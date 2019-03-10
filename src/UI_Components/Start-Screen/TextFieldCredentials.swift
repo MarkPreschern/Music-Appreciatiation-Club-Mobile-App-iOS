@@ -14,10 +14,11 @@ class TextFieldCredentials: UITextField {
         super.layoutSubviews()
         
         self.layer.borderWidth = 1
+        self.layer.borderColor = UIColor.darkGray.cgColor
     }
     
     override func textRect(forBounds bounds: CGRect) -> CGRect {
-        return bounds.insetBy(dx: 10, dy: 5)
+        return bounds.insetBy(dx: 9, dy: 5)
     }
     
     override func editingRect(forBounds bounds: CGRect) -> CGRect {

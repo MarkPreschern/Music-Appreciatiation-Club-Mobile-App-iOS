@@ -10,6 +10,7 @@
 		A495E2FF222CCE0000D8607D /* TextFieldCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = A495E2FE222CCE0000D8607D /* TextFieldCredentials.swift */; };
 		A495E304222E003F00D8607D /* StartScreenMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A495E303222E003F00D8607D /* StartScreenMain.swift */; };
 		A495E306222E03A600D8607D /* CheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A495E305222E03A600D8607D /* CheckBox.swift */; };
+		A495E30B22300AAA00D8607D /* NewsScreenMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A495E30A22300AAA00D8607D /* NewsScreenMainViewController.swift */; };
 		A4B2CDE8222B62EA00DB64AC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B2CDE7222B62EA00DB64AC /* AppDelegate.swift */; };
 		A4B2CDED222B62EA00DB64AC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4B2CDEB222B62EA00DB64AC /* Main.storyboard */; };
 		A4B2CDEF222B62EB00DB64AC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A4B2CDEE222B62EB00DB64AC /* Assets.xcassets */; };
@@ -40,6 +41,7 @@
 		A495E2FE222CCE0000D8607D /* TextFieldCredentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldCredentials.swift; sourceTree = "<group>"; };
 		A495E303222E003F00D8607D /* StartScreenMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartScreenMain.swift; sourceTree = "<group>"; };
 		A495E305222E03A600D8607D /* CheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBox.swift; sourceTree = "<group>"; };
+		A495E30A22300AAA00D8607D /* NewsScreenMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsScreenMainViewController.swift; sourceTree = "<group>"; };
 		A4B2CDE4222B62EA00DB64AC /* Music-Appreciation-Mobile-App-iOs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Music-Appreciation-Mobile-App-iOs.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4B2CDE7222B62EA00DB64AC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A4B2CDEC222B62EA00DB64AC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -91,6 +93,7 @@
 			isa = PBXGroup;
 			children = (
 				A495E300222CD95B00D8607D /* Start-Screen */,
+				A495E30D2230396500D8607D /* App-Screens */,
 			);
 			path = UI_Components;
 			sourceTree = "<group>";
@@ -105,12 +108,52 @@
 			path = "Start-Screen";
 			sourceTree = "<group>";
 		};
+		A495E307223007D900D8607D /* News-Screen */ = {
+			isa = PBXGroup;
+			children = (
+				A495E30A22300AAA00D8607D /* NewsScreenMainViewController.swift */,
+			);
+			path = "News-Screen";
+			sourceTree = "<group>";
+		};
+		A495E3082230082600D8607D /* User-Profile-Screen */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "User-Profile-Screen";
+			sourceTree = "<group>";
+		};
+		A495E3092230085400D8607D /* Music-Search-Screen */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Music-Search-Screen";
+			sourceTree = "<group>";
+		};
+		A495E30C223038CC00D8607D /* Top-Picks-Screen */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Top-Picks-Screen";
+			sourceTree = "<group>";
+		};
+		A495E30D2230396500D8607D /* App-Screens */ = {
+			isa = PBXGroup;
+			children = (
+				A495E307223007D900D8607D /* News-Screen */,
+				A495E3082230082600D8607D /* User-Profile-Screen */,
+				A495E30C223038CC00D8607D /* Top-Picks-Screen */,
+				A495E3092230085400D8607D /* Music-Search-Screen */,
+			);
+			path = "App-Screens";
+			sourceTree = "<group>";
+		};
 		A4B2CDDB222B62EA00DB64AC = {
 			isa = PBXGroup;
 			children = (
-				A4B2CDE6222B62EA00DB64AC /* Music-Appreciation-Mobile-App-iOs */,
-				A4B2CDFB222B62EB00DB64AC /* Music-Appreciation-Mobile-App-iOsTests */,
-				A4B2CE06222B62EB00DB64AC /* Music-Appreciation-Mobile-App-iOsUITests */,
+				A4B2CDE6222B62EA00DB64AC /* src */,
+				A4B2CDFB222B62EB00DB64AC /* iOsTests */,
+				A4B2CE06222B62EB00DB64AC /* iOsUITests */,
 				A4B2CDE5222B62EA00DB64AC /* Products */,
 				A495E2E8222B891E00D8607D /* Frameworks */,
 			);
@@ -126,7 +169,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		A4B2CDE6222B62EA00DB64AC /* Music-Appreciation-Mobile-App-iOs */ = {
+		A4B2CDE6222B62EA00DB64AC /* src */ = {
 			isa = PBXGroup;
 			children = (
 				A495E2FC222CCC1D00D8607D /* UI_Components */,
@@ -136,25 +179,25 @@
 				A4B2CDF0222B62EB00DB64AC /* LaunchScreen.storyboard */,
 				A4B2CDF3222B62EB00DB64AC /* Info.plist */,
 			);
-			path = "Music-Appreciation-Mobile-App-iOs";
+			path = src;
 			sourceTree = "<group>";
 		};
-		A4B2CDFB222B62EB00DB64AC /* Music-Appreciation-Mobile-App-iOsTests */ = {
+		A4B2CDFB222B62EB00DB64AC /* iOsTests */ = {
 			isa = PBXGroup;
 			children = (
 				A4B2CDFC222B62EB00DB64AC /* Music_Appreciation_Mobile_App_iOsTests.swift */,
 				A4B2CDFE222B62EB00DB64AC /* Info.plist */,
 			);
-			path = "Music-Appreciation-Mobile-App-iOsTests";
+			path = iOsTests;
 			sourceTree = "<group>";
 		};
-		A4B2CE06222B62EB00DB64AC /* Music-Appreciation-Mobile-App-iOsUITests */ = {
+		A4B2CE06222B62EB00DB64AC /* iOsUITests */ = {
 			isa = PBXGroup;
 			children = (
 				A4B2CE07222B62EB00DB64AC /* Music_Appreciation_Mobile_App_iOsUITests.swift */,
 				A4B2CE09222B62EB00DB64AC /* Info.plist */,
 			);
-			path = "Music-Appreciation-Mobile-App-iOsUITests";
+			path = iOsUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -292,6 +335,7 @@
 				A495E2FF222CCE0000D8607D /* TextFieldCredentials.swift in Sources */,
 				A4B2CDE8222B62EA00DB64AC /* AppDelegate.swift in Sources */,
 				A495E304222E003F00D8607D /* StartScreenMain.swift in Sources */,
+				A495E30B22300AAA00D8607D /* NewsScreenMainViewController.swift in Sources */,
 				A495E306222E03A600D8607D /* CheckBox.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -470,7 +514,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 97YHZ9LM88;
-				INFOPLIST_FILE = "Music-Appreciation-Mobile-App-iOs/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/src/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -491,7 +535,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 97YHZ9LM88;
-				INFOPLIST_FILE = "Music-Appreciation-Mobile-App-iOs/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/src/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
