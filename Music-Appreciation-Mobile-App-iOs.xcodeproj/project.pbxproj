@@ -7,10 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A4309CA722383C35002B6A13 /* ProfileScreenMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4309CA622383C35002B6A13 /* ProfileScreenMain.swift */; };
+		A46EAB54223A910100F1B702 /* PicksScreenMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A46EAB53223A910100F1B702 /* PicksScreenMain.swift */; };
+		A46EAB56223A911D00F1B702 /* SearchScreenMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A46EAB55223A911D00F1B702 /* SearchScreenMain.swift */; };
 		A495E2FF222CCE0000D8607D /* TextFieldCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = A495E2FE222CCE0000D8607D /* TextFieldCredentials.swift */; };
 		A495E304222E003F00D8607D /* StartScreenMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A495E303222E003F00D8607D /* StartScreenMain.swift */; };
 		A495E306222E03A600D8607D /* CheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A495E305222E03A600D8607D /* CheckBox.swift */; };
-		A495E30B22300AAA00D8607D /* NewsScreenMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A495E30A22300AAA00D8607D /* NewsScreenMainViewController.swift */; };
+		A495E30B22300AAA00D8607D /* NewsScreenMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A495E30A22300AAA00D8607D /* NewsScreenMain.swift */; };
 		A4B2CDE8222B62EA00DB64AC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B2CDE7222B62EA00DB64AC /* AppDelegate.swift */; };
 		A4B2CDED222B62EA00DB64AC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4B2CDEB222B62EA00DB64AC /* Main.storyboard */; };
 		A4B2CDEF222B62EB00DB64AC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A4B2CDEE222B62EB00DB64AC /* Assets.xcassets */; };
@@ -37,11 +40,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A4309CA622383C35002B6A13 /* ProfileScreenMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileScreenMain.swift; sourceTree = "<group>"; };
+		A46EAB53223A910100F1B702 /* PicksScreenMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicksScreenMain.swift; sourceTree = "<group>"; };
+		A46EAB55223A911D00F1B702 /* SearchScreenMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchScreenMain.swift; sourceTree = "<group>"; };
 		A495E2E9222B891E00D8607D /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		A495E2FE222CCE0000D8607D /* TextFieldCredentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldCredentials.swift; sourceTree = "<group>"; };
 		A495E303222E003F00D8607D /* StartScreenMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartScreenMain.swift; sourceTree = "<group>"; };
 		A495E305222E03A600D8607D /* CheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBox.swift; sourceTree = "<group>"; };
-		A495E30A22300AAA00D8607D /* NewsScreenMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsScreenMainViewController.swift; sourceTree = "<group>"; };
+		A495E30A22300AAA00D8607D /* NewsScreenMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsScreenMain.swift; sourceTree = "<group>"; };
 		A4B2CDE4222B62EA00DB64AC /* Music-Appreciation-Mobile-App-iOs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Music-Appreciation-Mobile-App-iOs.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4B2CDE7222B62EA00DB64AC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A4B2CDEC222B62EA00DB64AC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -111,39 +117,42 @@
 		A495E307223007D900D8607D /* News-Screen */ = {
 			isa = PBXGroup;
 			children = (
-				A495E30A22300AAA00D8607D /* NewsScreenMainViewController.swift */,
+				A495E30A22300AAA00D8607D /* NewsScreenMain.swift */,
 			);
 			path = "News-Screen";
 			sourceTree = "<group>";
 		};
-		A495E3082230082600D8607D /* User-Profile-Screen */ = {
+		A495E3082230082600D8607D /* Profile-Screen */ = {
 			isa = PBXGroup;
 			children = (
+				A4309CA622383C35002B6A13 /* ProfileScreenMain.swift */,
 			);
-			path = "User-Profile-Screen";
+			path = "Profile-Screen";
 			sourceTree = "<group>";
 		};
-		A495E3092230085400D8607D /* Music-Search-Screen */ = {
+		A495E3092230085400D8607D /* Search-Screen */ = {
 			isa = PBXGroup;
 			children = (
+				A46EAB55223A911D00F1B702 /* SearchScreenMain.swift */,
 			);
-			path = "Music-Search-Screen";
+			path = "Search-Screen";
 			sourceTree = "<group>";
 		};
-		A495E30C223038CC00D8607D /* Top-Picks-Screen */ = {
+		A495E30C223038CC00D8607D /* Picks-Screen */ = {
 			isa = PBXGroup;
 			children = (
+				A46EAB53223A910100F1B702 /* PicksScreenMain.swift */,
 			);
-			path = "Top-Picks-Screen";
+			path = "Picks-Screen";
 			sourceTree = "<group>";
 		};
 		A495E30D2230396500D8607D /* App-Screens */ = {
 			isa = PBXGroup;
 			children = (
 				A495E307223007D900D8607D /* News-Screen */,
-				A495E3082230082600D8607D /* User-Profile-Screen */,
-				A495E30C223038CC00D8607D /* Top-Picks-Screen */,
-				A495E3092230085400D8607D /* Music-Search-Screen */,
+				A495E3082230082600D8607D /* Profile-Screen */,
+				A495E30C223038CC00D8607D /* Picks-Screen */,
+				A495E3092230085400D8607D /* Search-Screen */,
 			);
 			path = "App-Screens";
 			sourceTree = "<group>";
@@ -334,9 +343,12 @@
 			files = (
 				A495E2FF222CCE0000D8607D /* TextFieldCredentials.swift in Sources */,
 				A4B2CDE8222B62EA00DB64AC /* AppDelegate.swift in Sources */,
+				A4309CA722383C35002B6A13 /* ProfileScreenMain.swift in Sources */,
 				A495E304222E003F00D8607D /* StartScreenMain.swift in Sources */,
-				A495E30B22300AAA00D8607D /* NewsScreenMainViewController.swift in Sources */,
+				A46EAB56223A911D00F1B702 /* SearchScreenMain.swift in Sources */,
+				A495E30B22300AAA00D8607D /* NewsScreenMain.swift in Sources */,
 				A495E306222E03A600D8607D /* CheckBox.swift in Sources */,
+				A46EAB54223A910100F1B702 /* PicksScreenMain.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
