@@ -87,6 +87,10 @@
                                             <action selector="CheckBoxTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="BvM-vV-G3u"/>
                                         </connections>
                                     </button>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="pDu-pL-mX9">
+                                        <rect key="frame" x="92" y="8" width="120" height="120"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" cocoaTouchSystemColor="lightTextColor"/>
                                 <constraints>
@@ -361,7 +365,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="background-image" width="375" height="667"/>
+        <image name="Logo" width="334" height="334"/>
+        <image name="background-image" width="91" height="137"/>
         <image name="check-mark-image" width="115" height="109"/>
         <image name="uncheck-mark-image" width="137" height="91"/>
     </resources>
