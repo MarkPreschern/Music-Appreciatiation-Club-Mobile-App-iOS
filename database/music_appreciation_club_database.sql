@@ -5,6 +5,18 @@ CREATE SCHEMA IF NOT EXISTS `music_appreciation_club` DEFAULT CHARACTER SET utf8
 USE `music_appreciation_club` ;
 
 -- -----------------------------------------------------
+-- Table `music_appreciation_club`.`role`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `music_appreciation_club`.`role` (
+  `role_id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(100) NOT NULL,
+  `description` VARCHAR(255) NULL,
+  PRIMARY KEY (`role_id`),
+  UNIQUE INDEX `role_id_UNIQUE` (`role_id` ASC) VISIBLE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `music_appreciation_club`.`user`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `music_appreciation_club`.`user` (
@@ -12,9 +24,15 @@ CREATE TABLE IF NOT EXISTS `music_appreciation_club`.`user` (
   `name_first` VARCHAR(100) NOT NULL,
   `name_last` VARCHAR(100) NOT NULL,
   `nuid` INT NOT NULL,
-  `role` VARCHAR(100) NULL,
-  PRIMARY KEY (`user_id`),
-  UNIQUE INDEX `user_id_UNIQUE` (`user_id` ASC) VISIBLE)
+  `role_id` INT NOT NULL,
+  PRIMARY KEY (`user_id`, `role_id`),
+  UNIQUE INDEX `user_id_UNIQUE` (`user_id` ASC) VISIBLE,
+  INDEX `fk_user_role1_idx` (`role_id` ASC) VISIBLE,
+  CONSTRAINT `fk_user_role1`
+    FOREIGN KEY (`role_id`)
+    REFERENCES `music_appreciation_club`.`role` (`role_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
