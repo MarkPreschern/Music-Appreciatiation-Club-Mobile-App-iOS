@@ -149,8 +149,8 @@
 		A495E30D2230396500D8607D /* App-Screens */ = {
 			isa = PBXGroup;
 			children = (
-				A495E307223007D900D8607D /* News-Screen */,
 				A495E3082230082600D8607D /* Profile-Screen */,
+				A495E307223007D900D8607D /* News-Screen */,
 				A495E30C223038CC00D8607D /* Picks-Screen */,
 				A495E3092230085400D8607D /* Search-Screen */,
 			);
