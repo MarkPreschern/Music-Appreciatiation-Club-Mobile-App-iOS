@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 48;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -290,7 +290,7 @@
 				};
 			};
 			buildConfigurationList = A4B2CDDF222B62EA00DB64AC /* Build configuration list for PBXProject "Music-Appreciation-Mobile-App-iOs" */;
-			compatibilityVersion = "Xcode 9.3";
+			compatibilityVersion = "Xcode 8.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
