@@ -8,19 +8,22 @@
 
 import UIKit
 
+var name = ""
+var nuid = ""
+
 // Represents the main login page
 class StartScreenMain: UIViewController, UITextFieldDelegate {
     
     var isChecked = false //if the check box 'Remember Me' is checked
-    @IBOutlet weak var name: UITextField!
-    @IBOutlet weak var NUID: UITextField!
+    @IBOutlet weak var name_outlet: UITextField!
+    @IBOutlet weak var nuid_outlet: UITextField!
     
     // initialization on view loading
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.name.delegate = self
-        self.NUID.delegate = self
+        self.name_outlet.delegate = self
+        self.nuid_outlet.delegate = self
     }
     
     // Dismisses text field on 'return' key
@@ -54,12 +57,16 @@ class StartScreenMain: UIViewController, UITextFieldDelegate {
             style: UIAlertAction.Style.default,
             handler: nil))
         
-        if (name.text == nil || NUID.text == nil /* || query to nuid database is incorrect */) {
+        if (name_outlet.text == nil || nuid_outlet.text == nil /* || query to nuid database is incorrect */) {
             self.present(alert, animated: true, completion: nil)
         } else {
             // add user information and isChecked var to database if credentials are correct
-            print((self.name.text ?? "") + " " + (self.NUID.text ?? ""))
-            self.present(alert, animated: true, completion: nil)
+            print((self.name_outlet.text ?? "") + " " + (self.nuid_outlet.text ?? ""))
+            name = name_outlet.text!
+            nuid = nuid_outlet.text!
+            
+            //switches to 'news' view controller
+            performSegue(withIdentifier: "LoginToNewsSeque", sender: self)
         }
     }
 }
