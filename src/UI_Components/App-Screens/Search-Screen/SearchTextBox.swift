@@ -1,5 +1,5 @@
 //
-//  TextFieldCredentials.swift
+//  SearchTextBox.swift
 //  Music-Appreciation-Mobile-App-iOs
 //
 //  Created by Mark Preschern on 7/28/19.
@@ -8,18 +8,20 @@
 
 import UIKit
 
-// Represents custom text field information for the start screen text fields
-class TextFieldCredentials: UITextField {
+// Represents the search text box
+class SearchTextBox: UITextField {
     
     override func layoutSubviews() {
         super.layoutSubviews()
         
         self.layer.borderWidth = 1
-        self.layer.borderColor = UIColor.darkGray.cgColor
+        self.layer.borderColor = UIColor(red:222/255, green:225/255, blue:227/255, alpha: 1).cgColor
+        
+        self.returnKeyType = UIReturnKeyType.search
     }
     
     override func textRect(forBounds bounds: CGRect) -> CGRect {
-        return bounds.insetBy(dx: 9, dy: 5)
+        return bounds.insetBy(dx: 25, dy: 12)
     }
     
     override func editingRect(forBounds bounds: CGRect) -> CGRect {

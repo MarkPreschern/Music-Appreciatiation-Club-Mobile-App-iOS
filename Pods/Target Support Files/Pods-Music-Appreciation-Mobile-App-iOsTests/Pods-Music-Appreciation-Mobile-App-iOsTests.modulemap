@@ -1,0 +1,6 @@
+framework module Pods_Music_Appreciation_Mobile_App_iOsTests {
+  umbrella header "Pods-Music-Appreciation-Mobile-App-iOsTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
