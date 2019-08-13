@@ -8,8 +8,8 @@
 
 import UIKit
 
-var name : String?
-var nuid : String?
+var user_name : String? // user's name
+var user_nuid : String? // user's nuid
 
 // Represents the main login page
 class StartScreenMain: UIViewController, UITextFieldDelegate {
@@ -68,10 +68,14 @@ class StartScreenMain: UIViewController, UITextFieldDelegate {
                 self.present(alert, animated: true, completion: nil)
                 return false;
             } else {
-                // add user information and isChecked var to database if credentials are correct
-                print((self.name_outlet.text ?? "") + " " + (self.nuid_outlet.text ?? ""))
-                name = name_outlet.text!
-                nuid = nuid_outlet.text!
+                if (self.isChecked) {
+                    //TODO: add user information and isChecked var to SQLite if credentials are correct
+                }
+            
+                //updates global variables
+                user_name = name_outlet.text!
+                user_nuid = nuid_outlet.text!
+                print(self.name_outlet.text! + " " + self.nuid_outlet.text!)
                 
                 //switches to 'news' view controller
                 if (identifier == "LoginToNewsSeque") {

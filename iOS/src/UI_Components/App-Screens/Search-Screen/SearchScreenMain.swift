@@ -11,14 +11,25 @@ import Alamofire
 
 // Represents information in a cell of the table view
 struct ItemData {
-    let name : String!
-    let mainImage : UIImage!
+    let type : ItemType! // the type of item
+
+    let name : String! // the name of the item
+    let mainImage : UIImage! // the main image of the item
 }
+
+// Represents the type of item this is, either a song, album, or artist
+enum ItemType {
+    case SONG
+    case ALBUM
+    case ARTIST
+}
+
+var currentURL : String?
 
 // Represents the search screen. Holds information regarding:
 // - Songs and albums available on spotify
 // - ability to choose songs and albums weekly
-class SearchScreenMain: UIViewController, UITextFieldDelegate {
+class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelegate {
     
     @IBOutlet weak var view_outlet: UIView! // main view
     @IBOutlet weak var searchTextBox_outlet: SearchTextBox! //search text box
@@ -28,33 +39,45 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate {
     typealias JSONStandard = [String : AnyObject] //typealias for json data
     
     // default url for when the view first loads in
-    let defaultURL = "https://api.spotify.com/v1/search?q=music&type=album%2Cartist%2Cplaylist%2Ctrack&limit=20"
+    let defaultURL = "https://api.spotify.com/v1/search?q=music&type=album%2Cplaylist%2Ctrack&limit=20"
     
+    // initialization on view loading
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        //sets task bar border
         self.view_outlet.layer.borderWidth = 1
         self.view_outlet.layer.borderColor = UIColor(red:222/255, green:225/255, blue:227/255, alpha: 1).cgColor
         
+        //sets search text box constraints
         self.searchTextBox_outlet.delegate = self
+        self.searchTextBox_outlet.placeholder = "Albums and songs"
         
+        //sets table view constraints
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "UITableViewCell")
         self.tableView.dataSource = self
+        self.tableView.delegate = self
         
-        self.callSpotifyURL(url: self.defaultURL)
+        //loads the currentURL, or the defaultURL if the currentURL is nil
+        self.callSpotifyURL(url: currentURL == nil ? self.defaultURL : currentURL!)
     }
     
-    // Dismisses text field on 'return' key
+    // Dismisses text field on 'return' key, and performs query if text isn't empty
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        self.view.endEditing(true)
+        self.view.endEditing(true) //ends editing of text field
+        if (!textField.text!.isEmpty) {
+            currentURL = self.buildURL(query: textField.text) //builds url given query
+            self.callSpotifyURL(url: currentURL!) //reloads spotify data to new query
+        }
         return false
     }
     
     //builds the url given the query
     func buildURL(query : String!) -> String! {
+        //TODO: query's with spaces don't work
         return "https://api.spotify.com/v1/search?q="
-            + query
-            + "&type=album%2Cartist%2Cplaylist%2Ctrack&limit=20";
+            + query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+            + "&type=album%2Cartist%2Ctrack&limit=20";
     }
 
     //calls the spotify url
@@ -102,9 +125,12 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate {
     
     //reads the json produced by the call to the spotify url
     func parseSpotifyData(JSONData : Data) {
+        self.items = [ItemData]() //retets table to empty
         do {
+            //reads the JSON
             var readableJSON = try JSONSerialization.jsonObject(with: JSONData, options: .mutableContainers) as! JSONStandard
             print(readableJSON)
+            //parses the JSON
             if let tracks = readableJSON["tracks"] as? JSONStandard {
                 if let items = tracks["items"] as? [JSONStandard] {
                     for i in 0..<items.count {
@@ -117,7 +143,8 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate {
                                 let mainImageData = NSData(contentsOf: mainImageURL!)
                                 let mainImage = UIImage(data: mainImageData! as Data)
                                 
-                                self.items.append(ItemData.init(name: name, mainImage: mainImage))
+                                //updates table information
+                                self.items.append(ItemData.init(type: ItemType.SONG, name: name, mainImage: mainImage))
                                 self.tableView.reloadData()
                             }
                         }
@@ -126,7 +153,33 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate {
             }
         } catch {
             print("Error info: \(error)")
+            fatalError()
         }
+    }
+    
+    // when table view cell is tapped, move to controller of cell type
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // chooses view controller based on cell type
+        var nextVC : GenericItemView!
+        switch (self.items[indexPath.row].type!) {
+        case .SONG:
+            nextVC = self.storyboard!.instantiateViewController(withIdentifier: "songViewID") as? GenericItemView
+        case .ALBUM:
+            nextVC = self.storyboard!.instantiateViewController(withIdentifier: "albumViewID") as? GenericItemView
+        case .ARTIST:
+            nextVC = self.storyboard!.instantiateViewController(withIdentifier: "artistViewID") as? GenericItemView
+        default:
+            fatalError()
+        }
+        
+        // sets local variables in the new view controller
+        nextVC!.itemName = self.items[indexPath.row].name
+        nextVC!.itemImage = self.items[indexPath.row].mainImage
+        nextVC!.prevViewController = self
+        
+        // navigates to new view controller using navigation controller
+        let navController = UINavigationController(rootViewController: nextVC)
+        self.present(navController, animated:true, completion: nil)
     }
 }
 
@@ -149,4 +202,5 @@ extension SearchScreenMain: UITableViewDataSource {
         mainImageView.image = self.items[indexPath.row].mainImage
         return cell!
     }
+    
 }

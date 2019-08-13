@@ -11,6 +11,7 @@ import UIKit
 // Represents custom text field information for the start screen text fields
 class TextFieldCredentials: UITextField {
     
+    // initialization on view loading
     override func layoutSubviews() {
         super.layoutSubviews()
         

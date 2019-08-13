@@ -11,6 +11,7 @@ import UIKit
 // Represents the search text box
 class SearchTextBox: UITextField {
     
+    // initialization on view loading
     override func layoutSubviews() {
         super.layoutSubviews()
         
