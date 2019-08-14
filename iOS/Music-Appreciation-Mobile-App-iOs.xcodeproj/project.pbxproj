@@ -20,11 +20,11 @@
 		A4B2CDF2222B62EB00DB64AC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4B2CDF0222B62EB00DB64AC /* LaunchScreen.storyboard */; };
 		A4B2CDFD222B62EB00DB64AC /* Music_Appreciation_Mobile_App_iOsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B2CDFC222B62EB00DB64AC /* Music_Appreciation_Mobile_App_iOsTests.swift */; };
 		A4B2CE08222B62EB00DB64AC /* Music_Appreciation_Mobile_App_iOsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B2CE07222B62EB00DB64AC /* Music_Appreciation_Mobile_App_iOsUITests.swift */; };
+		A4CCE7A1230439B600F0E518 /* GenericItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4CCE7A0230439B600F0E518 /* GenericItemView.swift */; };
 		A4D2AA2322EE5AFE009007B3 /* TextFieldCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D2AA2222EE5AFE009007B3 /* TextFieldCredentials.swift */; };
 		A4D2AA2722EE5B6E009007B3 /* SearchTextBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D2AA2622EE5B6E009007B3 /* SearchTextBox.swift */; };
 		A4D2AA3422F46B19009007B3 /* SongView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D2AA3322F46B19009007B3 /* SongView.swift */; };
 		A4D2AA3622F473A5009007B3 /* AlbumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D2AA3522F473A5009007B3 /* AlbumView.swift */; };
-		A4D2AA3822F481D3009007B3 /* GenericItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D2AA3722F481D3009007B3 /* GenericItemView.swift */; };
 		D5BBCC2305934F89D2423EE3 /* Pods_Music_Appreciation_Mobile_App_iOs.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32963F65C5442CD0F8AE526D /* Pods_Music_Appreciation_Mobile_App_iOs.framework */; };
 /* End PBXBuildFile section */
 
@@ -72,11 +72,11 @@
 		A4B2CE03222B62EB00DB64AC /* Music-Appreciation-Mobile-App-iOsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Music-Appreciation-Mobile-App-iOsUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4B2CE07222B62EB00DB64AC /* Music_Appreciation_Mobile_App_iOsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Music_Appreciation_Mobile_App_iOsUITests.swift; sourceTree = "<group>"; };
 		A4B2CE09222B62EB00DB64AC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A4CCE7A0230439B600F0E518 /* GenericItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericItemView.swift; sourceTree = "<group>"; };
 		A4D2AA2222EE5AFE009007B3 /* TextFieldCredentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldCredentials.swift; sourceTree = "<group>"; };
 		A4D2AA2622EE5B6E009007B3 /* SearchTextBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTextBox.swift; sourceTree = "<group>"; };
 		A4D2AA3322F46B19009007B3 /* SongView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongView.swift; sourceTree = "<group>"; };
 		A4D2AA3522F473A5009007B3 /* AlbumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumView.swift; sourceTree = "<group>"; };
-		A4D2AA3722F481D3009007B3 /* GenericItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericItemView.swift; sourceTree = "<group>"; };
 		D5ACB700AFCFD260A34A7F38 /* Pods_Music_Appreciation_Mobile_App_iOsUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Music_Appreciation_Mobile_App_iOsUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -238,7 +238,7 @@
 		A4D2AA2C22F46815009007B3 /* Item-Screens */ = {
 			isa = PBXGroup;
 			children = (
-				A4D2AA3722F481D3009007B3 /* GenericItemView.swift */,
+				A4CCE7A0230439B600F0E518 /* GenericItemView.swift */,
 				A4D2AA3522F473A5009007B3 /* AlbumView.swift */,
 				A4D2AA3322F46B19009007B3 /* SongView.swift */,
 			);
@@ -486,11 +486,11 @@
 			files = (
 				A4B2CDE8222B62EA00DB64AC /* AppDelegate.swift in Sources */,
 				A4D2AA2322EE5AFE009007B3 /* TextFieldCredentials.swift in Sources */,
+				A4CCE7A1230439B600F0E518 /* GenericItemView.swift in Sources */,
 				A4309CA722383C35002B6A13 /* ProfileScreenMain.swift in Sources */,
 				A4D2AA3422F46B19009007B3 /* SongView.swift in Sources */,
 				A495E304222E003F00D8607D /* StartScreenMain.swift in Sources */,
 				A4D2AA3622F473A5009007B3 /* AlbumView.swift in Sources */,
-				A4D2AA3822F481D3009007B3 /* GenericItemView.swift in Sources */,
 				A46EAB56223A911D00F1B702 /* SearchScreenMain.swift in Sources */,
 				A4D2AA2722EE5B6E009007B3 /* SearchTextBox.swift in Sources */,
 				A495E30B22300AAA00D8607D /* NewsScreenMain.swift in Sources */,

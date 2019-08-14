@@ -12,19 +12,19 @@ import Alamofire
 // Represents information in a cell of the table view
 struct ItemData {
     let type : ItemType! // the type of item
-
     let name : String! // the name of the item
-    let mainImage : UIImage! // the main image of the item
+    let image : UIImage! // the main image of the item
+    let id : String! // the item's uri
+    let previewUrl : String! // the item's preview url
 }
 
 // Represents the type of item this is, either a song, album, or artist
 enum ItemType {
     case SONG
     case ALBUM
-    case ARTIST
 }
 
-var currentURL : String?
+var currentQuery : String? // the current spotify query
 
 // Represents the search screen. Holds information regarding:
 // - Songs and albums available on spotify
@@ -38,13 +38,10 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
     var items = [ItemData]() // list of items in the table view
     typealias JSONStandard = [String : AnyObject] //typealias for json data
     
-    // default url for when the view first loads in
-    let defaultURL = "https://api.spotify.com/v1/search?q=music&type=album%2Cplaylist%2Ctrack&limit=20"
-    
     // initialization on view loading
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         //sets task bar border
         self.view_outlet.layer.borderWidth = 1
         self.view_outlet.layer.borderColor = UIColor(red:222/255, green:225/255, blue:227/255, alpha: 1).cgColor
@@ -59,29 +56,60 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
         self.tableView.delegate = self
         
         //loads the currentURL, or the defaultURL if the currentURL is nil
-        self.callSpotifyURL(url: currentURL == nil ? self.defaultURL : currentURL!)
+        self.callSpotifySongAndAlbum(query: currentQuery == nil ? "Music" : currentQuery!)
     }
     
     // Dismisses text field on 'return' key, and performs query if text isn't empty
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true) //ends editing of text field
         if (!textField.text!.isEmpty) {
-            currentURL = self.buildURL(query: textField.text) //builds url given query
-            self.callSpotifyURL(url: currentURL!) //reloads spotify data to new query
+            self.callSpotifySongAndAlbum(query: textField.text)
         }
         return false
     }
     
-    //builds the url given the query
-    func buildURL(query : String!) -> String! {
+    //calls to spotify api for songs and albums of this query and updates table
+    func callSpotifySongAndAlbum(query : String!) {
+        currentQuery = query //updates the current query
+        
+        // builds url's
+        let albumURL = self.buildAlbumURL(query: query)
+        let songURL = self.buildSongURL(query: query)
+        
+        self.items = [ItemData]() //resets table to empty
+
+        // calls the spotify url's, waiting for callbacks of success before moving to next steps
+        self.callSpotifyURL(url: albumURL!, type: ItemType.ALBUM, callback: { (token) -> Void in
+            if (token == "Success") {
+                self.callSpotifyURL(url: songURL!, type: ItemType.SONG, callback: { (token) -> Void in
+                    if (token == "Success") {
+                        // reloads table view data and scrolls to top of table view
+                        self.tableView.reloadData()
+                        self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+                    }
+                })
+            }
+        })
+    }
+    
+    //builds the song url given the query
+    func buildSongURL(query : String!) -> String! {
         //TODO: query's with spaces don't work
         return "https://api.spotify.com/v1/search?q="
             + query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
-            + "&type=album%2Cartist%2Ctrack&limit=20";
+            + "&type=track&limit=10";
     }
-
+    
+    //builds the album url given the query
+    func buildAlbumURL(query : String!) -> String! {
+        //TODO: query's with spaces don't work
+        return "https://api.spotify.com/v1/search?q="
+            + query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+            + "&type=album&limit=3";
+    }
+    
     //calls the spotify url
-    func callSpotifyURL(url : String) {
+    func callSpotifyURL(url : String, type : ItemType, callback: @escaping (String) -> Void) {
         //callback handler is needed to get the authorization since requestSpotifyAuthorizationToken is asyncronous
         self.requestSpotifyAuthorizationToken(callback: { (token) -> Void in
             if (token == "Error") {
@@ -96,7 +124,8 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
                 
                 Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON(completionHandler: {
                     response in
-                    self.parseSpotifyData(JSONData: response.data!)
+                    self.parseSpotifyData(JSONData: response.data!, type: type)
+                    callback("Success")
                 })
             }
         })
@@ -108,7 +137,7 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
         let parameters = ["client_id" : "f6412fd4b4cc4d59a043a432c377ed19",
                           "client_secret" : "b64be84293c24dfdabf2be9e1cd07f53",
                           "grant_type" : "client_credentials"]
-    
+        
         Alamofire.request(url, method: .post, parameters: parameters, encoding: URLEncoding.default, headers: nil).responseJSON(completionHandler: {
             response in
             do {
@@ -124,33 +153,58 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
     }
     
     //reads the json produced by the call to the spotify url
-    func parseSpotifyData(JSONData : Data) {
-        self.items = [ItemData]() //retets table to empty
+    func parseSpotifyData(JSONData : Data, type : ItemType) {
         do {
             //reads the JSON
             var readableJSON = try JSONSerialization.jsonObject(with: JSONData, options: .mutableContainers) as! JSONStandard
             print(readableJSON)
-            //parses the JSON
-            if let tracks = readableJSON["tracks"] as? JSONStandard {
-                if let items = tracks["items"] as? [JSONStandard] {
-                    for i in 0..<items.count {
-                        let item = items[i]
-                        let name = item["name"] as! String
-                        if let album = item["album"] as? JSONStandard {
-                            if let images = album["images"] as? [JSONStandard] {
+            
+            switch (type) {
+            case .ALBUM:
+                //parses the JSON for albums
+                if let albums = readableJSON["albums"] as? JSONStandard {
+                    if let items = albums["items"] as? [JSONStandard] {
+                        for i in 0..<items.count {
+                            let item = items[i]
+                            let name = item["name"] as! String
+                            let id = item["id"] as! String
+                            if let images = item["images"] as? [JSONStandard] {
                                 let imageData = images[0]
                                 let mainImageURL = URL(string: imageData["url"] as! String)
                                 let mainImageData = NSData(contentsOf: mainImageURL!)
                                 let mainImage = UIImage(data: mainImageData! as Data)
                                 
                                 //updates table information
-                                self.items.append(ItemData.init(type: ItemType.SONG, name: name, mainImage: mainImage))
-                                self.tableView.reloadData()
+                                self.items.append(ItemData.init(type: ItemType.ALBUM, name: name, image: mainImage, id: id, previewUrl: nil))
+                            }
+                        }
+                    }
+                }
+            case .SONG:
+                //parses the JSON for tracks
+                if let tracks = readableJSON["tracks"] as? JSONStandard {
+                    if let items = tracks["items"] as? [JSONStandard] {
+                        for i in 0..<items.count {
+                            let item = items[i]
+                            let name = item["name"] as! String
+                            let id = item["id"] as! String
+                            let previewUrl = item["preview_url"] as? String
+                            if let album = item["album"] as? JSONStandard {
+                                if let images = album["images"] as? [JSONStandard] {
+                                    let imageData = images[0]
+                                    let mainImageURL = URL(string: imageData["url"] as! String)
+                                    let mainImageData = NSData(contentsOf: mainImageURL!)
+                                    let mainImage = UIImage(data: mainImageData! as Data)
+                                    
+                                    //updates table information
+                                    self.items.append(ItemData.init(type: ItemType.SONG, name: name, image: mainImage, id: id, previewUrl: previewUrl))
+                                }
                             }
                         }
                     }
                 }
             }
+            
         } catch {
             print("Error info: \(error)")
             fatalError()
@@ -166,20 +220,16 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
             nextVC = self.storyboard!.instantiateViewController(withIdentifier: "songViewID") as? GenericItemView
         case .ALBUM:
             nextVC = self.storyboard!.instantiateViewController(withIdentifier: "albumViewID") as? GenericItemView
-        case .ARTIST:
-            nextVC = self.storyboard!.instantiateViewController(withIdentifier: "artistViewID") as? GenericItemView
         default:
             fatalError()
         }
         
         // sets local variables in the new view controller
-        nextVC!.itemName = self.items[indexPath.row].name
-        nextVC!.itemImage = self.items[indexPath.row].mainImage
-        nextVC!.prevViewController = self
+        nextVC!.itemData = self.items[indexPath.row]
+        nextVC!.prevControllerType = ControllerType.SearchView
         
-        // navigates to new view controller using navigation controller
-        let navController = UINavigationController(rootViewController: nextVC)
-        self.present(navController, animated:true, completion: nil)
+        // presents the new view controller
+        self.present(nextVC!, animated:true, completion: nil)
     }
 }
 
@@ -199,7 +249,7 @@ extension SearchScreenMain: UITableViewDataSource {
         mainLabel.text = self.items[indexPath.row].name
         //sets the image
         let mainImageView = cell?.viewWithTag(2) as! UIImageView
-        mainImageView.image = self.items[indexPath.row].mainImage
+        mainImageView.image = self.items[indexPath.row].image
         return cell!
     }
     
