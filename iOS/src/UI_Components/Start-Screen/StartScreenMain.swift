@@ -11,6 +11,21 @@ import UIKit
 var user_name : String? // user's name
 var user_nuid : String? // user's nuid
 
+//returns an alert with the given title, message, and action title
+func createAlert(title: String!, message: String!, actionTitle: String!) -> UIAlertController {
+    let alert = UIAlertController(
+        title: title,
+        message: message,
+        preferredStyle: UIAlertController.Style.alert)
+    
+    alert.addAction(UIAlertAction(
+        title: actionTitle,
+        style: UIAlertAction.Style.default,
+        handler: nil))
+    
+    return alert
+}
+
 // Represents the main login page
 class StartScreenMain: UIViewController, UITextFieldDelegate {
     
@@ -54,17 +69,11 @@ class StartScreenMain: UIViewController, UITextFieldDelegate {
     // - if correct login information, their user information is added to the database if not already contained
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         do {
-            let alert = UIAlertController(
-                title: "Login Failed",
-                message: "Invalid login information.",
-                preferredStyle: UIAlertController.Style.alert)
-            
-            alert.addAction(UIAlertAction(
-                title: "Try Again.",
-                style: UIAlertAction.Style.default,
-                handler: nil))
-            
             if (name_outlet == nil || nuid_outlet.text == nil /* || query to nuid database is incorrect */) {
+                let alert = createAlert(
+                    title: "Login Failed",
+                    message: "Invalid login information",
+                    actionTitle: "Try Again")
                 self.present(alert, animated: true, completion: nil)
                 return false;
             } else {
@@ -83,17 +92,6 @@ class StartScreenMain: UIViewController, UITextFieldDelegate {
                 }
             }
             return false;
-        } catch {
-            print("Error info: \(error)")
-            let alert = UIAlertController(
-                title: "Login Failed",
-                message: "Exception occured during login process",
-                preferredStyle: UIAlertController.Style.alert)
-            
-            alert.addAction(UIAlertAction(
-                title: "Try Again. Contact MAC if the problem persists.",
-                style: UIAlertAction.Style.default,
-                handler: nil))
         }
     }
 }

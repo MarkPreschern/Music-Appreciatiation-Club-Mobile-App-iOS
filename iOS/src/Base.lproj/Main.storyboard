@@ -497,8 +497,8 @@
                                 </prototypes>
                                 <sections/>
                             </tableView>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="bottom" borderStyle="line" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="2O9-Oe-1uY" customClass="SearchTextBox" customModule="Music_Appreciation_Mobile_App_iOs" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="44" width="375" height="68"/>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="bottom" borderStyle="line" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="2O9-Oe-1uY" customClass="SearchTextBox" customModule="Music_Appreciation_Mobile_App_iOs" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="44" width="379" height="68"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="25"/>
@@ -640,8 +640,8 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="nlo-d0-rq3"/>
-        <segue reference="Wpl-bZ-9zU"/>
-        <segue reference="9Bv-fI-Obu"/>
+        <segue reference="FRC-yp-F3f"/>
+        <segue reference="YMO-dw-Dns"/>
         <segue reference="a2v-dM-dVZ"/>
     </inferredMetricsTieBreakers>
 </document>

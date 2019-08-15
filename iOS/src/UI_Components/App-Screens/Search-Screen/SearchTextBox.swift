@@ -22,7 +22,7 @@ class SearchTextBox: UITextField {
     }
     
     override func textRect(forBounds bounds: CGRect) -> CGRect {
-        return bounds.insetBy(dx: 25, dy: 12)
+        return bounds.insetBy(dx: 10, dy: 12)
     }
     
     override func editingRect(forBounds bounds: CGRect) -> CGRect {

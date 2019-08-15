@@ -9,6 +9,9 @@
 import UIKit
 import AVFoundation
 
+var player : AVAudioPlayer?
+var session : AVAudioSession?
+
 // Represents a view controller for display information about and playing a song
 class SongView: GenericItemView {
     
@@ -16,8 +19,6 @@ class SongView: GenericItemView {
     @IBOutlet weak var mainImage_outlet: UIImageView!
     @IBOutlet weak var songTitle_outlet: UILabel!
     @IBOutlet weak var backButton_outlet: UIButton!
-    
-    var player : AVAudioPlayer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,23 +35,32 @@ class SongView: GenericItemView {
         // makes back button's background color transparent
         self.backButton_outlet.backgroundColor = UIColor.clear
         
+        //initializes the audio session
+        session = AVAudioSession.sharedInstance()
+        try! session?.setCategory(AVAudioSession.Category.playback)
+
         // prepares to play this song
-        print(self.itemData.previewUrl)
-        if (self.itemData.previewUrl == nil) {
-            // TODO : Tell user there is no preview for this song
-            print("Error: Null previewURL")
-        } else {
-            self.downloadFileFromURL(url: URL(string: self.itemData.previewUrl)!)
+        if (self.itemData.previewUrl != nil) {
+            // downloads and prepares song, waiting for a callback to remove loading screen
+            self.showSpinner(onView: self.view)
+            DispatchQueue.global(qos: .userInitiated).sync {
+                self.downloadFileFromURL(url: URL(string: self.itemData.previewUrl)!, completion: { (callback) -> Void in
+                    if (callback == "Complete") {
+                        self.removeSpinner()
+                    }
+                })
+            }
         }
     }
     
     // downloads the file from the given url and prepares to play it
-    func downloadFileFromURL(url: URL) {
+    func downloadFileFromURL(url: URL, completion: @escaping (String) -> Void) {
         var downloadTask = URLSessionDownloadTask()
         downloadTask = URLSession.shared.downloadTask(with: url, completionHandler: {
             customURL, response, error in
             
             self.prepareToPlay(url: customURL!)
+            completion("Complete")
         })
         downloadTask.resume()
     }
@@ -60,17 +70,31 @@ class SongView: GenericItemView {
         do {
             player = try AVAudioPlayer(contentsOf: url)
             player!.prepareToPlay()
-            player!.play()
+            player!.pause()
         } catch {
             print("Error info: \(error)")
-            fatalError()
+            let alert = createAlert(
+                title: "Audio Error",
+                message: "\(error)",
+                actionTitle: "Close")
+            self.present(alert, animated: true, completion: nil)
         }
     }
     
     // changes the player state from play to puase or visa versa
     @IBAction func changePlayerState(_ sender: Any) {
         if (self.itemData.previewUrl == nil) {
-            // TODO : Tell user there is no preview for this song
+            let alert = createAlert(
+                title: "Play Error",
+                message: "Song doesn't have a preview, can't be played",
+                actionTitle: "Close")
+            self.present(alert, animated: true, completion: nil)
+        } else if (player == nil) {
+            let alert = createAlert(
+                title: "Play Error",
+                message: "Player hasn't been initialized, please wait",
+                actionTitle: "Try Again")
+            self.present(alert, animated: true, completion: nil)
         } else {
             if (player!.isPlaying) {
                 player!.pause()
@@ -84,8 +108,6 @@ class SongView: GenericItemView {
     
     // goes back to previous view controller when the back button is clicked
     @IBAction func backButtonClicked(_ sender: Any) {
-        print("changing view")
-        
         // determines which controller to navigate to
         switch(self.prevControllerType) {
         case .AlbumView:

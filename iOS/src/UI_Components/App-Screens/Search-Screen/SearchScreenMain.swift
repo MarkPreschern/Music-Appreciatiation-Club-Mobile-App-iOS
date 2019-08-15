@@ -48,7 +48,7 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
         
         //sets search text box constraints
         self.searchTextBox_outlet.delegate = self
-        self.searchTextBox_outlet.placeholder = "Albums and songs"
+        self.searchTextBox_outlet.placeholder = "Albums and Songs"
         
         //sets table view constraints
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "UITableViewCell")
@@ -56,20 +56,31 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
         self.tableView.delegate = self
         
         //loads the currentURL, or the defaultURL if the currentURL is nil
-        self.callSpotifySongAndAlbum(query: currentQuery == nil ? "Music" : currentQuery!)
+        self.showSpinner(onView: self.view)
+        self.callSpotifySongAndAlbum(query: currentQuery == nil ? "Music" : currentQuery!, completion: { (callback) -> Void in
+            if (callback == "Complete") {
+                self.removeSpinner()
+            }
+        })
     }
     
     // Dismisses text field on 'return' key, and performs query if text isn't empty
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true) //ends editing of text field
         if (!textField.text!.isEmpty) {
-            self.callSpotifySongAndAlbum(query: textField.text)
+            //calls the spotify songs and albums, awaiting for a callback to remove the loading screen
+            self.showSpinner(onView: self.view)
+            self.callSpotifySongAndAlbum(query: textField.text, completion: { (callback) -> Void in
+                if (callback == "Complete") {
+                    self.removeSpinner()
+                }
+            })
         }
         return false
     }
     
     //calls to spotify api for songs and albums of this query and updates table
-    func callSpotifySongAndAlbum(query : String!) {
+    func callSpotifySongAndAlbum(query : String!, completion: @escaping (String) -> Void) {
         currentQuery = query //updates the current query
         
         // builds url's
@@ -79,13 +90,14 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
         self.items = [ItemData]() //resets table to empty
 
         // calls the spotify url's, waiting for callbacks of success before moving to next steps
-        self.callSpotifyURL(url: albumURL!, type: ItemType.ALBUM, callback: { (token) -> Void in
-            if (token == "Success") {
+        self.callSpotifyURL(url: albumURL!, type: ItemType.ALBUM, callback: { (callback) -> Void in
+            if (callback == "Success") {
                 self.callSpotifyURL(url: songURL!, type: ItemType.SONG, callback: { (token) -> Void in
-                    if (token == "Success") {
+                    if (callback == "Success") {
                         // reloads table view data and scrolls to top of table view
                         self.tableView.reloadData()
                         self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+                        completion("Complete")
                     }
                 })
             }
@@ -124,7 +136,9 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
                 
                 Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON(completionHandler: {
                     response in
-                    self.parseSpotifyData(JSONData: response.data!, type: type)
+                    DispatchQueue.global(qos: .userInitiated).sync {
+                        self.parseSpotifyData(JSONData: response.data!, type: type)
+                    }
                     callback("Success")
                 })
             }
@@ -204,10 +218,13 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
                     }
                 }
             }
-            
         } catch {
             print("Error info: \(error)")
-            fatalError()
+            let alert = createAlert(
+                title: "Spotify Query Error",
+                message: "\(error)",
+                actionTitle: "Try again")
+            self.present(alert, animated: true, completion: nil)
         }
     }
     
@@ -220,8 +237,6 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
             nextVC = self.storyboard!.instantiateViewController(withIdentifier: "songViewID") as? GenericItemView
         case .ALBUM:
             nextVC = self.storyboard!.instantiateViewController(withIdentifier: "albumViewID") as? GenericItemView
-        default:
-            fatalError()
         }
         
         // sets local variables in the new view controller
