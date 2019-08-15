@@ -28,9 +28,9 @@ class SongView: GenericItemView {
         self.mainImage_outlet.image = self.itemData.image
         self.songTitle_outlet.text = self.itemData.name
         
-        // sets back button preferences
-        background_outlet.layer.borderWidth = 1
-        background_outlet.layer.borderColor = UIColor.black.cgColor
+        // sets background preferences
+        self.background_outlet.layer.borderWidth = 1
+        self.background_outlet.layer.borderColor = UIColor.black.cgColor
         
         // makes back button's background color transparent
         self.backButton_outlet.backgroundColor = UIColor.clear
@@ -113,9 +113,6 @@ class SongView: GenericItemView {
         case .AlbumView:
             let albumView = self.storyboard!.instantiateViewController(withIdentifier: "albumViewID") as? GenericItemView
             albumView?.prevControllerType = ControllerType.SearchView
-            
-            // TODODODODODODODODO
-            
             self.present(albumView!, animated:true, completion: nil)
         case .SearchView:
             let searchView = self.storyboard!.instantiateViewController(withIdentifier: "searchScreenID")

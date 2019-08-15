@@ -24,6 +24,8 @@ enum ItemType {
     case ALBUM
 }
 
+typealias JSONStandard = [String : AnyObject] //typealias for json data
+
 var currentQuery : String? // the current spotify query
 
 // Represents the search screen. Holds information regarding:
@@ -36,7 +38,6 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
     @IBOutlet weak var tableView: UITableView! // table view
     
     var items = [ItemData]() // list of items in the table view
-    typealias JSONStandard = [String : AnyObject] //typealias for json data
     
     // initialization on view loading
     override func viewDidLoad() {
@@ -106,7 +107,6 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
     
     //builds the song url given the query
     func buildSongURL(query : String!) -> String! {
-        //TODO: query's with spaces don't work
         return "https://api.spotify.com/v1/search?q="
             + query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
             + "&type=track&limit=10";
@@ -114,7 +114,6 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
     
     //builds the album url given the query
     func buildAlbumURL(query : String!) -> String! {
-        //TODO: query's with spaces don't work
         return "https://api.spotify.com/v1/search?q="
             + query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
             + "&type=album&limit=3";
@@ -171,7 +170,6 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
         do {
             //reads the JSON
             var readableJSON = try JSONSerialization.jsonObject(with: JSONData, options: .mutableContainers) as! JSONStandard
-            print(readableJSON)
             
             switch (type) {
             case .ALBUM:
