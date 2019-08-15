@@ -9,9 +9,10 @@
 import UIKit
 import Alamofire
 
-var currentAlbumID: String!
+var songs = [ItemData]() // list of songs in the table view
 
-class AlbumView: GenericItemView, UITableViewDelegate {
+// Represents an album view, containing information about the album and it's songs
+class AlbumView: UIViewController, UITableViewDelegate {
     
     @IBOutlet weak var name_outlet: UILabel!
     @IBOutlet weak var image_outlet: UIImageView!
@@ -20,20 +21,15 @@ class AlbumView: GenericItemView, UITableViewDelegate {
     
     @IBOutlet weak var tableView_outlet: UITableView!
     
-    var songs = [ItemData]() // list of songs in the table view
-    
-    var spotifyAuthorizationTokenForSongs: String!
+    var albumData: ItemData! // the album data
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // sets the current album id if it's
-        currentAlbumID = self.itemData.id // TODO, fix for when going back from song
-        
         // sets song image and name information in view
-        self.name_outlet.text = self.itemData.name
-        self.image_outlet.image = self.itemData.image
-        self.imageBackground_outlet.image = self.itemData.image
+        self.name_outlet.text = self.albumData.name
+        self.image_outlet.image = self.albumData.image
+        self.imageBackground_outlet.image = self.albumData.image
         
         // makes back button's background color transparent
         self.backButton_outlet.backgroundColor = UIColor.clear
@@ -43,13 +39,15 @@ class AlbumView: GenericItemView, UITableViewDelegate {
         self.tableView_outlet.dataSource = self
         self.tableView_outlet.delegate = self
         
-        //loads the currentURL, or the defaultURL if the currentURL is nil
-        self.showSpinner(onView: self.view)
-        self.callSpotifyAlbumSongs(id: currentAlbumID, completion: { (callback) -> Void in
-            if (callback == "Complete") {
-                self.removeSpinner()
-            }
-        })
+        //loads the songs in this album if not already populated
+        if (songs.count == 0) {
+            self.showSpinner(onView: self.view)
+            self.callSpotifyAlbumSongs(id: self.albumData.id, completion: { (callback) -> Void in
+                if (callback == "Complete") {
+                    self.removeSpinner()
+                }
+            })
+        }
     }
     
     //calls to spotify api for songs and albums of this query and updates table
@@ -57,22 +55,24 @@ class AlbumView: GenericItemView, UITableViewDelegate {
         
         // builds url using the album id
         let url = self.buildAlbumSongsURL(id: id)
-        self.songs = [ItemData]() //resets table to empty
+        songs = [ItemData]() //resets table to empty
         
         // calls the spotify url, waiting for callbacks of success before moving to next steps
         self.callSpotifyURL(url: url!, callback: { (callback) -> Void in
             if (callback == "Success") {
                 // reloads table view data and scrolls to top of table view
-                self.tableView_outlet.reloadData()
-                self.tableView_outlet.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
-                completion("Complete")
+                DispatchQueue.main.sync {
+                    self.tableView_outlet.reloadData()
+                    self.tableView_outlet.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+                    completion("Complete")
+                }
             }
         })
     }
     
     //builds the url for querying all songs in this album
     func buildAlbumSongsURL(id : String!) -> String! {
-        return "https://api.spotify.com/v1/albums/" + id + "/tracks"
+        return "https://api.spotify.com/v1/albums/" + id + "/tracks?market=US" 
     }
     
     //calls the spotify url
@@ -82,7 +82,6 @@ class AlbumView: GenericItemView, UITableViewDelegate {
             if (token == "Error") {
                 fatalError()
             } else {
-                self.spotifyAuthorizationTokenForSongs = token
                 //header information for spotify url call
                 let headers : HTTPHeaders = [
                     "Accept" : "application/json",
@@ -92,7 +91,7 @@ class AlbumView: GenericItemView, UITableViewDelegate {
                 
                 Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON(completionHandler: {
                     response in
-                    DispatchQueue.global(qos: .userInitiated).sync {
+                    DispatchQueue.global(qos: .userInitiated).async {
                         self.parseSpotifyData(JSONData: response.data!, completion: { (completion) -> Void in
                             if (completion == "Success") {
                                 callback("Success")
@@ -139,9 +138,10 @@ class AlbumView: GenericItemView, UITableViewDelegate {
                     let name = item["name"] as! String
                     let id = item["id"] as! String
                     let previewUrl = item["preview_url"] as? String
-                    self.songs.append(ItemData(type: ItemType.SONG, name: name, image: nil, id: id, previewUrl: previewUrl))
+                    print(previewUrl ?? "nil")
+                    songs.append(ItemData(type: ItemType.SONG, name: name, image: self.albumData.image, id: id, previewUrl: previewUrl))
                     //calls back when all songs have been appended
-                    if (items.count == self.songs.count) {
+                    if (items.count == songs.count) {
                         completion("Success")
                     }
                 }
@@ -159,16 +159,16 @@ class AlbumView: GenericItemView, UITableViewDelegate {
     // goes back to previous view controller when the back button is clicked
     @IBAction func backButtonClicked(_ sender: Any) {
         let searchView = self.storyboard!.instantiateViewController(withIdentifier: "searchScreenID")
-        self.present(searchView, animated:true, completion: nil)
+        self.present(searchView, animated:false, completion: nil)
     }
     
     // when table view cell is tapped, move to controller of cell type
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let nextVC = self.storyboard!.instantiateViewController(withIdentifier: "songViewID") as? GenericItemView
+        let nextVC = self.storyboard!.instantiateViewController(withIdentifier: "songViewID") as? SongView
         
         // sets local variables in the new view controller
-        nextVC!.itemData = self.songs[indexPath.row]
-        nextVC!.prevControllerType = ControllerType.AlbumView
+        nextVC!.songData = songs[indexPath.row]
+        nextVC!.albumData = self.albumData
         
         // presents the new view controller
         self.present(nextVC!, animated:true, completion: nil)
@@ -181,7 +181,7 @@ extension AlbumView: UITableViewDataSource {
     
     //sets the number of rows in the table view
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.songs.count
+        return songs.count
     }
     
     //updates table view data including the image and label
@@ -189,7 +189,7 @@ extension AlbumView: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell2")
         //sets the label
         let mainLabel = cell?.viewWithTag(3) as! UILabel
-        mainLabel.text = self.songs[indexPath.row].name
+        mainLabel.text = songs[indexPath.row].name
         return cell!
     }
     

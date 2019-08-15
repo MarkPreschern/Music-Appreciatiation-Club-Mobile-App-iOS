@@ -13,20 +13,23 @@ var player : AVAudioPlayer?
 var session : AVAudioSession?
 
 // Represents a view controller for display information about and playing a song
-class SongView: GenericItemView {
+class SongView: UIViewController {
     
     @IBOutlet weak var background_outlet: UIImageView!
     @IBOutlet weak var mainImage_outlet: UIImageView!
     @IBOutlet weak var songTitle_outlet: UILabel!
     @IBOutlet weak var backButton_outlet: UIButton!
     
+    var songData : ItemData! // the item's data
+    var albumData : ItemData! // the song's album's data if applicable
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // sets song image and name information in view
-        self.background_outlet.image = self.itemData.image
-        self.mainImage_outlet.image = self.itemData.image
-        self.songTitle_outlet.text = self.itemData.name
+        self.background_outlet.image = self.songData.image
+        self.mainImage_outlet.image = self.songData.image
+        self.songTitle_outlet.text = self.songData.name
         
         // sets background preferences
         self.background_outlet.layer.borderWidth = 1
@@ -40,11 +43,11 @@ class SongView: GenericItemView {
         try! session?.setCategory(AVAudioSession.Category.playback)
 
         // prepares to play this song
-        if (self.itemData.previewUrl != nil) {
+        if (self.songData.previewUrl != nil) {
             // downloads and prepares song, waiting for a callback to remove loading screen
             self.showSpinner(onView: self.view)
             DispatchQueue.global(qos: .userInitiated).sync {
-                self.downloadFileFromURL(url: URL(string: self.itemData.previewUrl)!, completion: { (callback) -> Void in
+                self.downloadFileFromURL(url: URL(string: self.songData.previewUrl)!, completion: { (callback) -> Void in
                     if (callback == "Complete") {
                         self.removeSpinner()
                     }
@@ -83,7 +86,7 @@ class SongView: GenericItemView {
     
     // changes the player state from play to puase or visa versa
     @IBAction func changePlayerState(_ sender: Any) {
-        if (self.itemData.previewUrl == nil) {
+        if (self.songData.previewUrl == nil) {
             let alert = createAlert(
                 title: "Play Error",
                 message: "Song doesn't have a preview, can't be played",
@@ -108,15 +111,15 @@ class SongView: GenericItemView {
     
     // goes back to previous view controller when the back button is clicked
     @IBAction func backButtonClicked(_ sender: Any) {
+        player = AVAudioPlayer() //resets the audio player
         // determines which controller to navigate to
-        switch(self.prevControllerType) {
-        case .AlbumView:
-            let albumView = self.storyboard!.instantiateViewController(withIdentifier: "albumViewID") as? GenericItemView
-            albumView?.prevControllerType = ControllerType.SearchView
-            self.present(albumView!, animated:true, completion: nil)
-        case .SearchView:
+        if (self.albumData == nil) {
             let searchView = self.storyboard!.instantiateViewController(withIdentifier: "searchScreenID")
-            self.present(searchView, animated:true, completion: nil)
+            self.present(searchView, animated:false, completion: nil)
+        } else {
+            let albumView = self.storyboard!.instantiateViewController(withIdentifier: "albumViewID") as? AlbumView
+            albumView?.albumData = self.albumData
+            self.present(albumView!, animated:false, completion: nil)
         }
     }
 }
