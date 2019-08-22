@@ -22,6 +22,13 @@ struct ItemData {
 enum ItemType {
     case SONG
     case ALBUM
+    
+    var toString : String {
+        switch self {
+        case .SONG: return "Song"
+        case .ALBUM: return "Album"
+        }
+    }
 }
 
 typealias JSONStandard = [String : AnyObject] //typealias for json data
@@ -50,6 +57,7 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
         //sets search text box constraints
         self.searchTextBox_outlet.delegate = self
         self.searchTextBox_outlet.placeholder = "Albums and Songs"
+        self.searchTextBox_outlet.autocorrectionType = UITextAutocorrectionType.no
         
         //sets table view constraints
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "UITableViewCell")
@@ -197,7 +205,7 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
                                 
                                 //updates table information
                                 items.append(ItemData.init(type: ItemType.ALBUM, name: name, image: mainImage, id: id, previewUrl: nil))
-                                if (items.count == jsonItems.count) {
+                                if (i + 1 == jsonItems.count) {
                                     completion("Success")
                                 }
                             }
@@ -222,7 +230,7 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
                                     
                                     //updates table information
                                     items.append(ItemData.init(type: ItemType.SONG, name: name, image: mainImage, id: id, previewUrl: previewUrl))
-                                    if (items.count == jsonItems.count) {
+                                    if (i + 1 == jsonItems.count) {
                                         completion("Success")
                                     }
                                 }

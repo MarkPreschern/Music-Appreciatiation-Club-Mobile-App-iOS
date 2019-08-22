@@ -19,6 +19,8 @@ class SongView: UIViewController {
     @IBOutlet weak var mainImage_outlet: UIImageView!
     @IBOutlet weak var songTitle_outlet: UILabel!
     @IBOutlet weak var backButton_outlet: UIButton!
+    @IBOutlet weak var addButton_outlet: UIButton!
+    @IBOutlet weak var playPause_outlet: UIButton!
     
     var songData : ItemData! // the item's data
     var albumData : ItemData! // the song's album's data if applicable
@@ -27,7 +29,7 @@ class SongView: UIViewController {
         super.viewDidLoad()
         
         // sets song image and name information in view
-        self.background_outlet.image = self.songData.image
+        self.background_outlet.image = self.songData.image.averageColor()!.image(self.songData.image.size)
         self.mainImage_outlet.image = self.songData.image
         self.songTitle_outlet.text = self.songData.name
         
@@ -35,8 +37,17 @@ class SongView: UIViewController {
         self.background_outlet.layer.borderWidth = 1
         self.background_outlet.layer.borderColor = UIColor.black.cgColor
         
-        // makes back button's background color transparent
+        // makes back and add button's background color transparent
         self.backButton_outlet.backgroundColor = UIColor.clear
+        self.addButton_outlet.backgroundColor = UIColor.clear
+        
+        
+        //determines the color (black/white) of text and buttons based on the song image
+        let color = self.songData.image.averageColor()!.colorByBrightness()
+        self.backButton_outlet.setTitleColor(color, for: UIControl.State.normal)
+        self.addButton_outlet.setTitleColor(color, for: UIControl.State.normal)
+        self.songTitle_outlet.textColor = color
+        self.playPause_outlet.setTitleColor(color, for: UIControl.State.normal)
         
         //initializes the audio session
         session = AVAudioSession.sharedInstance()
@@ -72,6 +83,7 @@ class SongView: UIViewController {
     func prepareToPlay(url: URL) {
         do {
             player = try AVAudioPlayer(contentsOf: url)
+            player!.numberOfLoops = -1 //loops forever
             player!.prepareToPlay()
             player!.pause()
         } catch {
@@ -121,5 +133,11 @@ class SongView: UIViewController {
             albumView?.albumData = self.albumData
             self.present(albumView!, animated:false, completion: nil)
         }
+    }
+    
+    // when the add button is clicked, create an item alert for this song
+    @IBAction func addButtonClicked(_ sender: Any) {
+        UIAlertController(title: "", message: "", preferredStyle: UIAlertController.Style.alert)
+            .addItemAlert(name: self.songData.name, type: ItemType.SONG, item: self.songData, sender: self)
     }
 }

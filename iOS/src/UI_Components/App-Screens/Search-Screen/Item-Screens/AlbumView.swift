@@ -18,6 +18,7 @@ class AlbumView: UIViewController, UITableViewDelegate {
     @IBOutlet weak var image_outlet: UIImageView!
     @IBOutlet weak var imageBackground_outlet: UIImageView!
     @IBOutlet weak var backButton_outlet: UIButton!
+    @IBOutlet weak var addButton_outlet: UIButton!
     
     @IBOutlet weak var tableView_outlet: UITableView!
     
@@ -29,15 +30,22 @@ class AlbumView: UIViewController, UITableViewDelegate {
         // sets song image and name information in view
         self.name_outlet.text = self.albumData.name
         self.image_outlet.image = self.albumData.image
-        self.imageBackground_outlet.image = self.albumData.image
+        self.imageBackground_outlet.image = self.albumData.image.averageColor()!.image(self.albumData.image.size)
         
-        // makes back button's background color transparent
+        // makes back and add button's background color transparent
         self.backButton_outlet.backgroundColor = UIColor.clear
+        self.addButton_outlet.backgroundColor = UIColor.clear
         
         //sets table view constraints
         self.tableView_outlet.register(UITableViewCell.self, forCellReuseIdentifier: "UITableViewCell")
         self.tableView_outlet.dataSource = self
         self.tableView_outlet.delegate = self
+        
+        //determines the color (black/white) of text and buttons based on the song image
+        let color = self.albumData.image.averageColor()!.colorByBrightness()
+        self.backButton_outlet.setTitleColor(color, for: UIControl.State.normal)
+        self.addButton_outlet.setTitleColor(color, for: UIControl.State.normal)
+        self.name_outlet.textColor = color
         
         //loads the songs in this album if not already populated
         if (songs.count == 0) {
@@ -138,7 +146,6 @@ class AlbumView: UIViewController, UITableViewDelegate {
                     let name = item["name"] as! String
                     let id = item["id"] as! String
                     let previewUrl = item["preview_url"] as? String
-                    print(previewUrl ?? "nil")
                     songs.append(ItemData(type: ItemType.SONG, name: name, image: self.albumData.image, id: id, previewUrl: previewUrl))
                     //calls back when all songs have been appended
                     if (items.count == songs.count) {
@@ -174,6 +181,11 @@ class AlbumView: UIViewController, UITableViewDelegate {
         self.present(nextVC!, animated:true, completion: nil)
     }
     
+    // when the add button is clicked, create an item alert for this album
+    @IBAction func addButtonClicked(_ sender: Any) {
+        UIAlertController(title: "", message: "", preferredStyle: UIAlertController.Style.alert)
+            .addItemAlert(name: self.albumData.name, type: ItemType.ALBUM, item: self.albumData, sender: self)
+    }
 }
 
 // extension of search screen main allows for updating of the table view

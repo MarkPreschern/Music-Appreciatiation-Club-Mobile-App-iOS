@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		239BA1A32D47578FFDB7804A /* Pods_Music_Appreciation_Mobile_App_iOsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 631847DA1750E1E9CFBAE715 /* Pods_Music_Appreciation_Mobile_App_iOsTests.framework */; };
 		30C8A756A5C83FBE27792B63 /* Pods_Music_Appreciation_Mobile_App_iOsUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5ACB700AFCFD260A34A7F38 /* Pods_Music_Appreciation_Mobile_App_iOsUITests.framework */; };
+		A40FA785230ED43E00D19537 /* AverageColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A40FA784230ED43E00D19537 /* AverageColor.swift */; };
+		A40FA789230EDACD00D19537 /* ImageAsColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A40FA788230EDACD00D19537 /* ImageAsColor.swift */; };
+		A40FA78C230EE52800D19537 /* LoadingOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = A40FA78B230EE52800D19537 /* LoadingOverlay.swift */; };
+		A40FA78E230EE6FC00D19537 /* AddItemAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A40FA78D230EE6FC00D19537 /* AddItemAlert.swift */; };
 		A4309CA722383C35002B6A13 /* ProfileScreenMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4309CA622383C35002B6A13 /* ProfileScreenMain.swift */; };
 		A46EAB54223A910100F1B702 /* PicksScreenMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A46EAB53223A910100F1B702 /* PicksScreenMain.swift */; };
 		A46EAB56223A911D00F1B702 /* SearchScreenMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A46EAB55223A911D00F1B702 /* SearchScreenMain.swift */; };
@@ -20,7 +24,6 @@
 		A4B2CDF2222B62EB00DB64AC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4B2CDF0222B62EB00DB64AC /* LaunchScreen.storyboard */; };
 		A4B2CDFD222B62EB00DB64AC /* Music_Appreciation_Mobile_App_iOsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B2CDFC222B62EB00DB64AC /* Music_Appreciation_Mobile_App_iOsTests.swift */; };
 		A4B2CE08222B62EB00DB64AC /* Music_Appreciation_Mobile_App_iOsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B2CE07222B62EB00DB64AC /* Music_Appreciation_Mobile_App_iOsUITests.swift */; };
-		A4CCE7A32304817E00F0E518 /* loadingOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4CCE7A22304817E00F0E518 /* loadingOverlay.swift */; };
 		A4D2AA2322EE5AFE009007B3 /* TextFieldCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D2AA2222EE5AFE009007B3 /* TextFieldCredentials.swift */; };
 		A4D2AA2722EE5B6E009007B3 /* SearchTextBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D2AA2622EE5B6E009007B3 /* SearchTextBox.swift */; };
 		A4D2AA3422F46B19009007B3 /* SongView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D2AA3322F46B19009007B3 /* SongView.swift */; };
@@ -54,6 +57,10 @@
 		631847DA1750E1E9CFBAE715 /* Pods_Music_Appreciation_Mobile_App_iOsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Music_Appreciation_Mobile_App_iOsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DCAE7112DA4A12DDFC121FE /* Pods-Music-Appreciation-Mobile-App-iOsUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Music-Appreciation-Mobile-App-iOsUITests.release.xcconfig"; path = "Target Support Files/Pods-Music-Appreciation-Mobile-App-iOsUITests/Pods-Music-Appreciation-Mobile-App-iOsUITests.release.xcconfig"; sourceTree = "<group>"; };
 		9F27C4B94D8E54ACDE93744D /* Pods-Music-Appreciation-Mobile-App-iOsUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Music-Appreciation-Mobile-App-iOsUITests.debug.xcconfig"; path = "Target Support Files/Pods-Music-Appreciation-Mobile-App-iOsUITests/Pods-Music-Appreciation-Mobile-App-iOsUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		A40FA784230ED43E00D19537 /* AverageColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AverageColor.swift; sourceTree = "<group>"; };
+		A40FA788230EDACD00D19537 /* ImageAsColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAsColor.swift; sourceTree = "<group>"; };
+		A40FA78B230EE52800D19537 /* LoadingOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingOverlay.swift; sourceTree = "<group>"; };
+		A40FA78D230EE6FC00D19537 /* AddItemAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemAlert.swift; sourceTree = "<group>"; };
 		A4309CA622383C35002B6A13 /* ProfileScreenMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileScreenMain.swift; sourceTree = "<group>"; };
 		A46EAB53223A910100F1B702 /* PicksScreenMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicksScreenMain.swift; sourceTree = "<group>"; };
 		A46EAB55223A911D00F1B702 /* SearchScreenMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchScreenMain.swift; sourceTree = "<group>"; };
@@ -72,7 +79,6 @@
 		A4B2CE03222B62EB00DB64AC /* Music-Appreciation-Mobile-App-iOsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Music-Appreciation-Mobile-App-iOsUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4B2CE07222B62EB00DB64AC /* Music_Appreciation_Mobile_App_iOsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Music_Appreciation_Mobile_App_iOsUITests.swift; sourceTree = "<group>"; };
 		A4B2CE09222B62EB00DB64AC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A4CCE7A22304817E00F0E518 /* loadingOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = loadingOverlay.swift; sourceTree = "<group>"; };
 		A4D2AA2222EE5AFE009007B3 /* TextFieldCredentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldCredentials.swift; sourceTree = "<group>"; };
 		A4D2AA2622EE5B6E009007B3 /* SearchTextBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTextBox.swift; sourceTree = "<group>"; };
 		A4D2AA3322F46B19009007B3 /* SongView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongView.swift; sourceTree = "<group>"; };
@@ -108,6 +114,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A40FA78A230EE32C00D19537 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				A40FA78D230EE6FC00D19537 /* AddItemAlert.swift */,
+				A40FA784230ED43E00D19537 /* AverageColor.swift */,
+				A40FA788230EDACD00D19537 /* ImageAsColor.swift */,
+				A40FA78B230EE52800D19537 /* LoadingOverlay.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
 		A495E2E8222B891E00D8607D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -124,6 +141,7 @@
 			children = (
 				A495E300222CD95B00D8607D /* Start-Screen */,
 				A495E30D2230396500D8607D /* App-Screens */,
+				A40FA78A230EE32C00D19537 /* Utilities */,
 			);
 			path = UI_Components;
 			sourceTree = "<group>";
@@ -133,7 +151,6 @@
 			children = (
 				A495E303222E003F00D8607D /* StartScreenMain.swift */,
 				A4D2AA2222EE5AFE009007B3 /* TextFieldCredentials.swift */,
-				A4CCE7A22304817E00F0E518 /* loadingOverlay.swift */,
 			);
 			path = "Start-Screen";
 			sourceTree = "<group>";
@@ -488,13 +505,16 @@
 				A4D2AA2322EE5AFE009007B3 /* TextFieldCredentials.swift in Sources */,
 				A4309CA722383C35002B6A13 /* ProfileScreenMain.swift in Sources */,
 				A4D2AA3422F46B19009007B3 /* SongView.swift in Sources */,
+				A40FA78C230EE52800D19537 /* LoadingOverlay.swift in Sources */,
+				A40FA789230EDACD00D19537 /* ImageAsColor.swift in Sources */,
 				A495E304222E003F00D8607D /* StartScreenMain.swift in Sources */,
 				A4D2AA3622F473A5009007B3 /* AlbumView.swift in Sources */,
 				A46EAB56223A911D00F1B702 /* SearchScreenMain.swift in Sources */,
+				A40FA785230ED43E00D19537 /* AverageColor.swift in Sources */,
 				A4D2AA2722EE5B6E009007B3 /* SearchTextBox.swift in Sources */,
+				A40FA78E230EE6FC00D19537 /* AddItemAlert.swift in Sources */,
 				A495E30B22300AAA00D8607D /* NewsScreenMain.swift in Sources */,
 				A46EAB54223A910100F1B702 /* PicksScreenMain.swift in Sources */,
-				A4CCE7A32304817E00F0E518 /* loadingOverlay.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

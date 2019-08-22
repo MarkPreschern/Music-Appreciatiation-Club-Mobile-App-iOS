@@ -10,7 +10,10 @@ import UIKit
 
 var vSpinner : UIView?
 
+// represents a loading screen spinner than can be shown and removed
 extension UIViewController {
+    
+    // shows the spinner
     func showSpinner(onView : UIView) {
         let spinnerView = UIView.init(frame: onView.bounds)
         spinnerView.backgroundColor = UIColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
@@ -26,6 +29,7 @@ extension UIViewController {
         vSpinner = spinnerView
     }
     
+    // removes the spinner
     func removeSpinner() {
         DispatchQueue.main.async {
             vSpinner?.removeFromSuperview()

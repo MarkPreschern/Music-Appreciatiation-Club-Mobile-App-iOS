@@ -476,7 +476,7 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gce-zs-9vz">
-                                                    <rect key="frame" x="98" y="37.333333333333314" width="262" height="21"/>
+                                                    <rect key="frame" x="98" y="37.333333333333336" width="262" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -542,18 +542,6 @@
                                             <rect key="frame" x="70" y="173" width="235" height="279"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         </imageView>
-                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FGf-Lg-HLX">
-                                            <rect key="frame" x="8" y="40" width="35" height="28"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <color key="backgroundColor" cocoaTouchSystemColor="lightTextColor"/>
-                                            <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="20"/>
-                                            <state key="normal" title="&lt;">
-                                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            </state>
-                                            <connections>
-                                                <action selector="backButtonClicked:" destination="ff8-at-suJ" eventType="touchUpInside" id="9qe-BJ-UQh"/>
-                                            </connections>
-                                        </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Default Text" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FXw-WF-pkO">
                                             <rect key="frame" x="70" y="450" width="235" height="52"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -572,6 +560,30 @@
                                                 <action selector="changePlayerState:" destination="ff8-at-suJ" eventType="touchUpInside" id="Foz-6u-2YM"/>
                                             </connections>
                                         </button>
+                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PoF-H1-Fn0">
+                                            <rect key="frame" x="327" y="40" width="40" height="40"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <color key="backgroundColor" cocoaTouchSystemColor="lightTextColor"/>
+                                            <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="22"/>
+                                            <state key="normal" title="+">
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="addButtonClicked:" destination="ff8-at-suJ" eventType="touchUpInside" id="gJn-G0-wRU"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FGf-Lg-HLX">
+                                            <rect key="frame" x="8" y="40" width="40" height="40"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <color key="backgroundColor" cocoaTouchSystemColor="lightTextColor"/>
+                                            <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="22"/>
+                                            <state key="normal" title="&lt;">
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="backButtonClicked:" destination="ff8-at-suJ" eventType="touchUpInside" id="9qe-BJ-UQh"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                     <gestureRecognizers/>
                                 </view>
@@ -583,9 +595,11 @@
                         <viewLayoutGuide key="safeArea" id="Zgd-9A-OH9"/>
                     </view>
                     <connections>
+                        <outlet property="addButton_outlet" destination="PoF-H1-Fn0" id="uTl-Z1-e4V"/>
                         <outlet property="backButton_outlet" destination="FGf-Lg-HLX" id="w48-EU-diN"/>
                         <outlet property="background_outlet" destination="XJU-an-BJc" id="pNm-Im-hrT"/>
                         <outlet property="mainImage_outlet" destination="ze7-S2-MYe" id="92L-7r-FsD"/>
+                        <outlet property="playPause_outlet" destination="Glj-Tj-exJ" id="t3e-Ih-0pc"/>
                         <outlet property="songTitle_outlet" destination="FXw-WF-pkO" id="75I-qT-vIG"/>
                     </connections>
                 </viewController>
@@ -623,6 +637,18 @@
                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2gh-Ga-x6y">
+                                            <rect key="frame" x="327" y="50" width="40" height="40"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <color key="backgroundColor" cocoaTouchSystemColor="lightTextColor"/>
+                                            <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="22"/>
+                                            <state key="normal" title="+">
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="addButtonClicked:" destination="lIm-Tz-PeR" eventType="touchUpInside" id="ZOU-nP-Tyy"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                 </view>
                                 <blurEffect style="light"/>
@@ -664,10 +690,10 @@
                                 <sections/>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rQg-dk-BgP">
-                                <rect key="frame" x="8" y="50" width="35" height="28"/>
+                                <rect key="frame" x="8" y="50" width="40" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="lightTextColor"/>
-                                <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="20"/>
+                                <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="22"/>
                                 <state key="normal" title="&lt;">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <color key="titleShadowColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -682,6 +708,7 @@
                         <viewLayoutGuide key="safeArea" id="ewA-Ch-psU"/>
                     </view>
                     <connections>
+                        <outlet property="addButton_outlet" destination="2gh-Ga-x6y" id="bld-bI-kgA"/>
                         <outlet property="backButton_outlet" destination="rQg-dk-BgP" id="hks-eX-Jhu"/>
                         <outlet property="imageBackground_outlet" destination="uOh-BQ-wLi" id="tjj-Cq-WKA"/>
                         <outlet property="image_outlet" destination="sYA-s1-rR9" id="Zyi-I9-h3p"/>
