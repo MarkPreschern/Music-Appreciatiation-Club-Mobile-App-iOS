@@ -13,8 +13,11 @@
 		A40FA789230EDACD00D19537 /* ImageAsColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A40FA788230EDACD00D19537 /* ImageAsColor.swift */; };
 		A40FA78C230EE52800D19537 /* LoadingOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = A40FA78B230EE52800D19537 /* LoadingOverlay.swift */; };
 		A40FA78E230EE6FC00D19537 /* AddItemAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A40FA78D230EE6FC00D19537 /* AddItemAlert.swift */; };
+		A40FA79223102EFC00D19537 /* FadeInOutAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = A40FA79123102EFC00D19537 /* FadeInOutAudio.swift */; };
+		A40FA794231043B800D19537 /* AddBorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A40FA793231043B800D19537 /* AddBorder.swift */; };
+		A40FA7962310482400D19537 /* PicksScreenAlbumMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A40FA7952310482400D19537 /* PicksScreenAlbumMain.swift */; };
 		A4309CA722383C35002B6A13 /* ProfileScreenMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4309CA622383C35002B6A13 /* ProfileScreenMain.swift */; };
-		A46EAB54223A910100F1B702 /* PicksScreenMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A46EAB53223A910100F1B702 /* PicksScreenMain.swift */; };
+		A46EAB54223A910100F1B702 /* PicksScreenSongMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A46EAB53223A910100F1B702 /* PicksScreenSongMain.swift */; };
 		A46EAB56223A911D00F1B702 /* SearchScreenMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A46EAB55223A911D00F1B702 /* SearchScreenMain.swift */; };
 		A495E304222E003F00D8607D /* StartScreenMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A495E303222E003F00D8607D /* StartScreenMain.swift */; };
 		A495E30B22300AAA00D8607D /* NewsScreenMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A495E30A22300AAA00D8607D /* NewsScreenMain.swift */; };
@@ -61,8 +64,11 @@
 		A40FA788230EDACD00D19537 /* ImageAsColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAsColor.swift; sourceTree = "<group>"; };
 		A40FA78B230EE52800D19537 /* LoadingOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingOverlay.swift; sourceTree = "<group>"; };
 		A40FA78D230EE6FC00D19537 /* AddItemAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddItemAlert.swift; sourceTree = "<group>"; };
+		A40FA79123102EFC00D19537 /* FadeInOutAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FadeInOutAudio.swift; sourceTree = "<group>"; };
+		A40FA793231043B800D19537 /* AddBorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBorder.swift; sourceTree = "<group>"; };
+		A40FA7952310482400D19537 /* PicksScreenAlbumMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicksScreenAlbumMain.swift; sourceTree = "<group>"; };
 		A4309CA622383C35002B6A13 /* ProfileScreenMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileScreenMain.swift; sourceTree = "<group>"; };
-		A46EAB53223A910100F1B702 /* PicksScreenMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicksScreenMain.swift; sourceTree = "<group>"; };
+		A46EAB53223A910100F1B702 /* PicksScreenSongMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicksScreenSongMain.swift; sourceTree = "<group>"; };
 		A46EAB55223A911D00F1B702 /* SearchScreenMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchScreenMain.swift; sourceTree = "<group>"; };
 		A495E2E9222B891E00D8607D /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		A495E303222E003F00D8607D /* StartScreenMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartScreenMain.swift; sourceTree = "<group>"; };
@@ -119,8 +125,10 @@
 			children = (
 				A40FA78D230EE6FC00D19537 /* AddItemAlert.swift */,
 				A40FA784230ED43E00D19537 /* AverageColor.swift */,
+				A40FA79123102EFC00D19537 /* FadeInOutAudio.swift */,
 				A40FA788230EDACD00D19537 /* ImageAsColor.swift */,
 				A40FA78B230EE52800D19537 /* LoadingOverlay.swift */,
+				A40FA793231043B800D19537 /* AddBorder.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -184,7 +192,8 @@
 		A495E30C223038CC00D8607D /* Picks-Screen */ = {
 			isa = PBXGroup;
 			children = (
-				A46EAB53223A910100F1B702 /* PicksScreenMain.swift */,
+				A46EAB53223A910100F1B702 /* PicksScreenSongMain.swift */,
+				A40FA7952310482400D19537 /* PicksScreenAlbumMain.swift */,
 			);
 			path = "Picks-Screen";
 			sourceTree = "<group>";
@@ -501,6 +510,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A40FA79223102EFC00D19537 /* FadeInOutAudio.swift in Sources */,
+				A40FA794231043B800D19537 /* AddBorder.swift in Sources */,
+				A40FA7962310482400D19537 /* PicksScreenAlbumMain.swift in Sources */,
 				A4B2CDE8222B62EA00DB64AC /* AppDelegate.swift in Sources */,
 				A4D2AA2322EE5AFE009007B3 /* TextFieldCredentials.swift in Sources */,
 				A4309CA722383C35002B6A13 /* ProfileScreenMain.swift in Sources */,
@@ -514,7 +526,7 @@
 				A4D2AA2722EE5B6E009007B3 /* SearchTextBox.swift in Sources */,
 				A40FA78E230EE6FC00D19537 /* AddItemAlert.swift in Sources */,
 				A495E30B22300AAA00D8607D /* NewsScreenMain.swift in Sources */,
-				A46EAB54223A910100F1B702 /* PicksScreenMain.swift in Sources */,
+				A46EAB54223A910100F1B702 /* PicksScreenSongMain.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

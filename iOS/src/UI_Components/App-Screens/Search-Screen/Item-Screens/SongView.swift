@@ -41,7 +41,6 @@ class SongView: UIViewController {
         self.backButton_outlet.backgroundColor = UIColor.clear
         self.addButton_outlet.backgroundColor = UIColor.clear
         
-        
         //determines the color (black/white) of text and buttons based on the song image
         let color = self.songData.image.averageColor()!.colorByBrightness()
         self.backButton_outlet.setTitleColor(color, for: UIControl.State.normal)
@@ -112,18 +111,20 @@ class SongView: UIViewController {
             self.present(alert, animated: true, completion: nil)
         } else {
             if (player!.isPlaying) {
-                player!.pause()
-                // TODO: change button appearance to "play" image
+                player!.fadeOut()
+                self.playPause_outlet.setTitle("Play", for: UIControl.State.normal)
             } else {
-                player!.play()
-                // TODO: change button appearance to "pause" image
+                player!.fadeIn()
+                self.playPause_outlet.setTitle("Pause", for: UIControl.State.normal)
             }
         }
     }
     
     // goes back to previous view controller when the back button is clicked
     @IBAction func backButtonClicked(_ sender: Any) {
-        player = AVAudioPlayer() //resets the audio player
+        //resets the audio player after fading
+        player!.fadeOut()
+        player = AVAudioPlayer()
         // determines which controller to navigate to
         if (self.albumData == nil) {
             let searchView = self.storyboard!.instantiateViewController(withIdentifier: "searchScreenID")

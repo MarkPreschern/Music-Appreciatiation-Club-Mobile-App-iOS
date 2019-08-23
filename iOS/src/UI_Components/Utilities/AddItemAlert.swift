@@ -14,7 +14,8 @@ extension UIAlertController {
     func addItemAlert(name: String, type: ItemType, item: ItemData, sender: UIViewController) {
         self.title = "Add " + type.toString as String
         self.message = "Add " + name + " to your weekly " + type.toString.lowercased() + " picks?"
-        
+        // handles if the user clicks "no"
+        self.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
         // handles if the user clicks "yes"
         self.addAction(UIAlertAction(title: "Yes", style: .default, handler: { action in
             switch type {
@@ -26,8 +27,7 @@ extension UIAlertController {
                 //TODO : Query to database the number of albums already in this users top weekly picks. if greater than the maximum allowed value, than show another alert indicating failure and why
             }
         }))
-        self.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
-        
+        // presents the alert
         sender.present(self, animated: true, completion: nil)
     }
 }

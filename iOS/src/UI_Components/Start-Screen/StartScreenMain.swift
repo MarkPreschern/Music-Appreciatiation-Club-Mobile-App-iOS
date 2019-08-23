@@ -69,7 +69,7 @@ class StartScreenMain: UIViewController, UITextFieldDelegate {
     // - if correct login information, their user information is added to the database if not already contained
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         do {
-            if (name_outlet == nil || nuid_outlet.text == nil /* || query to nuid database is incorrect */) {
+            if (false /* query to nuid database is incorrect */) {
                 let alert = createAlert(
                     title: "Login Failed",
                     message: "Invalid login information",
@@ -84,7 +84,6 @@ class StartScreenMain: UIViewController, UITextFieldDelegate {
                 //updates global variables
                 user_name = name_outlet.text!
                 user_nuid = nuid_outlet.text!
-                print(self.name_outlet.text! + " " + self.nuid_outlet.text!)
                 
                 //switches to 'news' view controller
                 if (identifier == "LoginToNewsSeque") {
