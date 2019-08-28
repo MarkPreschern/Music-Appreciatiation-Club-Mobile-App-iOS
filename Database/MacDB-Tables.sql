@@ -37,9 +37,9 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `MacDB`.`user` (
   `user_id` INT NOT NULL AUTO_INCREMENT,
-  `name_first` VARCHAR(100) NOT NULL,
-  `name_last` VARCHAR(100) NOT NULL,
+  `name` VARCHAR(100) NOT NULL,
   `nuid` VARCHAR(10) NOT NULL,
+  `authorization` VARCHAR(64),
   `role_id` INT NOT NULL,
   `access_id` INT NOT NULL,
   PRIMARY KEY (`user_id`, `role_id`, `access_id`),
@@ -156,16 +156,3 @@ CREATE TABLE IF NOT EXISTS `MacDB`.`vote` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Inserts default access and role values
--- -----------------------------------------------------
-INSERT INTO access (name, description) VALUES
-('Admin', 'Same access as user and can add new users to the club'),
-('User', 'Can use the application as a normal user');
-
-INSERT INTO role (name, description) VALUES
-('President', 'President of the club'),
-('Lead Mobile Developer', 'Lead developer of the mobile app'),
-('Member', 'Member of the club');
