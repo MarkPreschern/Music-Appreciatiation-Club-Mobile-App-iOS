@@ -99,30 +99,50 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `MacDB`.`favorite_weekly`
--- Represents an item that a user favorited in the last week
+-- Table `MacDB`.`event`
+-- Represents an event timeframe for favorites to be saved in recent favorites
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `MacDB`.`favorite_weekly` (
-  `favorite_weekly_id` INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `MacDB`.`event` (
+  `event_id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(30) NOT NULL,
+  `description` VARCHAR(100) NOT NULL,
+  `start_date` DATETIME NOT NULL,
+  `end_date` DATETIME NOT NULL,
+  PRIMARY KEY (`event_id`),
+  UNIQUE INDEX `favorite_recent_id_UNIQUE` (`event_id` ASC))
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `MacDB`.`favorite_recent`
+-- Represents an item that a user favorited in the recent event timeframe
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `MacDB`.`favorite_recent` (
+  `favorite_recent_id` INT NOT NULL AUTO_INCREMENT,
   `date_favorited` DATETIME NOT NULL,
   `user_id` INT NOT NULL,
   `item_id` INT NOT NULL,
-  PRIMARY KEY (`favorite_weekly_id`, `user_id`, `item_id`),
-  UNIQUE INDEX `favorite_weekly_id_UNIQUE` (`favorite_weekly_id` ASC),
-  INDEX `fk_favorite_weekly_user1_idx` (`user_id` ASC),
-  INDEX `fk_favorite_weekly_item1_idx` (`item_id` ASC),
-  CONSTRAINT `fk_favorite_weekly_user1`
+  `event_id` INT NOT NULL,
+  PRIMARY KEY (`favorite_recent_id`, `user_id`, `item_id`, `event_id`),
+  UNIQUE INDEX `favorite_recent_id_UNIQUE` (`favorite_recent_id` ASC),
+  INDEX `fk_favorite_recent_user1_idx` (`user_id` ASC),
+  INDEX `fk_favorite_recent_item1_idx` (`item_id` ASC),
+  INDEX `fk_favorite_recent_event1_idx` (`event_id` ASC),
+  CONSTRAINT `fk_favorite_recent_user1`
     FOREIGN KEY (`user_id`)
     REFERENCES `MacDB`.`user` (`user_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_favorite_weekly_item1`
+  CONSTRAINT `fk_favorite_recent_item1`
     FOREIGN KEY (`item_id`)
     REFERENCES `MacDB`.`item` (`item_id`)
     ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_favorite_recent_event1`
+    FOREIGN KEY (`event_id`)
+    REFERENCES `MacDB`.`event` (`event_id`)
+    ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
 
 -- -----------------------------------------------------
 -- Table `MacDB`.`vote`
@@ -134,12 +154,12 @@ CREATE TABLE IF NOT EXISTS `MacDB`.`vote` (
   `comment` VARCHAR(255) NULL,
   `user_id` INT NOT NULL,
   `favorite_id` INT NOT NULL,
-  `favorite_weekly_id` INT NOT NULL,
-  PRIMARY KEY (`vote_id`, `user_id`, `favorite_id`, `favorite_weekly_id`),
+  `favorite_recent_id` INT NOT NULL,
+  PRIMARY KEY (`vote_id`, `user_id`, `favorite_id`, `favorite_recent_id`),
   INDEX `fk_vote_user1_idx` (`user_id` ASC),
   UNIQUE INDEX `vote_id_UNIQUE` (`vote_id` ASC),
   INDEX `fk_vote_favorite1_idx` (`favorite_id` ASC),
-  INDEX `fk_vote_favorite_weekly1_idx` (`favorite_weekly_id` ASC),
+  INDEX `fk_vote_favorite_recent1_idx` (`favorite_recent_id` ASC),
   CONSTRAINT `fk_vote_user1`
     FOREIGN KEY (`user_id`)
     REFERENCES `MacDB`.`user` (`user_id`)
@@ -150,9 +170,9 @@ CREATE TABLE IF NOT EXISTS `MacDB`.`vote` (
     REFERENCES `MacDB`.`favorite` (`favorite_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_vote_favorite_weekly1`
-    FOREIGN KEY (`favorite_weekly_id`)
-    REFERENCES `MacDB`.`favorite_weekly` (`favorite_weekly_id`)
+  CONSTRAINT `fk_vote_favorite_recent1`
+    FOREIGN KEY (`favorite_recent_id`)
+    REFERENCES `MacDB`.`favorite_recent` (`favorite_recent_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
