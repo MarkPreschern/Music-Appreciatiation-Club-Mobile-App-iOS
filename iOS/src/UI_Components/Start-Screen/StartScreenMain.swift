@@ -55,6 +55,31 @@ class StartScreenMain: UIViewController, UITextFieldDelegate {
         
         self.checkbox_outlet.layer.borderWidth = 1.0
         self.checkbox_outlet.layer.borderColor = UIColor.darkGray.cgColor
+        
+        // shows loading screen until a user is or isn't validated
+        self.showSpinner(onView: self.view)
+        self.validateExistingUser()
+    }
+    
+    // validates that a user choose 'remember me' and logs them in if so
+    func validateExistingUser() {
+        let nameData = UserDefaults.standard.data(forKey: "user_name")
+        let nuidData = UserDefaults.standard.data(forKey: "user_nuid")
+        let user_name = NSKeyedUnarchiver.unarchiveObject(with: nameData ?? Data())
+        let user_nuid = NSKeyedUnarchiver.unarchiveObject(with: nuidData ?? Data())
+        
+        self.requestAuthorization(loginRequest: false,
+                                  name: user_name as? String,
+                                  nuid: user_nuid as? String,
+                                  callback: { response -> Void in
+                                    if (response == "Success") {
+                                        let nextVC = self.storyboard!.instantiateViewController(withIdentifier: "NewsScreenMain")
+                                        self.present(nextVC, animated:true, completion: nil)
+                                        self.removeSpinner()
+                                    } else if (response == "Failure"){
+                                        self.removeSpinner()
+                                    }
+        })
     }
     
     // Dismisses text field on 'return' key
@@ -79,11 +104,18 @@ class StartScreenMain: UIViewController, UITextFieldDelegate {
     // - if correct login information, their user information is added to the database if not already contained
     @IBAction func loginButtonClicked(_ sender: UIButton) {
         if (sender.restorationIdentifier == "LoginToNewsButton") {
-            self.requestAuthorization(callback: { response -> Void in
-                if (response) {
-                    let nextVC = self.storyboard!.instantiateViewController(withIdentifier: "NewsScreenMain")
-                    self.present(nextVC, animated:true, completion: nil)
-                }
+            self.showSpinner(onView: self.view)
+            self.requestAuthorization(loginRequest: true,
+                                      name: self.name_outlet.text ?? "",
+                                      nuid: self.nuid_outlet.text ?? "",
+                                      callback: { response -> Void in
+                                        if (response == "Success") {
+                                            self.removeSpinner()
+                                            let nextVC = self.storyboard!.instantiateViewController(withIdentifier: "NewsScreenMain")
+                                            self.present(nextVC, animated:true, completion: nil)
+                                        } else if (response == "Failure") {
+                                            self.removeSpinner()
+                                        }
             })
         } else {
             let alert = createAlert(
@@ -95,12 +127,12 @@ class StartScreenMain: UIViewController, UITextFieldDelegate {
         
     }
     // requests authorization from the user
-    func requestAuthorization(callback: @escaping (Bool) -> Void) {
+    func requestAuthorization(loginRequest: Bool, name: String?, nuid: String?, callback: @escaping (String) -> Void) {
         //header information for spotify url call
         let url = "https://50pnu03u26.execute-api.us-east-2.amazonaws.com/MacTesting/api.mac.com/authorization"
         let headers : HTTPHeaders = [
-            "name" : self.name_outlet.text ?? "",
-            "nuid" : self.nuid_outlet.text ?? ""
+            "name" : name ?? "",
+            "nuid" : nuid ?? ""
         ]
         
         //creates a request for the authorization token
@@ -119,26 +151,34 @@ class StartScreenMain: UIViewController, UITextFieldDelegate {
                         authorization_token: user["authorization"] as? String,
                         role_id: user["role_id"] as? Int,
                         access_id: user["access_id"] as? Int)
+                    print(self.isChecked)
                     if (self.isChecked) {
-                        //TODO: add user information and isChecked var to SQLite if credentials are correct
+                        let nameData = NSKeyedArchiver.archivedData(withRootObject: name ?? "")
+                        let nuidData = NSKeyedArchiver.archivedData(withRootObject: nuid ?? "")
+                        UserDefaults.standard.set(nameData, forKey: "user_name")
+                        UserDefaults.standard.set(nuidData, forKey: "user_nuid")
                     }
-                    callback(true)
+                    callback("Success")
                 } else {
-                    let alert = createAlert(
-                        title: "Login Failed",
-                        message: "Invalid login information",
-                        actionTitle: "Try Again")
-                    self.present(alert, animated: true, completion: nil)
-                    callback(false)
+                    if loginRequest {
+                        let alert = createAlert(
+                            title: "Login Failed",
+                            message: "Invalid login information",
+                            actionTitle: "Try Again")
+                        self.present(alert, animated: true, completion: nil)
+                    }
+                    callback("Failure")
                 }
             } catch {
                 print("Error info: \(error)")
-                let alert = createAlert(
-                    title: "Login Failed",
-                    message: "Error occured during login",
-                    actionTitle: "Try Again")
-                self.present(alert, animated: true, completion: nil)
-                callback(false)
+                if loginRequest {
+                    let alert = createAlert(
+                        title: "Login Failed",
+                        message: "Error occured during login",
+                        actionTitle: "Try Again")
+                    self.present(alert, animated: true, completion: nil)
+                }
+                callback("Failure")
             }
         })
     }

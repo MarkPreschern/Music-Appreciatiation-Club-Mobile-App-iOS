@@ -57,8 +57,13 @@ class ProfileScreenMain: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
-    // resets all global variables to empty values
+    // resets all global variables to empty values and userDefaults values
     func resetGlobalVariables() {
+        let nameData = NSKeyedArchiver.archivedData(withRootObject: "")
+        let nuidData = NSKeyedArchiver.archivedData(withRootObject: "")
+        UserDefaults.standard.set(nameData, forKey: "user_name")
+        UserDefaults.standard.set(nuidData, forKey: "user_nuid")
+        
         userData = nil
         currentQuery = String()
         items = [ItemData]()
