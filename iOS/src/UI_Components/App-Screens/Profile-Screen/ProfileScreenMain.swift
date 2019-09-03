@@ -29,7 +29,7 @@ class ProfileScreenMain: UIViewController {
         // sets name label border and to user name
         self.nameLabel_outlet.layer.borderWidth = 1
         self.nameLabel_outlet.layer.borderColor = UIColor(red:222/255, green:225/255, blue:227/255, alpha: 1).cgColor
-        self.nameLabel_outlet.text = user_name
+        self.nameLabel_outlet.text = userData?.user_name
         
         // sets log out button border
         self.logOut_outlet.layer.borderWidth = 1
@@ -59,8 +59,7 @@ class ProfileScreenMain: UIViewController {
     
     // resets all global variables to empty values
     func resetGlobalVariables() {
-        user_name = String()
-        user_nuid = String()
+        userData = nil
         currentQuery = String()
         items = [ItemData]()
         songs = [ItemData]()

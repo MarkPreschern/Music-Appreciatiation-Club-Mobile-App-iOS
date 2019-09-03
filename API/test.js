@@ -1,14 +1,12 @@
 // test event data
 let eventData =
     {
-        "input": {
-            "resource": "/API/PATH",
-            "path": "authorization",
-            "httpMethod": "POST",
-        },
+        "resource": "/API/PATH",
+        "path": "/api.mac.com/authorization",
+        "httpMethod": "POST",
         "headers": {
-            "name": "name",
-            "nuid": "nuid"
+            "name":"test",
+            "nuid":"test1"
         },
         "queryStringParameters": null,
         "multiValueQueryStringParameters": null,
@@ -36,7 +34,8 @@ let eventData =
 let handler = require('./index');
 
 // call exports function with required params in AWS lambda
-handler.handler(eventData, {},
-    function (data) {
-        console.log(data);
-    });
+new Promise(function (resolve) {
+    resolve(handler.handler(eventData));
+}).then(data => {
+    console.log(data);
+});

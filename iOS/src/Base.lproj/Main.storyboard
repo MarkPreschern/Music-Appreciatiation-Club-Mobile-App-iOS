@@ -58,7 +58,7 @@
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Gj-y5-rnv">
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" restorationIdentifier="LoginToNewsButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Gj-y5-rnv">
                                         <rect key="frame" x="18" y="305" width="268" height="69"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" cocoaTouchSystemColor="lightTextColor"/>
@@ -67,7 +67,7 @@
                                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </state>
                                         <connections>
-                                            <segue destination="mFt-ek-JDN" kind="show" identifier="LoginToNewsSeque" id="uZu-Cm-Pib"/>
+                                            <action selector="loginButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="tfh-yZ-IT0"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aTR-WF-0Yp">
@@ -1110,17 +1110,16 @@
         <image name="check-mark-image" width="115.5" height="109.5"/>
         <image name="news" width="366" height="305"/>
         <image name="picks" width="3664" height="3194"/>
-        <image name="profile" width="353" height="458"/>
+        <image name="profile" width="1439" height="1869"/>
         <image name="profilegreen" width="353" height="458"/>
         <image name="search" width="301" height="301"/>
         <image name="searchgreen" width="301" height="301"/>
         <image name="uncheck-mark-image" width="137.5" height="91.5"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="5bF-AY-U8P"/>
-        <segue reference="QKl-cU-Ibm"/>
-        <segue reference="8cl-Rs-XGG"/>
-        <segue reference="dQu-lE-dEe"/>
-        <segue reference="VX8-Wf-1eA"/>
+        <segue reference="nlo-d0-rq3"/>
+        <segue reference="Wpl-bZ-9zU"/>
+        <segue reference="9Bv-fI-Obu"/>
+        <segue reference="VEZ-L3-ekw"/>
     </inferredMetricsTieBreakers>
 </document>

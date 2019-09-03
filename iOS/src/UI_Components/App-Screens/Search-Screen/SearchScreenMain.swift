@@ -135,9 +135,7 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
     func callSpotifyURL(url : String, type : ItemType, callback: @escaping (String) -> Void) {
         //callback handler is needed to get the authorization since requestSpotifyAuthorizationToken is asyncronous
         self.requestSpotifyAuthorizationToken(callback: { (token) -> Void in
-            if (token == "Error") {
-                fatalError()
-            } else {
+            if (token != "Error") {
                 //header information for spotify url call
                 let headers : HTTPHeaders = [
                     "Accept" : "application/json",
@@ -177,6 +175,11 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
                 callback(token_type + " " + access_token)
             } catch {
                 print("Error info: \(error)")
+                let alert = createAlert(
+                    title: "Spotify Authorization Error",
+                    message: "\(error)",
+                    actionTitle: "Try again")
+                self.present(alert, animated: true, completion: nil)
                 callback("Error")
             }
         })

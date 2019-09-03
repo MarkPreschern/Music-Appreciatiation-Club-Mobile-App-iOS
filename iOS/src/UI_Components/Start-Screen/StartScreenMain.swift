@@ -7,9 +7,20 @@
 //
 
 import UIKit
+import Alamofire
 
-var user_name : String? // user's name
-var user_nuid : String? // user's nuid
+// Represents user data
+struct UserData {
+    let user_id : Int? // user's id
+    let user_name : String? // user's name
+    let user_nuid : String? // user's nuid
+    let authorization_token: String? // user's authorization token
+    let role_id: Int? // user's role id
+    let access_id: Int? //user access id
+}
+
+// represents this user
+var userData : UserData?
 
 //returns an alert with the given title, message, and action title
 func createAlert(title: String!, message: String!, actionTitle: String!) -> UIAlertController {
@@ -63,34 +74,72 @@ class StartScreenMain: UIViewController, UITextFieldDelegate {
         }
     }
     
-    
     // Performs login with name and nuid. Effect:
     // - if invalid login credentials, the user is prompted with an alert
     // - if correct login information, their user information is added to the database if not already contained
-    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
-        do {
-            if (false /* query to nuid database is incorrect */) {
+    @IBAction func loginButtonClicked(_ sender: UIButton) {
+        if (sender.restorationIdentifier == "LoginToNewsButton") {
+            self.requestAuthorization(callback: { response -> Void in
+                if (response) {
+                    let nextVC = self.storyboard!.instantiateViewController(withIdentifier: "NewsScreenMain")
+                    self.present(nextVC, animated:true, completion: nil)
+                }
+            })
+        } else {
+            let alert = createAlert(
+                title: "Login Failed",
+                message: "Invalid Button Click",
+                actionTitle: "Try Again")
+            self.present(alert, animated: true, completion: nil)
+        }
+        
+    }
+    // requests authorization from the user
+    func requestAuthorization(callback: @escaping (Bool) -> Void) {
+        //header information for spotify url call
+        let url = "https://50pnu03u26.execute-api.us-east-2.amazonaws.com/MacTesting/api.mac.com/authorization"
+        let headers : HTTPHeaders = [
+            "name" : self.name_outlet.text ?? "",
+            "nuid" : self.nuid_outlet.text ?? ""
+        ]
+        
+        //creates a request for the authorization token
+        Alamofire.request(url, method: .post, parameters: nil, encoding: URLEncoding.default, headers: headers).responseJSON(completionHandler: {
+            response in
+            do {
+                var readableJSON = try JSONSerialization.jsonObject(with: response.data!, options: .mutableContainers) as! JSONStandard
+                let statusCode = readableJSON["statusCode"] as! String
+                // reads user data if the request was successful
+                if (statusCode == "200") {
+                    let user = readableJSON["user"] as! JSONStandard
+                    userData = UserData(
+                        user_id: user["user_id"] as? Int,
+                        user_name: user["name"] as? String,
+                        user_nuid: user["nuid"] as? String,
+                        authorization_token: user["authorization"] as? String,
+                        role_id: user["role_id"] as? Int,
+                        access_id: user["access_id"] as? Int)
+                    if (self.isChecked) {
+                        //TODO: add user information and isChecked var to SQLite if credentials are correct
+                    }
+                    callback(true)
+                } else {
+                    let alert = createAlert(
+                        title: "Login Failed",
+                        message: "Invalid login information",
+                        actionTitle: "Try Again")
+                    self.present(alert, animated: true, completion: nil)
+                    callback(false)
+                }
+            } catch {
+                print("Error info: \(error)")
                 let alert = createAlert(
                     title: "Login Failed",
-                    message: "Invalid login information",
+                    message: "Error occured during login",
                     actionTitle: "Try Again")
                 self.present(alert, animated: true, completion: nil)
-                return false;
-            } else {
-                if (self.isChecked) {
-                    //TODO: add user information and isChecked var to SQLite if credentials are correct
-                }
-            
-                //updates global variables
-                user_name = name_outlet.text!
-                user_nuid = nuid_outlet.text!
-                
-                //switches to 'news' view controller
-                if (identifier == "LoginToNewsSeque") {
-                    return true;
-                }
+                callback(false)
             }
-            return false;
-        }
+        })
     }
 }
