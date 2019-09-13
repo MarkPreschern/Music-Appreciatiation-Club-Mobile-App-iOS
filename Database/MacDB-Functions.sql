@@ -4,8 +4,9 @@ USE MacDB;
 -- Inserts default access and role values
 -- -----------------------------------------------------
 INSERT INTO access (name, description) VALUES
-('Developer', 'User and Admin access and can: Create new roles, Add new users with any access and role'),
-('Admin', 'User access and can: Add new users with user access and member role'),
+('Developer', 'Admin access and can: Add/Remove any users'),
+('Admin', 'Moderator access and can: Add new users with user or moderator access and with any role, can remove users with user and moderator access, can create new roles, can schedule events, can end events'),
+('Moderator', 'User access and can: Add new users with user access and member role'),
 ('User', 'Can use the application as a normal user');
 
 INSERT INTO role (name, description) VALUES
@@ -14,13 +15,7 @@ INSERT INTO role (name, description) VALUES
 ('Member', 'Member of the club');
 
 -- -----------------------------------------------------
--- Procedures
--- -----------------------------------------------------
-
--- TODO: validate authorization 
-
--- -----------------------------------------------------
 -- Triggers
 -- -----------------------------------------------------
 
--- TODO: weekly favorites reset, remove authorization token after 1 hour
+-- TODO: recent favorites reset, remove authorization token after 1 hour

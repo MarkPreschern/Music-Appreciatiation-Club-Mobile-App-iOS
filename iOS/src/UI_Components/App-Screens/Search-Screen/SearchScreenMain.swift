@@ -8,6 +8,7 @@
 
 import UIKit
 import Alamofire
+import JASON
 
 // Represents information in a cell of the table view
 struct ItemData {
@@ -144,15 +145,17 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
                 ]
                 
                 //creates a request for the url
-                Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON(completionHandler: {
+                Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJASON(completionHandler: {
                     response in
                     // asyncronously parses the json data, waiting for a response to continue
                     DispatchQueue.global(qos: .userInteractive).async {
-                        self.parseSpotifyData(JSONData: response.data!, type: type, completion: { (response) -> Void in
-                            if (response == "Success") {
-                                callback("Success")
-                            }
-                        })
+                        if let json = response.result.value {
+                            self.parseSpotifyData(jsonData: json, type: type, completion: { (response) -> Void in
+                                if (response == "Success") {
+                                    callback("Success")
+                                }
+                            })
+                        }
                     }
                 })
             }
@@ -186,15 +189,14 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
     }
     
     //reads the json produced by the call to the spotify url
-    func parseSpotifyData(JSONData : Data, type : ItemType, completion: @escaping (String) -> Void) {
+    func parseSpotifyData(jsonData : JSON, type : ItemType, completion: @escaping (String) -> Void) {
+        print(jsonData)
+        
         do {
-            //reads the JSON
-            var readableJSON = try JSONSerialization.jsonObject(with: JSONData, options: .mutableContainers) as! JSONStandard
-            
             switch (type) {
             case .ALBUM:
                 //parses the JSON for albums
-                if let albums = readableJSON["albums"] as? JSONStandard {
+                if let albums = jsonData["albums"].dictionary {
                     if let jsonItems = albums["items"] as? [JSONStandard] {
                         for i in 0..<jsonItems.count {
                             let item = jsonItems[i]
@@ -217,7 +219,7 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
                 }
             case .SONG:
                 //parses the JSON for tracks
-                if let tracks = readableJSON["tracks"] as? JSONStandard {
+                if let tracks = jsonData["tracks"].dictionary {
                     if let jsonItems = tracks["items"] as? [JSONStandard] {
                         for i in 0..<jsonItems.count {
                             let item = jsonItems[i]

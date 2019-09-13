@@ -15,9 +15,9 @@ exports.handler = async (event) => {
     // response is of the form if an error occurred:
     // {
     //      'statusCode': '<error status>',
-    //      'Error': '<error general message>',
-    //      'Description': '<error detailed description>',
-    //      'Stack Trace': '<error stack trace>'
+    //      'message': '<error general message>',
+    //      'description': '<error detailed description>',
+    //      'stack race': '<error stack trace>'
     // }
     return await new Promise(function (resolve, reject) {
         // establishes database connection
@@ -54,12 +54,7 @@ exports.handler = async (event) => {
     }).then(data => {
         return jsonFormat(data.statusCode, data);
     }).catch(error => {
-        return jsonFormat(404, {
-            "statusCode": "404",
-            "Error": "Server-side error",
-            "Description": "Unknown exception occurred",
-            "Stack Trace": error
-        });
+        return jsonFormat(404, createErrorMessage("404", "Server-side error", "Unknown exception occurred", error))
     });
 };
 
@@ -91,12 +86,7 @@ function establishDatabaseConnection(callbackLocal) {
     // attempts to connect to the database
     con.connect(function (error) {
         if (error) {
-            return callbackLocal({
-                "statusCode": "404",
-                "Error": "Connection Error",
-                "Description": "Failed to connect to database",
-                "Stack Trace": error
-            }, con);
+            return callbackLocal(createErrorMessage("404", "Connection Error", "Failed to connect to database", error), con);
         } else {
             return callbackLocal({
                 "statusCode": "200",
@@ -131,21 +121,11 @@ function authorizeRequest(con, path, callbackLocal) {
         // attempts to query the sql statement
         con.query(sql, function (error, results) {
             if (error) {
-                return callbackLocal({
-                    "statusCode": "404",
-                    "Error": "Authorization Error",
-                    "Description": "failed to authorize user due to server-side error",
-                    "Stack Trace": error
-                });
+                return callbackLocal(createErrorMessage("404", "Authorization Error", "failed to authorize user due to server-side error", error));
             }
 
             if (results.length === 0) { // invalid authorization token
-                return callbackLocal({
-                    "statusCode": "404",
-                    "Error": "Authorization Error",
-                    "Description": "failed to authorize user due to invalid authorization credentials",
-                    "Stack Trace": error
-                });
+                return callbackLocal(createErrorMessage("404", "Authorization Error", "failed to authorize user due to invalid authorization credentials", error));
             } else { // valid authorization token
                 return callbackLocal({
                     "statusCode": 200
@@ -164,13 +144,51 @@ function executeRequest(con, event, path, callback) {
         + path.slice(1);
 
     console.log("Evaluating: " + functionName);
-    callback(eval(functionName)(con, event));
+    eval(functionName)(con, event, function(response) {
+        callback(response);
+    });
 }
 
 
 /*
  ****************** GET METHODS ***************
  */
+
+// gets the user's weekly song picks
+function getUserRecentSongPicks(con, event, callback) {
+    const structure = 'SELECT * '
+        + 'FROM item '
+        + 'JOIN favorite_recent as fav on (item_id)'
+        + 'WHERE is_album = 0 and fav.user_id = ? ';
+    const inserts = [event.headers.user_id];
+    const sql = MySQL.format(structure, inserts);
+
+    con.query(sql, function (error, results) {
+        if (error) {
+            callback(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+        } else {
+            var jsonResponse = {
+                statusCode: "200",
+                message: "Successfully retrieved user's recent song picks",
+                songs: []
+            };
+
+            // parses song data and adds it to the jsonResponse's 'songs' array
+            for(let i = 0; i < results.length; i++) {
+                let songData = results[i];
+                jsonResponse.songs.push({
+                    "id": songData.item_id,
+                    "name": songData.item_name,
+                    "artist": songData.item_artist
+                });
+
+                if (i === results.length - 1) {
+                    callback(jsonResponse);
+                }
+            }
+        }
+    });
+}
 
 
 /*
@@ -179,10 +197,10 @@ function executeRequest(con, event, path, callback) {
 
 // validates that the user with the specified name and nuid exists, and generates an
 // authorization token for the user if so
-function postAuthorization(con, event) {
+function postAuthorization(con, event, callback) {
 
     // validates the user and updates their validation token
-    return new Promise(function(resolve, reject) {
+    callback(new Promise(function(resolve, reject) {
         try {
             validateUser(function (response1) {
                 if (response1.statusCode === "200") {
@@ -199,13 +217,8 @@ function postAuthorization(con, event) {
     }).then(data => {
         return data;
     }).catch(error => {
-        return {
-            "statusCode": "404",
-            "Error": "Server-side error",
-            "Description": "Failed to execute request due to unknown exception",
-            "Stack Trace": error
-        };
-    });
+        return createErrorMessage("404", "Server-side Error", "Failed to execute request due to unknown exception", error);
+    }));
 
     // sql query to validate that the user exists
     function validateUser(callbackLocal) {
@@ -218,19 +231,9 @@ function postAuthorization(con, event) {
         // gets the user's id if they exist
         con.query(sql1, function (error, results) {
             if (error) {
-                return callbackLocal({
-                    "statusCode": "404",
-                    "Error": "User Validation Error",
-                    "Description": "failed to validate user due to server-side error",
-                    "Stack Trace": error
-                });
+                return callbackLocal(createErrorMessage("404", "User Validation Error", "Failed to validate user due to server-side error", error));
             } else if (results.length === 0) { // invalid login credentials
-                return callbackLocal({
-                    "statusCode": "404",
-                    "Error": "User Validation Error",
-                    "Description": "failed to validate user due to invalid login credentials",
-                    "Stack Trace": error
-                });
+                return callbackLocal(createErrorMessage("404", "User Validation Error", "failed to validate user due to invalid login credentials", error));
             } else { // valid login credentials
                 return callbackLocal({
                     "statusCode": "200",
@@ -252,12 +255,7 @@ function postAuthorization(con, event) {
         // attempts to insert the authorization token
         con.query(sql2, function (error) {
             if (error) {
-                callbackLocal({
-                    "statusCode": "404",
-                    "Error": "Authorization Error",
-                    "Description": "failed to update authorization token due to server-side error",
-                    "Stack Trace": error
-                });
+                callbackLocal(createErrorMessage("404", "Authorization Error", "failed to update authorization token due to server-side error", error));
             } else {
                 callbackLocal({
                     "statusCode": "200",
@@ -285,36 +283,15 @@ function postAuthorization(con, event) {
  ****************** HELPER METHODS ***************
  */
 
-// TODO: Generalize querySQL and applySQL for get/post functions (aside from obtaining an authorization token
-// TODO: as there is more complexity) to streamline functions
-
-/*
-// returns a response with the results of the query as the body of the JSON
-// data, a success or failure code and message
-function querySQL(sql, successMessage) {
-    const res = con.query(sql); // error handling
-
-    // if error :
-    // statusCode: 503
-    // statusMessage: Service unavailable, encountered an internal database error
-
+// creates an error message
+function createErrorMessage(statusCode, message, description, error) {
     return {
-        statusCode: 200,
-        statusMessage: 'Success: ' + successMessage,
-        body: JSON.stringify(res) // get data from res
-    };
+        "statusCode": statusCode,
+        "message": message,
+        "description": description,
+        "stackTrace": error
+    }
 }
-
-// returns a response with a success or failure code and message
-function applySQL(sql, successMessage) {
-    const res = con.query(sql); // error handling
-
-    return {
-        statusCode: 200,
-        statusMessage: 'Success: ' + successMessage,
-    };
-}
- */
 
 // json/application return format
 function jsonFormat(statusCode, body) {
