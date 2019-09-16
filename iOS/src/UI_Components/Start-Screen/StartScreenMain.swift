@@ -126,6 +126,7 @@ class StartScreenMain: UIViewController, UITextFieldDelegate {
         }
         
     }
+    
     // requests authorization from the user
     func requestAuthorization(loginRequest: Bool, name: String?, nuid: String?, callback: @escaping (String) -> Void) {
         //header information for spotify url call
@@ -151,7 +152,6 @@ class StartScreenMain: UIViewController, UITextFieldDelegate {
                         authorization_token: user["authorization"] as? String,
                         role_id: user["role_id"] as? Int,
                         access_id: user["access_id"] as? Int)
-                    print(self.isChecked)
                     if (self.isChecked) {
                         let nameData = NSKeyedArchiver.archivedData(withRootObject: name ?? "")
                         let nuidData = NSKeyedArchiver.archivedData(withRootObject: nuid ?? "")

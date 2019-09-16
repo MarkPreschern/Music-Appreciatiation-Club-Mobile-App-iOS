@@ -66,7 +66,7 @@ class ProfileScreenMain: UIViewController {
         
         userData = nil
         currentQuery = String()
-        items = [ItemData]()
+        spotifySearchItems = [ItemData]()
         songs = [ItemData]()
         player = AVAudioPlayer()
         session = AVAudioSession()

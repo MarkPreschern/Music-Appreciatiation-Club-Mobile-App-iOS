@@ -9,9 +9,14 @@
 import UIKit
 
 // Represents the picks screen. Holds information regarding:
-// - continously updated song & album top picks across the entire club
-// - ability to upvote songs and albums
+// - continously updated album top picks across the entire club
+// - ability to vote on songs and albums
 class PicksScreenAlbumMain: UIViewController {
+    
+    // user picked songs
+    var picksUserAlbumItems = [ItemData]()
+    // club picked songs
+    var picksClubAlbumItems = [ItemData]()
     
     @IBOutlet weak var view_outlet: UIView!
     @IBOutlet weak var songLabel_outlet: UIButton!

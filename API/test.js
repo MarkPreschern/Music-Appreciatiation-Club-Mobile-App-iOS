@@ -2,11 +2,11 @@
 let eventData =
     {
         "resource": "/API/PATH",
-        "path": "/api.mac.com/authorization",
-        "httpMethod": "POST",
+        "path": "/api.mac.com/userSongPicks",
+        "httpMethod": "GET",
         "headers": {
-            "name":"test",
-            "nuid":"test1"
+            "user_id":"1",
+            "authorization":"179d701f-9a50-4252-ab86-dee380bd8b08"
         },
         "queryStringParameters": null,
         "multiValueQueryStringParameters": null,

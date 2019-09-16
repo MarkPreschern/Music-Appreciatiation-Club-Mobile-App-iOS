@@ -36,7 +36,7 @@ typealias JSONStandard = [String : AnyObject] //typealias for json data
 
 var currentQuery : String? // the current spotify query
 
-var items = [ItemData]() // list of items in the table view
+var spotifySearchItems = [ItemData]() // list of items in the table view
 
 // Represents the search screen. Holds information regarding:
 // - Songs and albums available on spotify
@@ -66,7 +66,7 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
         self.tableView.delegate = self
         
         //loads the currentURL, or the defaultURL if the currentURL is nil
-        if (items.count == 0) {
+        if (spotifySearchItems.count == 0) {
             self.showSpinner(onView: self.view)
             self.callSpotifySongAndAlbum(query: currentQuery == nil ? "Music" : currentQuery!, completion: { (callback) -> Void in
                 if (callback == "Complete") {
@@ -99,7 +99,7 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
         let albumURL = self.buildAlbumURL(query: query)
         let songURL = self.buildSongURL(query: query)
         
-        items = [ItemData]() //resets table to empty
+        spotifySearchItems = [ItemData]() //resets table to empty
 
         // calls the spotify url's, waiting for callbacks of success before moving to next steps
         self.callSpotifyURL(url: albumURL!, type: ItemType.ALBUM, callback: { (callback) -> Void in
@@ -190,8 +190,6 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
     
     //reads the json produced by the call to the spotify url
     func parseSpotifyData(jsonData : JSON, type : ItemType, completion: @escaping (String) -> Void) {
-        print(jsonData)
-        
         do {
             switch (type) {
             case .ALBUM:
@@ -209,7 +207,7 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
                                 let mainImage = UIImage(data: mainImageData! as Data)
                                 
                                 //updates table information
-                                items.append(ItemData.init(type: ItemType.ALBUM, name: name, image: mainImage, id: id, previewUrl: nil))
+                                spotifySearchItems.append(ItemData.init(type: ItemType.ALBUM, name: name, image: mainImage, id: id, previewUrl: nil))
                                 if (i + 1 == jsonItems.count) {
                                     completion("Success")
                                 }
@@ -234,7 +232,7 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
                                     let mainImage = UIImage(data: mainImageData! as Data)
                                     
                                     //updates table information
-                                    items.append(ItemData.init(type: ItemType.SONG, name: name, image: mainImage, id: id, previewUrl: previewUrl))
+                                    spotifySearchItems.append(ItemData.init(type: ItemType.SONG, name: name, image: mainImage, id: id, previewUrl: previewUrl))
                                     if (i + 1 == jsonItems.count) {
                                         completion("Success")
                                     }
@@ -257,14 +255,14 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
     // when table view cell is tapped, move to controller of cell type
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // chooses view controller based on cell type
-        switch (items[indexPath.row].type!) {
+        switch (spotifySearchItems[indexPath.row].type!) {
         case .SONG:
             let nextVC = self.storyboard!.instantiateViewController(withIdentifier: "songViewID") as? SongView
-            nextVC!.songData = items[indexPath.row]
+            nextVC!.songData = spotifySearchItems[indexPath.row]
             self.present(nextVC!, animated:true, completion: nil)
         case .ALBUM:
             let nextVC = self.storyboard!.instantiateViewController(withIdentifier: "albumViewID") as? AlbumView
-            nextVC!.albumData = items[indexPath.row]
+            nextVC!.albumData = spotifySearchItems[indexPath.row]
             songs = [ItemData]()
             self.present(nextVC!, animated:true, completion: nil)
 
@@ -277,7 +275,7 @@ extension SearchScreenMain: UITableViewDataSource {
     
     //sets the number of rows in the table view
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.count
+        return spotifySearchItems.count
     }
     
     //updates table view data including the image and label
@@ -285,10 +283,10 @@ extension SearchScreenMain: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell")
         //sets the label
         let mainLabel = cell?.viewWithTag(1) as! UILabel
-        mainLabel.text = items[indexPath.row].name
+        mainLabel.text = spotifySearchItems[indexPath.row].name
         //sets the image
         let mainImageView = cell?.viewWithTag(2) as! UIImageView
-        mainImageView.image = items[indexPath.row].image
+        mainImageView.image = spotifySearchItems[indexPath.row].image
         return cell!
     }
     
