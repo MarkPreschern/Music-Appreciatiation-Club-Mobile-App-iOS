@@ -20,7 +20,7 @@ struct UserData {
 }
 
 // represents this user
-var userData : UserData?
+var userData : UserData!
 
 //returns an alert with the given title, message, and action title
 func createAlert(title: String!, message: String!, actionTitle: String!) -> UIAlertController {

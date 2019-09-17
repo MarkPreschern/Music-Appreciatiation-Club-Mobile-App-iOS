@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 extension UIAlertController {
     
@@ -17,15 +18,17 @@ extension UIAlertController {
         // handles if the user clicks "no"
         self.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
         // handles if the user clicks "yes"
-        self.addAction(UIAlertAction(title: "Yes", style: .default, handler: { action in
-            switch type {
-            case .SONG:
-                print("Song Added")
-            //TODO : Query to database the number of songs already in this users top weekly picks. if greater than the maximum allowed value, than show another alert indicating failure and why
-            case .ALBUM:
-                print("Album Added")
-                //TODO : Query to database the number of albums already in this users top weekly picks. if greater than the maximum allowed value, than show another alert indicating failure and why
-            }
+        self.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (alert: UIAlertAction!) in
+            let params: Parameters = [
+                "item_is_album": item.type == ItemType.ALBUM ? 1 : 0,
+                "item_name": item.name,
+                "item_artist": item.artist,
+                "item_spotify_id": item.spotify_id
+            ]
+            // creates the song item and pick
+            sender.macRequest(urlName: "pick", httpMethod: .post, params: params, callback: { response -> Void in
+                // macRequest handles errors, so nothing more is needed to be done
+            })
         }))
         // presents the alert
         sender.present(self, animated: true, completion: nil)

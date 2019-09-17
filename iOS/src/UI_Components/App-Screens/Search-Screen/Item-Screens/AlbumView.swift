@@ -50,7 +50,7 @@ class AlbumView: UIViewController, UITableViewDelegate {
         //loads the songs in this album if not already populated
         if (songs.count == 0) {
             self.showSpinner(onView: self.view)
-            self.callSpotifyAlbumSongs(id: self.albumData.id, completion: { (callback) -> Void in
+            self.callSpotifyAlbumSongs(id: self.albumData.spotify_id, completion: { (callback) -> Void in
                 if (callback == "Complete") {
                     self.removeSpinner()
                 }
@@ -137,6 +137,8 @@ class AlbumView: UIViewController, UITableViewDelegate {
         do {
             //reads the JSON
             var readableJSON = try JSONSerialization.jsonObject(with: JSONData, options: .mutableContainers) as! JSONStandard
+            
+            print(readableJSON)
 
             //parses the JSON for tracks
             if let items = readableJSON["items"] as? [JSONStandard] {
@@ -146,7 +148,7 @@ class AlbumView: UIViewController, UITableViewDelegate {
                     let name = item["name"] as! String
                     let id = item["id"] as! String
                     let previewUrl = item["preview_url"] as? String
-                    songs.append(ItemData(type: ItemType.SONG, name: name, image: self.albumData.image, id: id, previewUrl: previewUrl))
+                    songs.append(ItemData(type: ItemType.SONG, name: name, artist: self.albumData.artist, image: self.albumData.image, spotify_id: id, previewUrl: previewUrl))
                     //calls back when all songs have been appended
                     if (items.count == songs.count) {
                         completion("Success")

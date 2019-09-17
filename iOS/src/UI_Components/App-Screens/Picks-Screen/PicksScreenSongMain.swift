@@ -76,7 +76,7 @@ class PicksScreenSongMain: UIViewController {
     
     // requests user song data from the mac api
     func requestUserData(callback: @escaping (String) -> Void) {
-        self.macRequest(urlName: "name", httpMethod: .get, callback: { (jsonData) -> Void in
+        self.macRequest(urlName: "name", httpMethod: .get, params: [:], callback: { (jsonData) -> Void in
             if (jsonData!["statusCode"]?.stringValue == "200") {
                 let songs = jsonData!["songs"] as! [JSONStandard]
                 for i in 0..<songs.count {

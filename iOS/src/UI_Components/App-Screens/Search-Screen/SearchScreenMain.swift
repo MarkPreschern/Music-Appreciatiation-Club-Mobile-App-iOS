@@ -14,8 +14,9 @@ import JASON
 struct ItemData {
     let type : ItemType! // the type of item
     let name : String! // the name of the item
+    let artist : String! // the name of the artist of this item
     let image : UIImage! // the main image of the item
-    let id : String! // the item's uri
+    let spotify_id : String! // the item's uri
     let previewUrl : String! // the item's preview url
 }
 
@@ -200,6 +201,14 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
                             let item = jsonItems[i]
                             let name = item["name"] as! String
                             let id = item["id"] as! String
+                            let artists = item["artists"] as! [JSONStandard]
+                            var artistName = ""
+                            for i in 0..<artists.count {
+                                artistName.append(artists[i]["name"] as! String)
+                                if (i != artists.count - 1) {
+                                    artistName.append(", ")
+                                }
+                            }
                             if let images = item["images"] as? [JSONStandard] {
                                 let imageData = images[0]
                                 let mainImageURL = URL(string: imageData["url"] as! String)
@@ -207,7 +216,7 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
                                 let mainImage = UIImage(data: mainImageData! as Data)
                                 
                                 //updates table information
-                                spotifySearchItems.append(ItemData.init(type: ItemType.ALBUM, name: name, image: mainImage, id: id, previewUrl: nil))
+                                spotifySearchItems.append(ItemData.init(type: ItemType.ALBUM, name: name, artist: artistName, image: mainImage, spotify_id: id, previewUrl: nil))
                                 if (i + 1 == jsonItems.count) {
                                     completion("Success")
                                 }
@@ -222,6 +231,14 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
                         for i in 0..<jsonItems.count {
                             let item = jsonItems[i]
                             let name = item["name"] as! String
+                            let artists = item["artists"] as! [JSONStandard]
+                            var artistName = ""
+                            for i in 0..<artists.count {
+                                artistName.append(artists[i]["name"] as! String)
+                                if (i != artists.count - 1) {
+                                    artistName.append(", ")
+                                }
+                            }
                             let id = item["id"] as! String
                             let previewUrl = item["preview_url"] as? String
                             if let album = item["album"] as? JSONStandard {
@@ -232,7 +249,7 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
                                     let mainImage = UIImage(data: mainImageData! as Data)
                                     
                                     //updates table information
-                                    spotifySearchItems.append(ItemData.init(type: ItemType.SONG, name: name, image: mainImage, id: id, previewUrl: previewUrl))
+                                    spotifySearchItems.append(ItemData.init(type: ItemType.SONG, name: name, artist: artistName, image: mainImage, spotify_id: id, previewUrl: previewUrl))
                                     if (i + 1 == jsonItems.count) {
                                         completion("Success")
                                     }

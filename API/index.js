@@ -65,49 +65,49 @@ function establishDatabaseConnection(callbackLocal) {
     //for remote use
 
     // creates mysql connection using environment variables
-    /*const con = MySQL.createConnection({
+    const con = MySQL.createConnection({
         "host": process.env.host,
         "user": process.env.user,
         "password": process.env.password,
         "database": process.env.database
-    });*/
+    });
 
     // for local use
 
     // creates mysql connection using environment variables
-    const json = require('/Users/markpreschern/Documents/env.json');
+    /*const json = require('/Users/markpreschern/Documents/env.json');
     const con = MySQL.createConnection({
         host: json.host,
         user: json.user,
         password: json.password,
         database: json.database
-    });
+    });*/
 
     // attempts to connect to the database
     con.connect(function (error) {
         if (error) {
-            return callbackLocal(createErrorMessage("404", "Connection Error", "Failed to connect to database", error), con);
+            callbackLocal(createErrorMessage("404", "Connection Error", "Failed to connect to database", error), con);
         } else {
-            return callbackLocal({
+            callbackLocal({
                 "statusCode": "200",
             }, con);
         }
     });
-};
+}
 
 // verifies that the request is authorized by validating the user's authorization token
 function authorizeRequest(event, con, path, callbackLocal) {
     // JSON Data Header: for all methods except postAuthorization
     // {
     //  headers: {
-    //      authorization: <token>
+    //      authorization_token: <token>
     //      user_id: <user_id>
     // }
     // }
 
     // Verify authorization token if not requesting for one
     if (path === "authorization") {
-        return callbackLocal({
+        callbackLocal({
             "statusCode": "200" // requesting authorization token
         });
     } else {
@@ -115,19 +115,19 @@ function authorizeRequest(event, con, path, callbackLocal) {
         const structure = 'SELECT * '
             + 'FROM user '
             + 'WHERE authorization = ? and user_id = ?';
-        const inserts = [event.headers.authorization, event.headers.user_id];
+        const inserts = [event.headers.authorization_token, event.headers.user_id];
         const sql = MySQL.format(structure, inserts);
 
         // attempts to query the sql statement
         con.query(sql, function (error, results) {
             if (error) {
-                return callbackLocal(createErrorMessage("404", "Authorization Error", "failed to authorize user due to server-side error", error));
+                callbackLocal(createErrorMessage("404", "Authorization Error", "failed to authorize user due to server-side error", error));
             }
 
             if (results.length === 0) { // invalid authorization token
-                return callbackLocal(createErrorMessage("404", "Authorization Error", "failed to authorize user due to invalid authorization credentials", error));
+                callbackLocal(createErrorMessage("404", "Authorization Error", "failed to authorize user due to invalid authorization credentials", error));
             } else { // valid authorization token
-                return callbackLocal({
+                callbackLocal({
                     "statusCode": "200"
                 });
             }
@@ -422,6 +422,14 @@ function postAuthorization(con, event, callback) {
             }
         });
     }
+}
+
+// creates the item associated with this pick, and the pick with the newly created item
+function postPick(con, event, callback) {
+    callback({
+        "statusCode" : "200",
+        "info": event
+    })
 }
 
 /*
