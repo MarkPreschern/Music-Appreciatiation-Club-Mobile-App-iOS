@@ -19,15 +19,15 @@ extension UIAlertController {
         self.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
         // handles if the user clicks "yes"
         self.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (alert: UIAlertAction!) in
-            let params: Parameters = [
-                "item_is_album": item.type == ItemType.ALBUM ? 1 : 0,
+            let header: HTTPHeaders = [
+                "item_id": item.spotify_id,
+                "item_is_album": item.type == ItemType.ALBUM ? "1" :"0",
                 "item_name": item.name,
-                "item_artist": item.artist,
-                "item_spotify_id": item.spotify_id
+                "item_artist": item.artist
             ]
-            // creates the song item and pick
-            sender.macRequest(urlName: "pick", httpMethod: .post, params: params, callback: { response -> Void in
-                // macRequest handles errors, so nothing more is needed to be done
+            // creates the item and pick
+            sender.macRequest(urlName: "pick", httpMethod: .post, header: header, callback: { response -> Void in
+                // TODO: alert of success
             })
         }))
         // presents the alert

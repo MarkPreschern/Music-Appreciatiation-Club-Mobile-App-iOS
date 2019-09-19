@@ -1,12 +1,13 @@
 // test event data
 let eventData =
     {
+        "body": "item_artist=Optional%28%22Hozier%22%29&item_is_album=0&item_name=Optional%28%22Almost%20%28Sweet%20Music%29%22%29&item_id=Optional%28%225Apvsk0suoivI1H8CmBglv%22%29",
         "resource": "/API/PATH",
         "path": "/api.mac.com/userSongPicks",
         "httpMethod": "GET",
         "headers": {
             "user_id":"1",
-            "authorization_token":"179d701f-9a50-4252-ab86-dee380bd8b08"
+            "authorization_token":"a71c2eb1-ff8d-491e-b283-4d4416b693c8",
         },
         "queryStringParameters": null,
         "multiValueQueryStringParameters": null,

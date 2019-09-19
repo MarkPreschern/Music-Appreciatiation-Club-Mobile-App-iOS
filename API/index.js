@@ -52,9 +52,9 @@ exports.handler = async (event) => {
             reject(error);
         }
     }).then(data => {
-        return jsonFormat(data.statusCode, data);
+        return jsonFormat(data);
     }).catch(error => {
-        return jsonFormat(404, createErrorMessage("404", "Server-side error", "Unknown exception occurred", error))
+        return jsonFormat(createErrorMessage("404", "Server-side error", "Unknown exception occurred", error))
     });
 };
 
@@ -178,9 +178,9 @@ function getAccess(con, event, callback) {
 
 // gets the user's recent song picks
 function getUserSongPicks(con, event, callback) {
-    const structure = 'SELECT item.item_id, item.is_album, item.item_name, item.item_artist, item.item_spotify_id, pick.pick_id '
+    const structure = 'SELECT item.item_id, item.is_album, item.item_name, item.item_artist, item.item_id, pick.pick_id '
         + 'FROM item '
-        + 'JOIN pick on item.item_id = pick.item_id '
+        + 'JOIN pick ON item.item_id = pick.item_id '
         + 'WHERE is_album = 0 and pick.user_id = ? ';
     const inserts = [event.headers.user_id];
     const sql = MySQL.format(structure, inserts);
@@ -189,39 +189,18 @@ function getUserSongPicks(con, event, callback) {
         if (error) {
             callback(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
         } else {
-            if (results.length === 0) {
-                callback({
-                    statusCode: "200",
-                    message: "Successfully retrieved recent album picks",
-                    songs: JSON.stringify(results)
-                });
-            } else {
-                for (let i = 0; i < results.length; i++) {
-                    let pick = results[i];
-                    getPickVotes(pick["pick_id"], con, function (response) {
-                        results[pick].add({
-                            "votes": response
-                        });
-                    });
-
-                    if (i === results.length - 1) {
-                        callback({
-                            statusCode: "200",
-                            message: "Successfully retrieved recent user song picks",
-                            songs: JSON.stringify(results)
-                        });
-                    }
-                }
-            }
+            parsePicksVoteData(false, con, results, function(result) {
+                callback(result);
+            });
         }
     });
 }
 
 // gets the user's recent album picks
 function getUserAlbumPicks(con, event, callback) {
-    const structure = 'SELECT item.item_id, item.is_album, item.item_name, item.item_artist, item.item_spotify_id, pick.pick_id '
+    const structure = 'SELECT item.item_id, item.is_album, item.item_name, item.item_artist, item.item_id, pick.pick_id '
         + 'FROM item '
-        + 'JOIN pick on (item_id)'
+        + 'JOIN pick ON item.item_id = pick.item_id '
         + 'WHERE is_album = 1 and pick.user_id = ? ';
     const inserts = [event.headers.user_id];
     const sql = MySQL.format(structure, inserts);
@@ -230,110 +209,45 @@ function getUserAlbumPicks(con, event, callback) {
         if (error) {
             callback(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
         } else {
-            if (results.length === 0) {
-                callback({
-                    statusCode: "200",
-                    message: "Successfully retrieved recent album picks",
-                    songs: JSON.stringify(results)
-                });
-            } else {
-                for (let i = 0; i < results.length; i++) {
-                    let pick = results[i];
-                    getPickVotes(pick["pick_id"], con, function (response) {
-                        results[pick].add({
-                            "votes": response
-                        });
-                    });
-
-                    if (i === results.length - 1) {
-                        callback({
-                            statusCode: "200",
-                            message: "Successfully retrieved recent user album picks",
-                            songs: JSON.stringify(results)
-                        });
-                    }
-                }
-            }
+            parsePicksVoteData(true, con, results, function(result) {
+                callback(result);
+            });
         }
     });
 }
 
 // gets recent song picks
 function getClubSongPicks(con, event, callback) {
-    const sql = 'SELECT item.item_id, item.is_album, item.item_name, item.item_artist, item.item_spotify_id, pick.pick_id '
+    const sql = 'SELECT item.item_id, item.is_album, item.item_name, item.item_artist, item.item_id, pick.pick_id '
         + 'FROM item '
-        + 'JOIN pick on (item_id)'
+        + 'JOIN pick ON item.item_id = pick.item_id '
         + 'WHERE is_album = 0';
 
     con.query(sql, function (error, results) {
         if (error) {
             callback(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
         } else {
-            if (results.length === 0) {
-                callback({
-                    statusCode: "200",
-                    message: "Successfully retrieved recent album picks",
-                    songs: JSON.stringify(results)
-                });
-            } else {
-                for (let i = 0; i < results.length; i++) {
-                    let pick = results[i];
-                    getPickVotes(pick["pick_id"], con, function (response) {
-                        results[pick].add({
-                            "votes": response
-                        });
-                    });
-
-
-                    if (i === results.length - 1) {
-                        callback({
-                            statusCode: "200",
-                            message: "Successfully retrieved recent song picks",
-                            songs: JSON.stringify(results)
-                        });
-                    }
-                }
-            }
+            parsePicksVoteData(false, con, results, function(result) {
+                callback(result);
+            });
         }
     });
 }
 
 // gets recent song picks
 function getClubAlbumPicks(con, event, callback) {
-    const sql = 'SELECT item.item_id, item.is_album, item.item_name, item.item_artist, item.item_spotify_id, pick.pick_id '
+    const sql = 'SELECT item.item_id, item.is_album, item.item_name, item.item_artist, item.item_id, pick.pick_id '
         + 'FROM item '
-        + 'JOIN pick on (item_id)'
+        + 'JOIN pick ON item.item_id = pick.item_id '
         + 'WHERE is_album = 1';
 
     con.query(sql, function (error, results) {
         if (error) {
             callback(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
         } else {
-            if (results.length === 0) {
-                callback({
-                    statusCode: "200",
-                    message: "Successfully retrieved recent album picks",
-                    songs: JSON.stringify(results)
-                });
-            } else {
-                for (let i = 0; i < results.length; i++) {
-                    let pick = results[i];
-                    getPickVotes(pick["pick_id"], con, function (response) {
-                        results[pick].add({
-                            "votes": response
-                        });
-                    });
-
-
-                    if (i === results.length - 1) {
-                        callback({
-                            statusCode: "200",
-                            message: "Successfully retrieved recent album picks",
-                            songs: JSON.stringify(results)
-                        });
-                    }
-                }
-            }
+            parsePicksVoteData(true, con, results, function(result) {
+                callback(result);
+            });
         }
     });
 }
@@ -426,10 +340,115 @@ function postAuthorization(con, event, callback) {
 
 // creates the item associated with this pick, and the pick with the newly created item
 function postPick(con, event, callback) {
-    callback({
-        "statusCode" : "200",
-        "info": event
-    })
+
+    callback(picksCount().then(function() {
+        return addItem();
+    }).then(function() {
+        return getEventID();
+    }).then(eventID => {
+        return addPick(eventID);
+    }).catch(error => {
+        return error;
+    }));
+
+    // Returns the current amount of user picks for this item type
+    function picksCount() {
+        return new Promise(function (resolve, reject) {
+            const structure = 'SELECT count(*) '
+                + 'FROM pick '
+                + 'JOIN item ON pick.item_id = item.item_id '
+                + 'WHERE item.is_album = ? AND pick.user_id = ? ';
+            const inserts = [event.headers["item_is_album"], event.headers["user_id"]];
+            const sql = MySQL.format(structure, inserts);
+
+            // attempts to insert the authorization token
+            con.query(sql, function (error, results) {
+                if (error) {
+                    reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+                } else {
+                    let count = results[0]["count(*)"];
+                    if (event.headers["item_is_album"] === "1" && count > 3) {
+                        reject(createErrorMessage("404", "Insertion Error", "Failed to insert a new album pick as you have exceeded 3 album picks ", error));
+                    } else if (event.headers["item_is_album"] === "0" && count > 5) {
+                        reject(createErrorMessage("404", "Insertion Error", "Failed to insert a new song pick as you have exceeded 5 song picks", error));
+                    } else {
+                        resolve()
+                    }
+                }
+            });
+        })
+    }
+
+    // Add's an item with the provided item data if the item id is unique
+    function addItem() {
+        return new Promise(function (resolve, reject) {
+            const structure = 'INSERT INTO item (item_id, is_album, item_name, item_artist) '
+                + 'VALUES ( ? , ? , ? , ? ) ';
+            const inserts = [event.headers["item_id"], event.headers["item_is_album"], event.headers["item_name"], event.headers["item_artist"]];
+            const sql = MySQL.format(structure, inserts);
+
+            // attempts to insert the authorization token
+            con.query(sql, function (error) {
+                if (error) {
+                    if (error["code"] === "ER_DUP_ENTRY") { // don't want to allow multiple users to pick the same item
+                        reject(createErrorMessage("404", "Duplicate Entry Error", "This " + (event.headers["item_is_album"] === "1" ? "album" : "song") + " has already been chosen for this event", error))
+                    } else {
+                        reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+                    }
+                } else {
+                    resolve();
+                }
+            });
+        })
+    }
+
+    // Returns the current event ID
+    function getEventID() {
+        return new Promise(function (resolve, reject) {
+            const structure = 'SELECT * '
+                + 'FROM event '
+                + 'WHERE ? BETWEEN start_date AND end_date '
+                + 'ORDER BY end_date DESC '
+                + 'LIMIT 1';
+            const inserts = [dateTime()];
+            const sql = MySQL.format(structure, inserts);
+
+            // attempts to insert the authorization token
+            con.query(sql, function (error, results) {
+                if (error) {
+                    reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+                } else {
+                    if (results.length === 0) {
+                        reject(createErrorMessage("404", "Server-side Error", "Missing Event Data", error));
+                    } else {
+                        resolve(results[0]["event_id"]);
+                    }
+                }
+            });
+        })
+    }
+
+    // Returns the current amount of user picks for this item type
+    function addPick(event_id) {
+        return new Promise(function (resolve, reject) {
+            const structure = 'INSERT INTO pick (date_picked, user_id, item_id, event_id) '
+                + 'VALUES ( ? , ? , ? , ? ) ';
+            const inserts = [dateTime(), event.headers["user_id"], event.headers["item_id"], event_id];
+            const sql = MySQL.format(structure, inserts);
+
+            // attempts to insert the authorization token
+            con.query(sql, function (error) {
+                if (error) {
+                    reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+                } else {
+                    resolve({
+                        "statusCode": "200",
+                        "Message": "Successfully created pick"
+                    });
+                }
+            });
+        })
+    }
 }
 
 /*
@@ -452,91 +471,105 @@ function createErrorMessage(statusCode, title, description, error) {
 }
 
 // json/application return format
-function jsonFormat(statusCode, body) {
+function jsonFormat(body) {
     return {
-        "statusCode": statusCode,
         "body": JSON.stringify(body),
         "headers": {'Content-Type': 'application/json'}
     };
 }
 
+// gets a sql formatted datetime of now
+function dateTime() {
+    return new Date().toISOString().slice(0, 19).replace('T', ' ');
+}
+
+// parses a list of picks data for their respective votes
+function parsePicksVoteData(is_album, con, results, callback) {
+    if (results.length === 0) {
+        callback({
+            statusCode: "200",
+            message: "Successfully retrieved recent album picks",
+            songs: JSON.stringify(results)
+        });
+    } else {
+        let i = 0;
+        while (i < results.length) {
+            let pick = results[i];
+            getPickVotes(pick["pick_id"], con, function (response) {
+                results[i]["votes"] = response;
+
+                if (i === results.length - 1) {
+                    callback({
+                        statusCode: "200",
+                        message: "Successfully retrieved " + (is_album === true ? "album" : "song") + " picks",
+                        songs: JSON.stringify(results)
+                    });
+                    i++;
+                } else {
+                    i++;
+                }
+            });
+        }
+    }
+}
+
 // Gets all votes of a pick
 function getPickVotes(pick_id, con, callback) {
-
-    // gets upvotes and downvotes for this item
-    let upVotePromise = new Promise(function(resolve, reject) {
-        getUpVotes(function (upvotes) {
-            if (upvotes.statusCode === "200") {
-                resolve(upvotes)
-            } else {
-                reject(upvotes);
-            }
-        })
-    });
-
-    // gets upvotes and downvotes for this item
-    let downVotePromise = new Promise(function(resolve, reject) {
-        getDownVotes(function (downvotes) {
-            if (downvotes.statusCode === "200") {
-                resolve(downvotes)
-            } else {
-                reject(downvotes);
-            }
-        })
-    });
-
-    callback(Promise.all([upVotePromise, downVotePromise])).then(values => {
+    callback(Promise.all([getUpVotes(), getDownVotes()]).then(values => {
+        console.log(values[0], values[1], values[0].votes.length + values[1].votes.length);
         return {
             "statusCode": "200",
-            "voteData": values[0].votes.length + values[1].votes.length,
-            "upVotes": values[0],
-            "downVotes": values[1]
+            "votes": values[0].votes.length + values[1].votes.length,
+            "upVoteData": values[0],
+            "downVoteData": values[1]
         }
     }).catch(error => {
-        return createErrorMessage("404", "Server-side Error", "Failed to execute request due to unknown exception", error);
-    });
+        return error;
+    }));
 
     // gets all up votes for this item
     function getUpVotes() {
-        const structure = 'SELECT * '
-            + 'FROM votes '
-            + 'JOIN pick on (pick_id) '
-            + 'WHERE vote.up = 1 and pick_id = ?';
-        const inserts = [pick_id];
-        const sql = MySQL.format(structure, inserts);
+        return new Promise(function(resolve, reject) {
+            const structure = 'SELECT * '
+                + 'FROM votes '
+                + 'JOIN pick on (pick_id) '
+                + 'WHERE vote.up = 1 and pick_id = ?';
+            const inserts = [pick_id];
+            const sql = MySQL.format(structure, inserts);
 
-        con.query(sql, function (error, results) {
-            if (error) {
-                callback(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
-            } else {
-                callback({
-                    statusCode: "200",
-                    message: "Successfully retrieved pick up votes",
-                    votes: JSON.stringify(results)
-                });
-            }
+            con.query(sql, function (error, results) {
+                if (error) {
+                    reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+                } else {
+                    resolve({
+                        "votesCount": results.length,
+                        "voteData": JSON.stringify(results)
+                    });
+                }
+            });
         });
     }
 
     // gets all down votes for this item
     function getDownVotes() {
-        const structure = 'SELECT * '
-            + 'FROM votes '
-            + 'JOIN pick on (pick_id) '
-            + 'WHERE vote.up = 0 and pick_id = ?';
-        const inserts = [pick_id];
-        const sql = MySQL.format(structure, inserts);
+        return new Promise(function (resolve, reject) {
+            const structure = 'SELECT * '
+                + 'FROM votes '
+                + 'JOIN pick on (pick_id) '
+                + 'WHERE vote.up = 0 and pick_id = ?';
+            const inserts = [pick_id];
+            const sql = MySQL.format(structure, inserts);
 
-        con.query(sql, function (error, results) {
-            if (error) {
-                callback(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
-            } else {
-                callback({
-                    statusCode: "200",
-                    message: "Successfully retrieved pick down votes",
-                    votes: JSON.stringify(results)
-                });
-            }
+            con.query(sql, function (error, results) {
+                if (error) {
+                    reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+                } else {
+                    resolve({
+                        "votesCount": results.length,
+                        "voteData": JSON.stringify(results)
+                    });
+                }
+            });
         });
     }
 }

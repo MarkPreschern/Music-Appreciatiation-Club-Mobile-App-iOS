@@ -13,9 +13,9 @@ extension AVAudioPlayer {
     
     // fades audio in
     @objc func fadeIn() {
-        if !self.isPlaying {
+        if !self.isPlaying && self.volume == 0.0  {
             // gets the player ready to play at 0.0 volume and play
-            self.volume = 0.0
+            self.volume = 0.2
             self.prepareToPlay()
             self.play()
             self.perform(#selector(fadeIn), with: nil, afterDelay: 0.0)
@@ -23,20 +23,24 @@ extension AVAudioPlayer {
             // Fade
             self.volume += 0.2
             self.perform(#selector(fadeIn), with: nil, afterDelay: 0.2)
+        } else {
+            self.volume = 1.0
         }
     }
     
     // fades audio out
     @objc func fadeOut() {
-        if self.volume > 0.0 {
-            // Fade
-            self.volume -= 0.1
-            self.perform(#selector(fadeOut), with: nil, afterDelay: 0.1)
-        } else {
-            // Stop and get the sound ready for playing again
-            self.stop()
-            self.prepareToPlay()
-            self.volume = 1.0
+        if self.isPlaying {
+            if self.volume > 0.0 {
+                // Fade
+                self.volume -= 0.1
+                self.perform(#selector(fadeOut), with: nil, afterDelay: 0.1)
+            } else {
+                // Stop and get the sound ready for playing again
+                self.volume = 0.0
+                self.stop()
+                self.prepareToPlay()
+            }
         }
     }
 }

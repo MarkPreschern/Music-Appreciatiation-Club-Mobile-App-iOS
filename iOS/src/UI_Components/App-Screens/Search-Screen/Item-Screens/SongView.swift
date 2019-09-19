@@ -71,7 +71,6 @@ class SongView: UIViewController {
         var downloadTask = URLSessionDownloadTask()
         downloadTask = URLSession.shared.downloadTask(with: url, completionHandler: {
             customURL, response, error in
-            
             self.prepareToPlay(url: customURL!)
             completion("Complete")
         })
@@ -82,9 +81,10 @@ class SongView: UIViewController {
     func prepareToPlay(url: URL) {
         do {
             player = try AVAudioPlayer(contentsOf: url)
-            player!.numberOfLoops = -1 //loops forever
-            player!.prepareToPlay()
-            player!.pause()
+            player?.numberOfLoops = -1 //loops forever
+            player?.volume = 0.0
+            player?.prepareToPlay()
+            player?.pause()
         } catch {
             print("Error info: \(error)")
             let alert = createAlert(
@@ -110,11 +110,12 @@ class SongView: UIViewController {
                 actionTitle: "Try Again")
             self.present(alert, animated: true, completion: nil)
         } else {
-            if (player!.isPlaying) {
-                player!.fadeOut()
+            print(player!.isPlaying, player!.volume)
+            if (player?.isPlaying ?? false && player?.volume == 1.0) {
+                player?.fadeOut()
                 self.playPause_outlet.setTitle("Play", for: UIControl.State.normal)
-            } else {
-                player!.fadeIn()
+            } else if (!(player?.isPlaying ?? true) && player?.volume == 0.0) {
+                player?.fadeIn()
                 self.playPause_outlet.setTitle("Pause", for: UIControl.State.normal)
             }
         }
@@ -123,7 +124,9 @@ class SongView: UIViewController {
     // goes back to previous view controller when the back button is clicked
     @IBAction func backButtonClicked(_ sender: Any) {
         //resets the audio player after fading
-        player!.fadeOut()
+        if (player?.isPlaying ?? false && player?.volume == 1.0) {
+            player?.fadeOut()
+        }
         player = AVAudioPlayer()
         // determines which controller to navigate to
         if (self.albumData == nil) {

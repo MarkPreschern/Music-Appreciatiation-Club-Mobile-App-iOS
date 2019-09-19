@@ -1119,10 +1119,9 @@
         <image name="uncheck-mark-image" width="137.5" height="91.5"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="5bF-AY-U8P"/>
-        <segue reference="QKl-cU-Ibm"/>
+        <segue reference="vj4-4g-HNT"/>
         <segue reference="8cl-Rs-XGG"/>
-        <segue reference="dQu-lE-dEe"/>
-        <segue reference="VX8-Wf-1eA"/>
+        <segue reference="bN8-zY-ePZ"/>
+        <segue reference="kZf-nR-pmR"/>
     </inferredMetricsTieBreakers>
 </document>

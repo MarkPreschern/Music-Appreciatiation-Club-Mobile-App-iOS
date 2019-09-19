@@ -60,17 +60,15 @@ ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `MacDB`.`item`
--- Represents either a song or album and information about it
+-- Represents either a song or album and information about it, where the item_id is the respective spotifyID for the item
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `MacDB`.`item` (
-  `item_id` INT NOT NULL AUTO_INCREMENT,
+  `item_id` VARCHAR(100) NOT NULL,
   `is_album` TINYINT NOT NULL,
   `item_name` VARCHAR(255) NOT NULL,
   `item_artist` VARCHAR(100) NOT NULL,
-  `item_spotify_id` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`item_id`),
-  UNIQUE INDEX `item_id_UNIQUE` (`item_id` ASC),
-  UNIQUE INDEX `item_spotify_id_UNIQUE` (`item_spotify_id` ASC))
+  UNIQUE INDEX `item_id_UNIQUE` (`item_id` ASC))
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
@@ -95,7 +93,7 @@ CREATE TABLE IF NOT EXISTS `MacDB`.`pick` (
   `pick_id` INT NOT NULL AUTO_INCREMENT,
   `date_picked` DATETIME NOT NULL,
   `user_id` INT NOT NULL,
-  `item_id` INT NOT NULL,
+  `item_id` VARCHAR(100) NOT NULL,
   `event_id` INT NOT NULL,
   PRIMARY KEY (`pick_id`, `user_id`, `item_id`, `event_id`),
   UNIQUE INDEX `pick_id_UNIQUE` (`pick_id` ASC),
