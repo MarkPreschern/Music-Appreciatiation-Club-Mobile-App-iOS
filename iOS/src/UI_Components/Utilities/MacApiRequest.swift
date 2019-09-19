@@ -12,7 +12,7 @@ import Alamofire
 extension UIViewController {
 
     // Requests data from the mac api given a urlName and httpMethod, waits for a callback
-    func macRequest(urlName : String!, httpMethod : HTTPMethod!, header : HTTPHeaders?, callback: @escaping (JSONStandard?) -> Void) {
+    func macRequest(urlName : String!, httpMethod : HTTPMethod!, header : HTTPHeaders?, successAlert : Bool!, callback: @escaping (JSONStandard?) -> Void) {
         let url = "https://50pnu03u26.execute-api.us-east-2.amazonaws.com/MacTesting/api.mac.com/" + urlName
         
         var headers: HTTPHeaders = [:];
@@ -33,6 +33,10 @@ extension UIViewController {
                 print(readableJSON)
                 if let statusCode = readableJSON["statusCode"] as? String {
                     if (statusCode == "200") {
+                        if (successAlert) {
+                            let alert = createAlert(title: "Success", message: readableJSON["message"] as? String, actionTitle: "close")
+                            self.present(alert, animated: true, completion: nil)
+                        }
                         callback(readableJSON)
                     } else {
                         let alert = createAlert(title: readableJSON["title"] as? String, message: readableJSON["description"] as? String, actionTitle: "close")

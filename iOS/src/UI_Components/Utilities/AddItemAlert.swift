@@ -26,7 +26,7 @@ extension UIAlertController {
                 "item_artist": item.artist
             ]
             // creates the item and pick
-            sender.macRequest(urlName: "pick", httpMethod: .post, header: header, callback: { response -> Void in
+            sender.macRequest(urlName: "pick", httpMethod: .post, header: header, successAlert: true, callback: { response -> Void in
                 // TODO: alert of success
             })
         }))

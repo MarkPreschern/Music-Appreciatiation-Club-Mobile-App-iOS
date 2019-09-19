@@ -7,7 +7,7 @@ let eventData =
         "httpMethod": "GET",
         "headers": {
             "user_id":"1",
-            "authorization_token":"a71c2eb1-ff8d-491e-b283-4d4416b693c8",
+            "authorization_token":"c1c5bb4c-c8ba-45ab-be63-ff538bf5b406",
         },
         "queryStringParameters": null,
         "multiValueQueryStringParameters": null,

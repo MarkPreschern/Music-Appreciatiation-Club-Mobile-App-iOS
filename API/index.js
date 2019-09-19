@@ -65,23 +65,23 @@ function establishDatabaseConnection(callbackLocal) {
     //for remote use
 
     // creates mysql connection using environment variables
-    const con = MySQL.createConnection({
+    /*const con = MySQL.createConnection({
         "host": process.env.host,
         "user": process.env.user,
         "password": process.env.password,
         "database": process.env.database
-    });
+    });*/
 
     // for local use
 
     // creates mysql connection using environment variables
-    /*const json = require('/Users/markpreschern/Documents/env.json');
+    const json = require('/Users/markpreschern/Documents/env.json');
     const con = MySQL.createConnection({
         host: json.host,
         user: json.user,
         password: json.password,
         database: json.database
-    });*/
+    });
 
     // attempts to connect to the database
     con.connect(function (error) {
@@ -301,6 +301,7 @@ function postAuthorization(con, event, callback) {
             } else { // valid login credentials
                 return callbackLocal({
                     "statusCode": "200",
+                    "message": "Successfully validated user",
                     "user": results[0]
                 });
             }
@@ -323,7 +324,7 @@ function postAuthorization(con, event, callback) {
             } else {
                 callbackLocal({
                     "statusCode": "200",
-                    "Message": "Successfully created authorization token",
+                    "message": "Successfully created authorization token",
                     "user": {
                         "user_id": user["user_id"],
                         "name": user["name"],
@@ -443,7 +444,7 @@ function postPick(con, event, callback) {
                 } else {
                     resolve({
                         "statusCode": "200",
-                        "Message": "Successfully created pick"
+                        "message": "Added " + event.headers["item_name"] + " by " + event.headers["item_artist"] + " to picks"
                     });
                 }
             });
@@ -492,84 +493,73 @@ function parsePicksVoteData(is_album, con, results, callback) {
             songs: JSON.stringify(results)
         });
     } else {
-        let i = 0;
-        while (i < results.length) {
-            let pick = results[i];
-            getPickVotes(pick["pick_id"], con, function (response) {
-                results[i]["votes"] = response;
-
-                if (i === results.length - 1) {
-                    callback({
-                        statusCode: "200",
-                        message: "Successfully retrieved " + (is_album === true ? "album" : "song") + " picks",
-                        songs: JSON.stringify(results)
-                    });
-                    i++;
-                } else {
-                    i++;
-                }
-            });
-        }
+        let promises = results.map(async item => {
+            item["votes"] = await getPickVotes(item["pick_id"], con);
+        });
+        callback(Promise.all(promises).then(function () {
+            return {
+                statusCode: "200",
+                message: "Successfully retrieved " + (is_album === true ? "album" : "song") + " picks",
+                songs: JSON.stringify(results)
+            };
+        }).catch(error => {
+            return error;
+        }));
     }
 }
 
 // Gets all votes of a pick
-function getPickVotes(pick_id, con, callback) {
-    callback(Promise.all([getUpVotes(), getDownVotes()]).then(values => {
-        console.log(values[0], values[1], values[0].votes.length + values[1].votes.length);
-        return {
-            "statusCode": "200",
-            "votes": values[0].votes.length + values[1].votes.length,
-            "upVoteData": values[0],
-            "downVoteData": values[1]
-        }
-    }).catch(error => {
-        return error;
-    }));
+function getPickVotes(pick_id, con) {
 
     // gets all up votes for this item
-    function getUpVotes() {
-        return new Promise(function(resolve, reject) {
-            const structure = 'SELECT * '
-                + 'FROM votes '
-                + 'JOIN pick on (pick_id) '
-                + 'WHERE vote.up = 1 and pick_id = ?';
-            const inserts = [pick_id];
-            const sql = MySQL.format(structure, inserts);
+    let getUpVotes = new Promise(async function(resolve, reject) {
+        const structure = 'SELECT * '
+            + 'FROM vote '
+            + 'JOIN pick on vote.pick_id = pick.pick_id  '
+            + 'WHERE vote.up = 1 and vote.pick_id = ?';
+        const inserts = [pick_id];
+        const sql = MySQL.format(structure, inserts);
 
-            con.query(sql, function (error, results) {
-                if (error) {
-                    reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
-                } else {
-                    resolve({
-                        "votesCount": results.length,
-                        "voteData": JSON.stringify(results)
-                    });
-                }
-            });
+        await con.query(sql, function (error, results) {
+            if (error) {
+                reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+            } else {
+                resolve({
+                    "votesCount": results.length,
+                    "votesData": JSON.stringify(results)
+                });
+            }
         });
-    }
+    });
 
     // gets all down votes for this item
-    function getDownVotes() {
-        return new Promise(function (resolve, reject) {
-            const structure = 'SELECT * '
-                + 'FROM votes '
-                + 'JOIN pick on (pick_id) '
-                + 'WHERE vote.up = 0 and pick_id = ?';
-            const inserts = [pick_id];
-            const sql = MySQL.format(structure, inserts);
+    let getDownVotes = new Promise(async function (resolve, reject) {
+        const structure = 'SELECT * '
+            + 'FROM vote '
+            + 'JOIN pick on vote.pick_id = pick.pick_id '
+            + 'WHERE vote.up = 0 and vote.pick_id = ?';
+        const inserts = [pick_id];
+        const sql = MySQL.format(structure, inserts);
 
-            con.query(sql, function (error, results) {
-                if (error) {
-                    reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
-                } else {
-                    resolve({
-                        "votesCount": results.length,
-                        "voteData": JSON.stringify(results)
-                    });
-                }
-            });
+        await con.query(sql, function (error, results) {
+            if (error) {
+                reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+            } else {
+                resolve({
+                    "votesCount": results.length,
+                    "votesData": JSON.stringify(results)
+                });
+            }
         });
-    }
+    });
+
+    return Promise.all([getUpVotes, getDownVotes]).then(values => {
+        return {
+            "totalVotes": values[0]["votesCount"] + values[1]["votesCount"],
+            "upVoteData": values[0],
+            "downVoteData": values[1]
+        };
+    }).catch(error => {
+        return error;
+    });
 }
