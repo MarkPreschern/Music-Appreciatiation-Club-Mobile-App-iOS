@@ -170,7 +170,7 @@ function getAccess(con, event, callback) {
             callback({
                 statusCode: "200",
                 message: "Successfully retrieved user's access",
-                songs: JSON.stringify(results)
+                items: results
             });
         }
     });
@@ -178,9 +178,10 @@ function getAccess(con, event, callback) {
 
 // gets the user's recent song picks
 function getUserSongPicks(con, event, callback) {
-    const structure = 'SELECT item.item_id, item.is_album, item.item_name, item.item_artist, item.item_id, pick.pick_id '
+    const structure = 'SELECT item.item_id, item.is_album, item.item_name, item.item_artist, item.item_image_url, item.item_preview_url, pick.pick_id, user.user_id, user.name '
         + 'FROM item '
         + 'JOIN pick ON item.item_id = pick.item_id '
+        + 'JOIN user ON pick.user_id = user.user_id '
         + 'WHERE is_album = 0 and pick.user_id = ? ';
     const inserts = [event.headers.user_id];
     const sql = MySQL.format(structure, inserts);
@@ -198,9 +199,10 @@ function getUserSongPicks(con, event, callback) {
 
 // gets the user's recent album picks
 function getUserAlbumPicks(con, event, callback) {
-    const structure = 'SELECT item.item_id, item.is_album, item.item_name, item.item_artist, item.item_id, pick.pick_id '
+    const structure = 'SELECT item.item_id, item.is_album, item.item_name, item.item_artist, item.item_image_url, item.item_preview_url, pick.pick_id, user.user_id, user.name '
         + 'FROM item '
         + 'JOIN pick ON item.item_id = pick.item_id '
+        + 'JOIN user ON pick.user_id = user.user_id '
         + 'WHERE is_album = 1 and pick.user_id = ? ';
     const inserts = [event.headers.user_id];
     const sql = MySQL.format(structure, inserts);
@@ -218,9 +220,10 @@ function getUserAlbumPicks(con, event, callback) {
 
 // gets recent song picks
 function getClubSongPicks(con, event, callback) {
-    const sql = 'SELECT item.item_id, item.is_album, item.item_name, item.item_artist, item.item_id, pick.pick_id '
+    const sql = 'SELECT item.item_id, item.is_album, item.item_name, item.item_artist, item.item_image_url, item.item_preview_url, pick.pick_id, user.user_id, user.name '
         + 'FROM item '
         + 'JOIN pick ON item.item_id = pick.item_id '
+        + 'JOIN user ON pick.user_id = user.user_id '
         + 'WHERE is_album = 0';
 
     con.query(sql, function (error, results) {
@@ -236,9 +239,10 @@ function getClubSongPicks(con, event, callback) {
 
 // gets recent song picks
 function getClubAlbumPicks(con, event, callback) {
-    const sql = 'SELECT item.item_id, item.is_album, item.item_name, item.item_artist, item.item_id, pick.pick_id '
+    const sql = 'SELECT item.item_id, item.is_album, item.item_name, item.item_artist, item.item_image_url, item.item_preview_url, pick.pick_id, user.user_id, user.name '
         + 'FROM item '
         + 'JOIN pick ON item.item_id = pick.item_id '
+        + 'JOIN user ON pick.user_id = user.user_id '
         + 'WHERE is_album = 1';
 
     con.query(sql, function (error, results) {
@@ -383,9 +387,9 @@ function postPick(con, event, callback) {
     // Add's an item with the provided item data if the item id is unique
     function addItem() {
         return new Promise(function (resolve, reject) {
-            const structure = 'INSERT INTO item (item_id, is_album, item_name, item_artist) '
-                + 'VALUES ( ? , ? , ? , ? ) ';
-            const inserts = [event.headers["item_id"], event.headers["item_is_album"], event.headers["item_name"], event.headers["item_artist"]];
+            const structure = 'INSERT INTO item (item_id, is_album, item_name, item_artist, item_image_url, item_preview_url) '
+                + 'VALUES ( ? , ? , ? , ? , ? , ? ) ';
+            const inserts = [event.headers["item_id"], event.headers["item_is_album"], event.headers["item_name"], event.headers["item_artist"], event.headers["item_image_url"], event.headers["item_preview_url"]];
             const sql = MySQL.format(structure, inserts);
 
             // attempts to insert the authorization token
@@ -488,9 +492,9 @@ function dateTime() {
 function parsePicksVoteData(is_album, con, results, callback) {
     if (results.length === 0) {
         callback({
-            statusCode: "200",
-            message: "Successfully retrieved recent album picks",
-            songs: JSON.stringify(results)
+            "statusCode": "200",
+            "message": "Successfully retrieved recent album picks",
+            "items": []
         });
     } else {
         let promises = results.map(async item => {
@@ -498,9 +502,9 @@ function parsePicksVoteData(is_album, con, results, callback) {
         });
         callback(Promise.all(promises).then(function () {
             return {
-                statusCode: "200",
-                message: "Successfully retrieved " + (is_album === true ? "album" : "song") + " picks",
-                songs: JSON.stringify(results)
+                "statusCode": "200",
+                "message": "Successfully retrieved " + (is_album === true ? "album" : "song") + " picks",
+                "items": results
             };
         }).catch(error => {
             return error;
@@ -526,7 +530,7 @@ function getPickVotes(pick_id, con) {
             } else {
                 resolve({
                     "votesCount": results.length,
-                    "votesData": JSON.stringify(results)
+                    "votesData": results
                 });
             }
         });
@@ -547,7 +551,7 @@ function getPickVotes(pick_id, con) {
             } else {
                 resolve({
                     "votesCount": results.length,
-                    "votesData": JSON.stringify(results)
+                    "votesData": results
                 });
             }
         });
@@ -555,7 +559,7 @@ function getPickVotes(pick_id, con) {
 
     return Promise.all([getUpVotes, getDownVotes]).then(values => {
         return {
-            "totalVotes": values[0]["votesCount"] + values[1]["votesCount"],
+            "totalVotes": values[0]["votesCount"] - values[1]["votesCount"],
             "upVoteData": values[0],
             "downVoteData": values[1]
         };

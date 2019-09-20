@@ -67,6 +67,8 @@ CREATE TABLE IF NOT EXISTS `MacDB`.`item` (
   `is_album` TINYINT NOT NULL,
   `item_name` VARCHAR(255) NOT NULL,
   `item_artist` VARCHAR(100) NOT NULL,
+  `item_image_url` VARCHAR(100) NOT NULL,
+  `item_preview_url` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`item_id`),
   UNIQUE INDEX `item_id_UNIQUE` (`item_id` ASC))
 ENGINE = InnoDB;

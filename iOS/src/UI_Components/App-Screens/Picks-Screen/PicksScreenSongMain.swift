@@ -8,15 +8,29 @@
 
 import UIKit
 
+// represents a pick as the item picked, the votes for this item, and the user that picked this item
+struct Pick {
+    let itemData : ItemData!
+    let voteData : VoteData!
+    let userData: UserData!
+}
+
+// represents a vote for a pick
+struct VoteData {
+    let totalVotes : Int! // upVotes - downvotes
+    let upVoteData: JSONStandard!
+    let downVoteData: JSONStandard!
+}
+
 // Represents the picks screen. Holds information regarding:
 // - continously updated song top picks across the entire club
 // - ability to vote on songs and albums
 class PicksScreenSongMain: UIViewController {
     
-    // user picked songs
-    var picksUserSongItems = [ItemData]()
-    // club picked songs
-    var picksClubSongItems = [ItemData]()
+    // user picked songs and their votes
+    var userSongPicks = [Pick]()
+    // club picked songs and their votes
+    var clubSongPicks = [Pick]()
 
     @IBOutlet weak var view_outlet: UIView!
     @IBOutlet weak var songLabel_outlet: UIButton!
@@ -64,9 +78,17 @@ class PicksScreenSongMain: UIViewController {
     func requestUserAndClubSongData() {
         self.showSpinner(onView: self.view)
         self.requestUserData(callback: { (response1) -> Void in
-            if (response1 == "Done") {
+            if (response1 == "Error") {
+                self.removeSpinner()
+            } else if (response1 == "Done") {
                 self.requestClubData(callback: { (response2) -> Void in
-                    if (response2 == "Done") {
+                    if (response2 == "Error") {
+                        self.removeSpinner()
+                    } else if (response2 == "Done") {
+                        self.myPicksTable_outlet.reloadData()
+                        self.myPicksTable_outlet.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+                        self.clubPicksTable_outlet.reloadData()
+                        self.clubPicksTable_outlet.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
                         self.removeSpinner()
                     }
                 })
@@ -77,19 +99,29 @@ class PicksScreenSongMain: UIViewController {
     // requests user song data from the mac api
     func requestUserData(callback: @escaping (String) -> Void) {
         self.macRequest(urlName: "userSongPicks", httpMethod: .get, header: [:], successAlert: false, callback: { jsonData -> Void in
-            if (jsonData!["statusCode"]?.stringValue == "200") {
-                let songs = jsonData!["songs"] as! [JSONStandard]
-                for i in 0..<songs.count {
-                    let song = songs[i]
-                    // TODO: get all song data in picksUserSongItems
+            self.parsePickData(jsonData: jsonData, callback: { (picks : [Pick]!) -> Void in
+                if (picks[0].itemData.name == "Error404") {
+                    callback("Error")
+                } else {
+                    self.userSongPicks = picks
+                    callback("Done")
                 }
-            }
+            })
         })
     }
     
     // requests club song data from the mac api
     func requestClubData(callback: @escaping (String) -> Void) {
-        // TODO
+        self.macRequest(urlName: "clubSongPicks", httpMethod: .get, header: [:], successAlert: false, callback: { jsonData -> Void in
+            self.parsePickData(jsonData: jsonData, callback: { (picks : [Pick]!) -> Void in
+                if (picks[0].itemData.name == "Error404") {
+                    callback("Error")
+                } else {
+                    self.clubSongPicks = picks
+                    callback("Done")
+                }
+            })
+        })
     }
 }
 
@@ -99,9 +131,9 @@ extension PicksScreenSongMain: UITableViewDataSource {
         //sets the number of rows in the table view
         func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
             if (tableView.restorationIdentifier == "MySongPicksTable") {
-                return picksUserSongItems.count
+                return userSongPicks.count
             } else if (tableView.restorationIdentifier == "ClubSongPicksTable") {
-                return picksClubSongItems.count
+                return clubSongPicks.count
             } else {
                 return 0
             }
@@ -113,19 +145,19 @@ extension PicksScreenSongMain: UITableViewDataSource {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "mySongsCell")
                 //sets the label
                 let mainLabel = cell?.viewWithTag(1) as! UILabel
-                mainLabel.text = picksUserSongItems[indexPath.row].name
+                mainLabel.text = userSongPicks[indexPath.row].itemData.name
                 //sets the image
                 let mainImageView = cell?.viewWithTag(2) as! UIImageView
-                mainImageView.image = picksUserSongItems[indexPath.row].image
+                mainImageView.image = userSongPicks[indexPath.row].itemData.image
                 return cell!
             } else if (tableView.restorationIdentifier == "ClubSongPicksTable") {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "clubSongsCell")
                 //sets the label
                 let mainLabel = cell?.viewWithTag(1) as! UILabel
-                mainLabel.text = picksClubSongItems[indexPath.row].name
+                mainLabel.text = clubSongPicks[indexPath.row].itemData.name
                 //sets the image
                 let mainImageView = cell?.viewWithTag(2) as! UIImageView
-                mainImageView.image = picksClubSongItems[indexPath.row].image
+                mainImageView.image = clubSongPicks[indexPath.row].itemData.image
                 return cell!
             } else {
                 return UITableViewCell()

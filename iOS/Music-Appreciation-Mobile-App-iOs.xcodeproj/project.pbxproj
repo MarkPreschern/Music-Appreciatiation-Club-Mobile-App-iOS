@@ -29,6 +29,7 @@
 		A4B2CDF2222B62EB00DB64AC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4B2CDF0222B62EB00DB64AC /* LaunchScreen.storyboard */; };
 		A4B2CDFD222B62EB00DB64AC /* Music_Appreciation_Mobile_App_iOsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B2CDFC222B62EB00DB64AC /* Music_Appreciation_Mobile_App_iOsTests.swift */; };
 		A4B2CE08222B62EB00DB64AC /* Music_Appreciation_Mobile_App_iOsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B2CE07222B62EB00DB64AC /* Music_Appreciation_Mobile_App_iOsUITests.swift */; };
+		A4B59E1A2334F3E8002C3EFA /* ParsePickData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B59E192334F3E8002C3EFA /* ParsePickData.swift */; };
 		A4D2AA2322EE5AFE009007B3 /* TextFieldCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D2AA2222EE5AFE009007B3 /* TextFieldCredentials.swift */; };
 		A4D2AA2722EE5B6E009007B3 /* SearchTextBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D2AA2622EE5B6E009007B3 /* SearchTextBox.swift */; };
 		A4D2AA3422F46B19009007B3 /* SongView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D2AA3322F46B19009007B3 /* SongView.swift */; };
@@ -89,6 +90,7 @@
 		A4B2CE03222B62EB00DB64AC /* Music-Appreciation-Mobile-App-iOsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Music-Appreciation-Mobile-App-iOsUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4B2CE07222B62EB00DB64AC /* Music_Appreciation_Mobile_App_iOsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Music_Appreciation_Mobile_App_iOsUITests.swift; sourceTree = "<group>"; };
 		A4B2CE09222B62EB00DB64AC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A4B59E192334F3E8002C3EFA /* ParsePickData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParsePickData.swift; sourceTree = "<group>"; };
 		A4D2AA2222EE5AFE009007B3 /* TextFieldCredentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldCredentials.swift; sourceTree = "<group>"; };
 		A4D2AA2622EE5B6E009007B3 /* SearchTextBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTextBox.swift; sourceTree = "<group>"; };
 		A4D2AA3322F46B19009007B3 /* SongView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongView.swift; sourceTree = "<group>"; };
@@ -135,6 +137,7 @@
 				A40FA793231043B800D19537 /* AddBorder.swift */,
 				A4387AC023282179008F501B /* JASON+Alamofire.swift */,
 				A44BFBC9232FA99F007272AB /* MacApiRequest.swift */,
+				A4B59E192334F3E8002C3EFA /* ParsePickData.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -533,6 +536,7 @@
 				A4D2AA3422F46B19009007B3 /* SongView.swift in Sources */,
 				A40FA78C230EE52800D19537 /* LoadingOverlay.swift in Sources */,
 				A40FA789230EDACD00D19537 /* ImageAsColor.swift in Sources */,
+				A4B59E1A2334F3E8002C3EFA /* ParsePickData.swift in Sources */,
 				A44BFBCA232FA99F007272AB /* MacApiRequest.swift in Sources */,
 				A495E304222E003F00D8607D /* StartScreenMain.swift in Sources */,
 				A4D2AA3622F473A5009007B3 /* AlbumView.swift in Sources */,

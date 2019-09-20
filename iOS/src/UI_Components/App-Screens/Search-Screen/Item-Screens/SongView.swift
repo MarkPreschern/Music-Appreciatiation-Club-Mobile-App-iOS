@@ -124,8 +124,10 @@ class SongView: UIViewController {
     // goes back to previous view controller when the back button is clicked
     @IBAction func backButtonClicked(_ sender: Any) {
         //resets the audio player after fading
-        if (player?.isPlaying ?? false && player?.volume == 1.0) {
-            player?.fadeOut()
+        if (self.songData.previewUrl != nil) {
+            if (player?.isPlaying ?? false && player?.volume == 1.0) {
+                player?.fadeOut()
+            }
         }
         player = AVAudioPlayer()
         // determines which controller to navigate to

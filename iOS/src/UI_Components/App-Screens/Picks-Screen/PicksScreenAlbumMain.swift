@@ -14,9 +14,9 @@ import UIKit
 class PicksScreenAlbumMain: UIViewController {
     
     // user picked songs
-    var picksUserAlbumItems = [ItemData]()
+    var UserAlbumPicks = [ItemData]()
     // club picked songs
-    var picksClubAlbumItems = [ItemData]()
+    var ClubAlbumPicks = [ItemData]()
     
     @IBOutlet weak var view_outlet: UIView!
     @IBOutlet weak var songLabel_outlet: UIButton!

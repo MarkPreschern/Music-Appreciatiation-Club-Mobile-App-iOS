@@ -148,7 +148,7 @@ class AlbumView: UIViewController, UITableViewDelegate {
                     let name = item["name"] as! String
                     let id = item["id"] as! String
                     let previewUrl = item["preview_url"] as? String
-                    songs.append(ItemData(type: ItemType.SONG, name: name, artist: self.albumData.artist, image: self.albumData.image, spotify_id: id, previewUrl: previewUrl))
+                    songs.append(ItemData(type: ItemType.SONG, name: name, artist: self.albumData.artist, image: self.albumData.image, imageUrl: self.albumData.imageUrl, spotify_id: id, previewUrl: previewUrl))
                     //calls back when all songs have been appended
                     if (items.count == songs.count) {
                         completion("Success")

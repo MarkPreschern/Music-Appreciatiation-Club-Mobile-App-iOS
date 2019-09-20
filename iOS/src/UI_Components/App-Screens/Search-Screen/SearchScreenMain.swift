@@ -16,6 +16,7 @@ struct ItemData {
     let name : String! // the name of the item
     let artist : String! // the name of the artist of this item
     let image : UIImage! // the main image of the item
+    let imageUrl : String! // the item's image url
     let spotify_id : String! // the item's uri
     let previewUrl : String! // the item's preview url
 }
@@ -211,12 +212,12 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
                             }
                             if let images = item["images"] as? [JSONStandard] {
                                 let imageData = images[0]
-                                let mainImageURL = URL(string: imageData["url"] as! String)
-                                let mainImageData = NSData(contentsOf: mainImageURL!)
+                                let mainImageURL = imageData["url"] as! String
+                                let mainImageData = NSData(contentsOf: URL(string: mainImageURL)!)
                                 let mainImage = UIImage(data: mainImageData! as Data)
                                 
                                 //updates table information
-                                spotifySearchItems.append(ItemData.init(type: ItemType.ALBUM, name: name, artist: artistName, image: mainImage, spotify_id: id, previewUrl: nil))
+                                spotifySearchItems.append(ItemData.init(type: ItemType.ALBUM, name: name, artist: artistName, image: mainImage, imageUrl: mainImageURL, spotify_id: id, previewUrl: nil))
                                 if (i + 1 == jsonItems.count) {
                                     completion("Success")
                                 }
@@ -244,12 +245,12 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
                             if let album = item["album"] as? JSONStandard {
                                 if let images = album["images"] as? [JSONStandard] {
                                     let imageData = images[0]
-                                    let mainImageURL = URL(string: imageData["url"] as! String)
-                                    let mainImageData = NSData(contentsOf: mainImageURL!)
+                                    let mainImageURL = imageData["url"] as! String
+                                    let mainImageData = NSData(contentsOf: URL(string: mainImageURL)!)
                                     let mainImage = UIImage(data: mainImageData! as Data)
                                     
                                     //updates table information
-                                    spotifySearchItems.append(ItemData.init(type: ItemType.SONG, name: name, artist: artistName, image: mainImage, spotify_id: id, previewUrl: previewUrl))
+                                    spotifySearchItems.append(ItemData.init(type: ItemType.SONG, name: name, artist: artistName, image: mainImage, imageUrl: mainImageURL, spotify_id: id, previewUrl: previewUrl))
                                     if (i + 1 == jsonItems.count) {
                                         completion("Success")
                                     }
