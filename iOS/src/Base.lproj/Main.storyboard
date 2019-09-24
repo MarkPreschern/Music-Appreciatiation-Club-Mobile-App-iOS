@@ -316,7 +316,7 @@
         <!--Picks Screen Song Main-->
         <scene sceneID="Tjv-p7-7ny">
             <objects>
-                <viewController id="lxe-gg-s9f" customClass="PicksScreenSongMain" customModule="Music_Appreciation_Mobile_App_iOs" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="picksScreenSongID" id="lxe-gg-s9f" customClass="PicksScreenSongMain" customModule="Music_Appreciation_Mobile_App_iOs" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="EQM-LM-Au8">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -882,7 +882,7 @@
         <!--Picks Screen Album Main-->
         <scene sceneID="CXh-Ff-Wqv">
             <objects>
-                <viewController id="HPl-qA-wtO" customClass="PicksScreenAlbumMain" customModule="Music_Appreciation_Mobile_App_iOs" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="picksScreenAlbumID" id="HPl-qA-wtO" customClass="PicksScreenAlbumMain" customModule="Music_Appreciation_Mobile_App_iOs" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gBT-HA-we2">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1093,7 +1093,9 @@
                     </view>
                     <connections>
                         <outlet property="albumLabel_outlet" destination="wjg-Eg-rgk" id="RJm-Se-zJW"/>
+                        <outlet property="clubPicksTable_outlet" destination="EpS-lV-pJ5" id="8T5-Vf-cTl"/>
                         <outlet property="clubPicksView_outlet" destination="gO3-2B-VHx" id="Khb-Hl-2gc"/>
+                        <outlet property="myPicksTable_outlet" destination="evY-1R-iNo" id="AEn-Tn-bjQ"/>
                         <outlet property="myPicksView_outlet" destination="P3o-Yw-cYJ" id="p1U-Fz-DZv"/>
                         <outlet property="songLabel_outlet" destination="ER6-MM-JBz" id="LQN-98-RNt"/>
                         <outlet property="view_outlet" destination="dlh-SA-XWd" id="h2l-ua-L3b"/>
@@ -1119,9 +1121,10 @@
         <image name="uncheck-mark-image" width="137.5" height="91.5"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="vj4-4g-HNT"/>
+        <segue reference="5bF-AY-U8P"/>
+        <segue reference="QKl-cU-Ibm"/>
         <segue reference="8cl-Rs-XGG"/>
-        <segue reference="bN8-zY-ePZ"/>
-        <segue reference="kZf-nR-pmR"/>
+        <segue reference="dQu-lE-dEe"/>
+        <segue reference="VX8-Wf-1eA"/>
     </inferredMetricsTieBreakers>
 </document>

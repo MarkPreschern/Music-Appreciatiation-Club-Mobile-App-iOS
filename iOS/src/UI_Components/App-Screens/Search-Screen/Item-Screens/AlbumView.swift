@@ -23,6 +23,7 @@ class AlbumView: UIViewController, UITableViewDelegate {
     @IBOutlet weak var tableView_outlet: UITableView!
     
     var albumData: ItemData! // the album data
+    var previousRestorationIdentifier: String! // the restoration identifier of the previous view controller
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -138,8 +139,6 @@ class AlbumView: UIViewController, UITableViewDelegate {
             //reads the JSON
             var readableJSON = try JSONSerialization.jsonObject(with: JSONData, options: .mutableContainers) as! JSONStandard
             
-            print(readableJSON)
-
             //parses the JSON for tracks
             if let items = readableJSON["items"] as? [JSONStandard] {
                 for i in 0..<items.count {
@@ -167,7 +166,7 @@ class AlbumView: UIViewController, UITableViewDelegate {
     
     // goes back to previous view controller when the back button is clicked
     @IBAction func backButtonClicked(_ sender: Any) {
-        let searchView = self.storyboard!.instantiateViewController(withIdentifier: "searchScreenID")
+        let searchView = self.storyboard!.instantiateViewController(withIdentifier: previousRestorationIdentifier)
         self.present(searchView, animated:false, completion: nil)
     }
     
@@ -178,7 +177,9 @@ class AlbumView: UIViewController, UITableViewDelegate {
         // sets local variables in the new view controller
         nextVC!.songData = songs[indexPath.row]
         nextVC!.albumData = self.albumData
-        
+        nextVC!.previousRestorationIdentifier = "albumViewID"
+        nextVC!.albumPreviousRestorationIdentifier = previousRestorationIdentifier
+    
         // presents the new view controller
         self.present(nextVC!, animated:true, completion: nil)
     }

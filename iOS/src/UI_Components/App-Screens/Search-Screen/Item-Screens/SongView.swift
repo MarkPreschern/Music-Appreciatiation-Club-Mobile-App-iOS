@@ -24,6 +24,8 @@ class SongView: UIViewController {
     
     var songData : ItemData! // the item's data
     var albumData : ItemData! // the song's album's data if applicable
+    var previousRestorationIdentifier: String! // the restoration identifier of the previous view controller
+    var albumPreviousRestorationIdentifier: String! // the restoration identifier of the album's previous view controller if applicable
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -110,7 +112,6 @@ class SongView: UIViewController {
                 actionTitle: "Try Again")
             self.present(alert, animated: true, completion: nil)
         } else {
-            print(player!.isPlaying, player!.volume)
             if (player?.isPlaying ?? false && player?.volume == 1.0) {
                 player?.fadeOut()
                 self.playPause_outlet.setTitle("Play", for: UIControl.State.normal)
@@ -132,11 +133,12 @@ class SongView: UIViewController {
         player = AVAudioPlayer()
         // determines which controller to navigate to
         if (self.albumData == nil) {
-            let searchView = self.storyboard!.instantiateViewController(withIdentifier: "searchScreenID")
+            let searchView = self.storyboard!.instantiateViewController(withIdentifier: previousRestorationIdentifier)
             self.present(searchView, animated:false, completion: nil)
         } else {
             let albumView = self.storyboard!.instantiateViewController(withIdentifier: "albumViewID") as? AlbumView
             albumView?.albumData = self.albumData
+            albumView?.previousRestorationIdentifier = albumPreviousRestorationIdentifier
             self.present(albumView!, animated:false, completion: nil)
         }
     }

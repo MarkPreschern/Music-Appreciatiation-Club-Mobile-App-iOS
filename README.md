@@ -1,4 +1,4 @@
-# Music Appreciation Club Mobile App iOS
+# Music Appreciation Club Mobile App
 The iOS and Android app for the Music Appreciation Club at Northeastern University
 
 ## iOS

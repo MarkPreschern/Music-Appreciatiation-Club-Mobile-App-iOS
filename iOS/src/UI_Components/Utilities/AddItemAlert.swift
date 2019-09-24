@@ -25,7 +25,7 @@ extension UIAlertController {
                 "item_name": item.name,
                 "item_artist": item.artist,
                 "item_image_url": item.imageUrl,
-                "item_preview_url": item.previewUrl
+                "item_preview_url": item.previewUrl ?? ""
             ]
             // creates the item and pick
             sender.macRequest(urlName: "pick", httpMethod: .post, header: header, successAlert: true, callback: { response -> Void in

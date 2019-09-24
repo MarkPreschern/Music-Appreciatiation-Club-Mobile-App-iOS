@@ -277,10 +277,12 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
         case .SONG:
             let nextVC = self.storyboard!.instantiateViewController(withIdentifier: "songViewID") as? SongView
             nextVC!.songData = spotifySearchItems[indexPath.row]
+            nextVC!.previousRestorationIdentifier = "searchScreenID"
             self.present(nextVC!, animated:true, completion: nil)
         case .ALBUM:
             let nextVC = self.storyboard!.instantiateViewController(withIdentifier: "albumViewID") as? AlbumView
             nextVC!.albumData = spotifySearchItems[indexPath.row]
+            nextVC!.previousRestorationIdentifier = "searchScreenID"
             songs = [ItemData]()
             self.present(nextVC!, animated:true, completion: nil)
 
