@@ -1,0 +1,184 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml:2:1-30:12
+INJECTED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml:2:1-30:12
+INJECTED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml:2:1-30:12
+INJECTED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml:2:1-30:12
+MERGED from [com.google.android.material:material:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\2d843f002ae9cde6f891ce544f5663af\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.appcompat:appcompat:1.0.2] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\cabebee3e3d72bb23293daa6b970cb02\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\58c47c5b7a6951ca4ba22fe0979eff50\AndroidManifest.xml:2:1-11:12
+MERGED from [androidx.fragment:fragment:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\d5e6dda2995fd72ce08b51d0d8e6cc38\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\ce5c6f3f30443ae8f7f4d1bea4949dc6\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.recyclerview:recyclerview:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\c49dcd4e258439e8aeb03e923689aece\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\ebac25e8460088d8b0d966cb0571cca7\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\027ea3c6a8c1df18436463f53e7fb8c6\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.vectordrawable:vectordrawable:1.0.1] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\ea6a8e9c1e8b88882b9228e64f1aa4f2\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.transition:transition:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\5d737d346fa179f4a862a285c176e388\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\f0a6aa7e832fbabdeafed8cfcfd8aac7\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\a009e576acc4f97321e2d53d8da065f2\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\a2f8f6ecba0675a51503b11115bb42e4\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\2e65e8e8b3cc54f5cad8aceaebdb9230\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\703190b19e6757d03b2b341e9e2056a6\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\ea4001abf5c4ba3de16d4756989bfa08\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\2391b5161b93bb9b3cc2326946c89bf3\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\6d7295ffaed95473bdd545772966119f\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.core:core:1.0.1] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\ebefb1e136c30a77b4837019c75eda11\AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\a5ebc5d72022bab32e3b558fcfdc573e\AndroidManifest.xml:17:1-25:12
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\92a4c201034d950d119e551d13110d94\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.cardview:cardview:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\03803dadd454a9f1809bbae73a92e639\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\b242694730d13444723eb8a70c86a376\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\84364f24275d82d17a073f41d4f27c1b\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\eaff2502454e727cd74f041f2e29cc14\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.print:print:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\1f6abe688758477fc35cce73af5f5155\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\bc30721c131d8231d2bc002dd147cfc4\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\46c41f88aa1740eded9116396ec8ccf8\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\a2caf4d7ec32f2d0084218b62886cb7d\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\882ceaf3794cfa4a85314385d3f5d6fe\AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.arch.core:core-runtime:2.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\bbfbbdc2da1a25298873c5ea51376246\AndroidManifest.xml:17:1-22:12
+INJECTED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml:2:1-30:12
+INJECTED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml:2:1-30:12
+INJECTED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml:2:1-30:12
+	package
+		ADDED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml:3:5-32
+		INJECTED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml
+	android:versionName
+		INJECTED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml
+		ADDED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml:2:1-30:12
+		INJECTED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml
+	android:versionCode
+		INJECTED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml
+		ADDED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml:2:1-30:12
+		INJECTED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml:2:11-69
+application
+ADDED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml:5:5-28:19
+MERGED from [com.google.android.material:material:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\2d843f002ae9cde6f891ce544f5663af\AndroidManifest.xml:22:5-20
+MERGED from [com.google.android.material:material:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\2d843f002ae9cde6f891ce544f5663af\AndroidManifest.xml:22:5-20
+MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\58c47c5b7a6951ca4ba22fe0979eff50\AndroidManifest.xml:9:5-20
+MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\58c47c5b7a6951ca4ba22fe0979eff50\AndroidManifest.xml:9:5-20
+MERGED from [androidx.core:core:1.0.1] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\ebefb1e136c30a77b4837019c75eda11\AndroidManifest.xml:22:5-89
+MERGED from [androidx.core:core:1.0.1] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\ebefb1e136c30a77b4837019c75eda11\AndroidManifest.xml:22:5-89
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\a5ebc5d72022bab32e3b558fcfdc573e\AndroidManifest.xml:22:5-23:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\a5ebc5d72022bab32e3b558fcfdc573e\AndroidManifest.xml:22:5-23:19
+	android:appComponentFactory
+		ADDED from [androidx.core:core:1.0.1] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\ebefb1e136c30a77b4837019c75eda11\AndroidManifest.xml:22:18-86
+	android:supportsRtl
+		ADDED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml:10:9-35
+	android:label
+		ADDED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml:8:9-41
+	android:roundIcon
+		ADDED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml:9:9-54
+	android:icon
+		ADDED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml:7:9-43
+	android:allowBackup
+		ADDED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml:6:9-35
+	android:theme
+		ADDED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml:11:9-40
+activity#com.example.muapp.Login
+ADDED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml:12:9-18:20
+	android:name
+		ADDED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml:12:19-40
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml:13:13-17:29
+action#android.intent.action.MAIN
+ADDED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml:14:17-69
+	android:name
+		ADDED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml:14:25-66
+category#android.intent.category.LAUNCHER
+ADDED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml:16:17-77
+	android:name
+		ADDED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml:16:27-74
+activity#com.example.muapp.News
+ADDED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml:20:9-51
+	android:name
+		ADDED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml:20:19-39
+activity#com.example.muapp.Profile
+ADDED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml:22:9-54
+	android:name
+		ADDED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml:22:19-42
+activity#com.example.muapp.Pick
+ADDED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml:24:9-51
+	android:name
+		ADDED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml:24:19-39
+activity#com.example.muapp.Search
+ADDED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml:26:9-53
+	android:name
+		ADDED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml:26:19-41
+uses-sdk
+INJECTED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml
+INJECTED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml
+MERGED from [com.google.android.material:material:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\2d843f002ae9cde6f891ce544f5663af\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.material:material:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\2d843f002ae9cde6f891ce544f5663af\AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat:1.0.2] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\cabebee3e3d72bb23293daa6b970cb02\AndroidManifest.xml:20:5-44
+MERGED from [androidx.appcompat:appcompat:1.0.2] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\cabebee3e3d72bb23293daa6b970cb02\AndroidManifest.xml:20:5-44
+MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\58c47c5b7a6951ca4ba22fe0979eff50\AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.constraintlayout:constraintlayout:1.1.3] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\58c47c5b7a6951ca4ba22fe0979eff50\AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.fragment:fragment:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\d5e6dda2995fd72ce08b51d0d8e6cc38\AndroidManifest.xml:20:5-44
+MERGED from [androidx.fragment:fragment:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\d5e6dda2995fd72ce08b51d0d8e6cc38\AndroidManifest.xml:20:5-44
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\ce5c6f3f30443ae8f7f4d1bea4949dc6\AndroidManifest.xml:20:5-44
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\ce5c6f3f30443ae8f7f4d1bea4949dc6\AndroidManifest.xml:20:5-44
+MERGED from [androidx.recyclerview:recyclerview:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\c49dcd4e258439e8aeb03e923689aece\AndroidManifest.xml:20:5-44
+MERGED from [androidx.recyclerview:recyclerview:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\c49dcd4e258439e8aeb03e923689aece\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\ebac25e8460088d8b0d966cb0571cca7\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\ebac25e8460088d8b0d966cb0571cca7\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\027ea3c6a8c1df18436463f53e7fb8c6\AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\027ea3c6a8c1df18436463f53e7fb8c6\AndroidManifest.xml:20:5-44
+MERGED from [androidx.vectordrawable:vectordrawable:1.0.1] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\ea6a8e9c1e8b88882b9228e64f1aa4f2\AndroidManifest.xml:20:5-44
+MERGED from [androidx.vectordrawable:vectordrawable:1.0.1] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\ea6a8e9c1e8b88882b9228e64f1aa4f2\AndroidManifest.xml:20:5-44
+MERGED from [androidx.transition:transition:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\5d737d346fa179f4a862a285c176e388\AndroidManifest.xml:20:5-44
+MERGED from [androidx.transition:transition:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\5d737d346fa179f4a862a285c176e388\AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\f0a6aa7e832fbabdeafed8cfcfd8aac7\AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\f0a6aa7e832fbabdeafed8cfcfd8aac7\AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\a009e576acc4f97321e2d53d8da065f2\AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\a009e576acc4f97321e2d53d8da065f2\AndroidManifest.xml:20:5-44
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\a2f8f6ecba0675a51503b11115bb42e4\AndroidManifest.xml:20:5-44
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\a2f8f6ecba0675a51503b11115bb42e4\AndroidManifest.xml:20:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\2e65e8e8b3cc54f5cad8aceaebdb9230\AndroidManifest.xml:20:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\2e65e8e8b3cc54f5cad8aceaebdb9230\AndroidManifest.xml:20:5-44
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\703190b19e6757d03b2b341e9e2056a6\AndroidManifest.xml:20:5-44
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\703190b19e6757d03b2b341e9e2056a6\AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\ea4001abf5c4ba3de16d4756989bfa08\AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\ea4001abf5c4ba3de16d4756989bfa08\AndroidManifest.xml:20:5-44
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\2391b5161b93bb9b3cc2326946c89bf3\AndroidManifest.xml:20:5-44
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\2391b5161b93bb9b3cc2326946c89bf3\AndroidManifest.xml:20:5-44
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\6d7295ffaed95473bdd545772966119f\AndroidManifest.xml:20:5-44
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\6d7295ffaed95473bdd545772966119f\AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.0.1] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\ebefb1e136c30a77b4837019c75eda11\AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.0.1] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\ebefb1e136c30a77b4837019c75eda11\AndroidManifest.xml:20:5-44
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\a5ebc5d72022bab32e3b558fcfdc573e\AndroidManifest.xml:20:5-44
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\a5ebc5d72022bab32e3b558fcfdc573e\AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\92a4c201034d950d119e551d13110d94\AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\92a4c201034d950d119e551d13110d94\AndroidManifest.xml:20:5-44
+MERGED from [androidx.cardview:cardview:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\03803dadd454a9f1809bbae73a92e639\AndroidManifest.xml:20:5-44
+MERGED from [androidx.cardview:cardview:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\03803dadd454a9f1809bbae73a92e639\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\b242694730d13444723eb8a70c86a376\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\b242694730d13444723eb8a70c86a376\AndroidManifest.xml:20:5-44
+MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\84364f24275d82d17a073f41d4f27c1b\AndroidManifest.xml:20:5-44
+MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\84364f24275d82d17a073f41d4f27c1b\AndroidManifest.xml:20:5-44
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\eaff2502454e727cd74f041f2e29cc14\AndroidManifest.xml:20:5-44
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\eaff2502454e727cd74f041f2e29cc14\AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\1f6abe688758477fc35cce73af5f5155\AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\1f6abe688758477fc35cce73af5f5155\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\bc30721c131d8231d2bc002dd147cfc4\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\bc30721c131d8231d2bc002dd147cfc4\AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\46c41f88aa1740eded9116396ec8ccf8\AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\46c41f88aa1740eded9116396ec8ccf8\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\a2caf4d7ec32f2d0084218b62886cb7d\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\a2caf4d7ec32f2d0084218b62886cb7d\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\882ceaf3794cfa4a85314385d3f5d6fe\AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\882ceaf3794cfa4a85314385d3f5d6fe\AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\bbfbbdc2da1a25298873c5ea51376246\AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.0.0] C:\Users\Azad\.gradle\caches\transforms-2\files-2.1\bbfbbdc2da1a25298873c5ea51376246\AndroidManifest.xml:20:5-44
+INJECTED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml
+INJECTED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml
+		ADDED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml
+		ADDED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Azad\AndroidStudioProjects\MusicAppreciationApp-master\app\src\main\AndroidManifest.xml

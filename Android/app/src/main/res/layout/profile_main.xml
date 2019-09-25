@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/news4"
+        android:layout_width="102.5dp"
+        android:layout_height="92dp"
+        android:text="News"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="2dp"
+        android:background="@color/white" />
+
+    <Button
+        android:id="@+id/profile4"
+        android:layout_width="105dp"
+        android:layout_height="93dp"
+        android:layout_marginLeft="100dp"
+        android:background="@color/white"
+        android:text="Profile"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/news4"
+        android:textColor="@color/colorPrimary"/>
+
+    <Button
+        android:id="@+id/pick4"
+        android:layout_width="102.5dp"
+        android:layout_height="93dp"
+        android:layout_marginLeft="104dp"
+        android:text="Pick"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/profile4"
+        android:background="@color/white"/>
+
+    <Button
+        android:id="@+id/search4"
+        android:layout_width="102.5dp"
+        android:layout_height="93dp"
+        android:layout_marginLeft="100dp"
+        android:text="Search"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@+id/pick4"
+        android:background="@color/white"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
+
