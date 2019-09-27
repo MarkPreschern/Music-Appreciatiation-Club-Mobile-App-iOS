@@ -396,7 +396,7 @@ function postPick(con, event, callback) {
             con.query(sql, function (error) {
                 if (error) {
                     if (error["code"] === "ER_DUP_ENTRY") { // don't want to allow multiple users to pick the same item
-                        reject(createErrorMessage("404", "Duplicate Entry Error", "This " + (event.headers["item_is_album"] === "1" ? "album" : "song") + " has already been chosen for this event", error))
+                        reject(createErrorMessage("404", "Duplicate Entry", "This " + (event.headers["item_is_album"] === "1" ? "album" : "song") + " has already been chosen for this event", error))
                     } else {
                         reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
                     }
@@ -433,7 +433,7 @@ function postPick(con, event, callback) {
         })
     }
 
-    // Returns the current amount of user picks for this item type
+    // adds the pick
     function addPick(event_id) {
         return new Promise(function (resolve, reject) {
             const structure = 'INSERT INTO pick (date_picked, user_id, item_id, event_id) '
@@ -456,9 +456,133 @@ function postPick(con, event, callback) {
     }
 }
 
+// creates the vote if the user isn't voting for their own pick
+function postVote(con, event, callback) {
+
+    callback(ownPick().then(function() {
+        return addVote();
+    }).catch(error => {
+        return error;
+    }));
+
+    // determines if the user voted for their own pick
+    function ownPick() {
+        return new Promise(async function (resolve, reject) {
+            const structure = 'SELECT count(*) '
+                + 'FROM vote '
+                + 'WHERE vote.pick_id = ? AND vote.user_id = ?';
+            const inserts = [event.headers["pick_id"], event.headers["user_id"]];
+            const sql = MySQL.format(structure, inserts);
+
+            await con.query(sql, function (error, results) {
+                if (error) {
+                    reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+                } else {
+                    if (results[0] > 0) {
+                        reject(createErrorMessage("404", "Vote Error", "You can't vote for your own " + (event.headers["item_is_album"] === "1" ? "album" : "song") + "!", error))
+                    } else {
+                        resolve();
+                    }
+                }
+            });
+        });
+    }
+
+    // adds the vote from this user to this pick
+    function addVote() {
+        return new Promise(async function (resolve, reject) {
+            const structure = 'INSERT INTO vote (up, comment, user_id, pick_id)'
+                + 'VALUES ( ? , ? , ? , ? )';
+            const inserts = [event.headers["up"], event.headers["comment"], event.headers["user_id"], event.headers["pick_id"]];
+            const sql = MySQL.format(structure, inserts);
+
+            await con.query(sql, function (error, results) {
+                if (error) {
+                    reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+                } else {
+                    resolve({
+                        "statusCode": "200",
+                        "message": "Successfully voted"
+                    });
+                }
+            });
+        });
+    }
+}
+
 /*
  ****************** DELETE METHODS ***************
  */
+
+// deletes the pick if it's the user's pick and the pick's item
+function deletePick(con, event, callback) {
+
+    callback(deleteItem().then(function() {
+        return deletePick();
+    }).catch(error => {
+        return error;
+    }));
+
+    // delete's the user's pick's item
+    function deleteItem() {
+        return new Promise(async function (resolve, reject) {
+            const structure = 'DELETE FROM item '
+                + 'WHERE item.item_id IN (SELECT item_id '
+                +                       '(FROM pick'
+                +                       '(WHERE pick.pick_id = ? AND pick.user_id = ? )';
+            const inserts = [event.headers["pick_id"], event.headers["user_id"]];
+            const sql = MySQL.format(structure, inserts);
+
+            await con.query(sql, function (error, results) {
+                if (error) {
+                    reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+                } else {
+                    resolve();
+                }
+            });
+        });
+    }
+
+    // delete's the user's pick
+    function deletePick() {
+        return new Promise(async function (resolve, reject) {
+            const structure = 'DELETE FROM pick'
+                + 'WHERE pick.pick_id = ? AND pick.user_id = ?';
+            const inserts = [event.headers["pick_id"], event.headers["user_id"]];
+            const sql = MySQL.format(structure, inserts);
+
+            await con.query(sql, function (error, results) {
+                if (error) {
+                    reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+                } else {
+                    resolve({
+                        "statusCode": "200",
+                        "message": "Successfully deleted pick"
+                    });
+                }
+            });
+        });
+    }
+}
+
+// deletes the vote if it's the user's vote
+function deleteVote(con, event, callback) {
+    const structure = 'DELETE FROM vote'
+        + 'WHERE vote.vote_id = ? AND vote.user_id = ?';
+    const inserts = [event.headers["vote_id"], event.headers["user_id"]];
+    const sql = MySQL.format(structure, inserts);
+
+    con.query(sql, function (error, results) {
+        if (error) {
+            callback(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+        } else {
+            callback({
+                "statusCode": "200",
+                "message": "Successfully deleted vote"
+            });
+        }
+    });
+}
 
 
 /*

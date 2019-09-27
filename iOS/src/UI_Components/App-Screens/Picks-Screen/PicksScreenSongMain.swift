@@ -177,6 +177,12 @@ extension PicksScreenSongMain: UITableViewDataSource {
                 //sets the image
                 let mainImageView = cell?.viewWithTag(2) as! UIImageView
                 mainImageView.image = userSongPicks[indexPath.row].itemData.image
+                // sets the name label
+                let nameLabel = cell?.viewWithTag(3) as! UILabel
+                nameLabel.text = userSongPicks[indexPath.row].userData.user_name
+                // sets the vote label
+                let voteLabel = cell?.viewWithTag(4) as! UILabel
+                voteLabel.text = String(userSongPicks[indexPath.row].voteData.totalVotes ?? 0)
                 return cell!
             } else if (tableView.restorationIdentifier == "ClubSongPicksTable") {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "clubSongsCell")
@@ -186,6 +192,12 @@ extension PicksScreenSongMain: UITableViewDataSource {
                 //sets the image
                 let mainImageView = cell?.viewWithTag(2) as! UIImageView
                 mainImageView.image = clubSongPicks[indexPath.row].itemData.image
+                // sets the name label
+                let nameLabel = cell?.viewWithTag(3) as! UILabel
+                nameLabel.text = clubSongPicks[indexPath.row].userData.user_name
+                // sets the vote label
+                let voteLabel = cell?.viewWithTag(4) as! UILabel
+                voteLabel.text = String(clubSongPicks[indexPath.row].voteData.totalVotes ?? 0)
                 return cell!
             } else {
                 return UITableViewCell()

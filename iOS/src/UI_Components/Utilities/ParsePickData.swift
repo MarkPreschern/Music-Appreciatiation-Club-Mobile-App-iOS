@@ -40,7 +40,7 @@ extension UIViewController {
                                 spotify_id: item["item_id"] as? String,
                                 previewUrl: item["item_preview_url"] as? String),
                             voteData: VoteData(
-                                totalVotes: votes["totalPicks"] as? Int,
+                                totalVotes: votes["totalVotes"] as? Int,
                                 upVoteData: votes["upVoteData"] as? JSONStandard,
                                 downVoteData: votes["downVoteData"] as? JSONStandard),
                             userData: UserData(
