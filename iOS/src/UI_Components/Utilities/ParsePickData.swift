@@ -17,6 +17,7 @@ extension UIViewController {
         if let items = jsonData!["items"] as? [JSONStandard] {
             if (items.count == 0) {
                 let pick = Pick(
+                    pickID: nil,
                     itemData: nil,
                     voteData: nil,
                     userData: nil)
@@ -31,6 +32,7 @@ extension UIViewController {
                         let mainImage = UIImage(data: mainImageData! as Data)
                         
                         let pick = Pick(
+                            pickID: item["pick_id"] as? Int,
                             itemData: ItemData(
                                 type: (item["is_album"] as? Int) == 1 ? ItemType.ALBUM : ItemType.SONG,
                                 name: item["item_name"] as? String,

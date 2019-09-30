@@ -93,14 +93,16 @@ class PicksScreenAlbumMain: UIViewController, UITableViewDelegate {
     func requestUserData(callback: @escaping (String) -> Void) {
         self.macRequest(urlName: "userAlbumPicks", httpMethod: .get, header: [:], successAlert: false, callback: { jsonData -> Void in
             self.parsePickData(jsonData: jsonData, callback: { (picks : [Pick]?) -> Void in
-                if (picks == nil) {
-                    callback("Error")
-                } else if (picks![0].itemData == nil) {
-                    self.userAlbumPicks = []
-                    callback("Done")
-                } else {
-                    self.userAlbumPicks = picks!
-                    callback("Done")
+                if (jsonData?["statusCode"] as? String == "200") {
+                    if (picks == nil) {
+                        callback("Error")
+                    } else if (picks![0].itemData == nil) {
+                        self.userAlbumPicks = []
+                        callback("Done")
+                    } else {
+                        self.userAlbumPicks = picks!
+                        callback("Done")
+                    }
                 }
             })
         })
@@ -110,14 +112,16 @@ class PicksScreenAlbumMain: UIViewController, UITableViewDelegate {
     func requestClubData(callback: @escaping (String) -> Void) {
         self.macRequest(urlName: "clubAlbumPicks", httpMethod: .get, header: [:], successAlert: false, callback: { jsonData -> Void in
             self.parsePickData(jsonData: jsonData, callback: { (picks : [Pick]?) -> Void in
-                if (picks == nil) {
-                    callback("Error")
-                } else if (picks![0].itemData == nil) {
-                    self.userAlbumPicks = []
-                    callback("Done")
-                } else {
-                    self.clubAlbumPicks = picks!
-                    callback("Done")
+                if (jsonData?["statusCode"] as? String == "200") {
+                    if (picks == nil) {
+                        callback("Error")
+                    } else if (picks![0].itemData == nil) {
+                        self.userAlbumPicks = []
+                        callback("Done")
+                    } else {
+                        self.clubAlbumPicks = picks!
+                        callback("Done")
+                    }
                 }
             })
         })

@@ -352,6 +352,8 @@ function postPick(con, event, callback) {
         return getEventID();
     }).then(eventID => {
         return addPick(eventID);
+    }).then(function() {
+        return getPickID();
     }).catch(error => {
         return error;
     }));
@@ -446,10 +448,37 @@ function postPick(con, event, callback) {
                 if (error) {
                     reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
                 } else {
-                    resolve({
-                        "statusCode": "200",
-                        "message": "Added " + event.headers["item_name"] + " by " + event.headers["item_artist"] + " to picks"
-                    });
+                    resolve();
+                }
+            });
+        })
+    }
+
+    // gets the pick id using it's item_id since item_id has a unique constraint
+    function getPickID() {
+        return new Promise(function (resolve, reject) {
+            const structure = 'SELECT pick_id '
+                + 'FROM pick '
+                + 'WHERE pick.item_id = ? ';
+            const inserts = [event.headers["item_id"]];
+            const sql = MySQL.format(structure, inserts);
+
+            // attempts to insert the authorization token
+            con.query(sql, function (error, results) {
+                if (error) {
+                    reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+                } else {
+                    if (results.length === 0) {
+                        reject(createErrorMessage("404", "Server-side Error", "Missing pick data", error));
+                    } else if (results.length > 1) {
+                        reject(createErrorMessage("404", "Server-side Error", "Invalid pick data, duplicate items", error));
+                    } else {
+                        resolve({
+                            "statusCode": "200",
+                            "message": "Added " + event.headers["item_name"] + " by " + event.headers["item_artist"] + " to picks",
+                            "pick_id": results[0]
+                        });
+                    }
                 }
             });
         })
