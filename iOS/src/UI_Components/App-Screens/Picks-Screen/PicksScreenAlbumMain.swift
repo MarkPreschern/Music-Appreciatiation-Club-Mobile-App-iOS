@@ -169,9 +169,6 @@ extension PicksScreenAlbumMain: UITableViewDataSource {
             //sets the image
             let mainImageView = cell?.viewWithTag(2) as! UIImageView
             mainImageView.image = userAlbumPicks[indexPath.row].itemData.image
-            // sets the name label
-            let nameLabel = cell?.viewWithTag(3) as! UILabel
-            nameLabel.text = userAlbumPicks[indexPath.row].userData.user_name
             // sets the vote label
             let voteLabel = cell?.viewWithTag(4) as! UILabel
             voteLabel.text = String(userAlbumPicks[indexPath.row].voteData.totalVotes ?? 0)

@@ -19,3 +19,18 @@ INSERT INTO role (name, description) VALUES
 -- -----------------------------------------------------
 
 -- TODO: recent favorites reset, remove authorization token after 1 hour
+
+DROP PROCEDURE IF EXISTS removeAuthorization;
+
+DELIMITER //
+
+-- -----------------------------------------------------
+-- Removes a user's authorization token 1 hour after it was requested, for all user's
+-- A user's authorization token can be deemed invalid by the API authorization process by
+-- checking if the user's login time > 1 hour before the current time
+-- create a job for endEvent that is called when the event datetime is past
+-- -----------------------------------------------------
+
+
+-- TODO: Create job to reset user.authorization token to null after 1 hour after user.login_date
+

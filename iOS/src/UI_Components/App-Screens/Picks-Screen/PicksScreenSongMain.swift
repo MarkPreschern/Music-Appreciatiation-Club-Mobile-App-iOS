@@ -33,6 +33,9 @@ class PicksScreenSongMain: UIViewController, UITableViewDelegate {
     var userSongPicks = [Pick]()
     // club picked songs and their votes
     var clubSongPicks = [Pick]()
+    
+    // cell's containing club songs
+    var clubSongCells = [SongCell]()
 
     @IBOutlet weak var view_outlet: UIView!
     @IBOutlet weak var songLabel_outlet: UIButton!
@@ -161,6 +164,7 @@ class PicksScreenSongMain: UIViewController, UITableViewDelegate {
     // handles an up vote click
     @objc func upVote(gesture: UIGestureRecognizer) {
         if (gesture.view as? UIImageView) != nil {
+    
             
             // TODO:
             // - if currently upVote, delete the upVote
@@ -218,6 +222,11 @@ extension PicksScreenSongMain: UITableViewDataSource {
         if (tableView.restorationIdentifier == "MySongPicksTable") {
             return userSongPicks.count
         } else if (tableView.restorationIdentifier == "ClubSongPicksTable") {
+            self.clubSongCells = [SongCell]()
+            self.clubSongCells.reserveCapacity(clubSongPicks.count)
+            for _ in 0..<self.clubSongPicks.count {
+                self.clubSongCells.append(SongCell())
+            }
             return clubSongPicks.count
         } else {
             return 0
@@ -234,18 +243,9 @@ extension PicksScreenSongMain: UITableViewDataSource {
             //sets the image
             let mainImageView = cell.viewWithTag(2) as! UIImageView
             mainImageView.image = userSongPicks[indexPath.row].itemData.image
-            // sets the name label
-            let nameLabel = cell.viewWithTag(3) as! UILabel
-            nameLabel.text = userSongPicks[indexPath.row].userData.user_name
             // sets the vote label
             let voteLabel = cell.viewWithTag(4) as! UILabel
             voteLabel.text = String(userSongPicks[indexPath.row].voteData.totalVotes ?? 0)
-            
-            // creates up vote image gesture recognizers
-            let tapGestureUp = VoteTapGesture(target: self, action: #selector(PicksScreenSongMain.upVote(gesture:)))
-            tapGestureUp.index = indexPath.row
-            cell.upVote_outlet.addGestureRecognizer(tapGestureUp)
-            cell.upVote_outlet.isUserInteractionEnabled = true
             
             return cell
         } else if (tableView.restorationIdentifier == "ClubSongPicksTable") {
@@ -263,11 +263,19 @@ extension PicksScreenSongMain: UITableViewDataSource {
             let voteLabel = cell.viewWithTag(4) as! UILabel
             voteLabel.text = String(clubSongPicks[indexPath.row].voteData.totalVotes ?? 0)
             
+            // creates up vote image gesture recognizers
+            let tapGestureUp = VoteTapGesture(target: self, action: #selector(PicksScreenSongMain.upVote(gesture:)))
+            tapGestureUp.index = indexPath.row
+            cell.upVote_outlet.addGestureRecognizer(tapGestureUp)
+            cell.upVote_outlet.isUserInteractionEnabled = true
+            
             // creates down vote image gesture recognizers
             let tapGestureDown = VoteTapGesture(target: self, action: #selector(PicksScreenSongMain.downVote(gesture:)))
             tapGestureDown.index = indexPath.row
             cell.downVote_outlet.addGestureRecognizer(tapGestureDown)
             cell.downVote_outlet.isUserInteractionEnabled = true
+            
+            self.clubSongCells[indexPath.row] = cell
             
             return cell
         } else {

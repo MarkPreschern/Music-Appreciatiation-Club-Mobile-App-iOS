@@ -30,7 +30,6 @@ CREATE TABLE IF NOT EXISTS `MacDB`.`access` (
   UNIQUE INDEX `role_id_UNIQUE` (`access_id` ASC))
 ENGINE = InnoDB;
 
-
 -- -----------------------------------------------------
 -- Table `MacDB`.`user`
 -- Represents a user in the club
@@ -40,6 +39,7 @@ CREATE TABLE IF NOT EXISTS `MacDB`.`user` (
   `name` VARCHAR(100) NOT NULL,
   `nuid` VARCHAR(10) NOT NULL,
   `authorization` VARCHAR(64),
+  `login_date` DATETIME NOT NULL,
   `role_id` INT NOT NULL,
   `access_id` INT NOT NULL,
   PRIMARY KEY (`user_id`, `role_id`, `access_id`),

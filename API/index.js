@@ -316,9 +316,9 @@ function postAuthorization(con, event, callback) {
     function insertAuthorizationToken(user, callbackLocal) {
         const uuid = UUID4();
         const structure2 = 'UPDATE user '
-            + 'SET authorization = ? '
+            + 'SET authorization = ? , login_date = ?'
             + 'WHERE user_id = ?';
-        const inserts2 = [uuid, user["user_id"]];
+        const inserts2 = [uuid, dateTime(), user["user_id"]];
         const sql2 = MySQL.format(structure2, inserts2);
 
         // attempts to insert the authorization token
@@ -489,7 +489,9 @@ function postPick(con, event, callback) {
 function postVote(con, event, callback) {
 
     callback(ownPick().then(function() {
-        return addVote();
+        return duplicatePick();
+    }).then(function() {
+        return addVote()
     }).catch(error => {
         return error;
     }));
@@ -497,7 +499,30 @@ function postVote(con, event, callback) {
     // determines if the user voted for their own pick
     function ownPick() {
         return new Promise(async function (resolve, reject) {
-            const structure = 'SELECT count(*) '
+            const structure = 'SELECT * '
+                + 'FROM pick '
+                + 'WHERE pick.pick_id = ? AND pick.user_id = ?';
+            const inserts = [event.headers["pick_id"], event.headers["user_id"]];
+            const sql = MySQL.format(structure, inserts);
+
+            await con.query(sql, function (error, results) {
+                if (error) {
+                    reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+                } else {
+                    if (results.length > 0) {
+                        reject(createErrorMessage("404", "Vote Error", "You can't vote for your own " + (event.headers["item_is_album"] === "1" ? "album" : "song") + "!", error))
+                    } else {
+                        resolve();
+                    }
+                }
+            });
+        });
+    }
+
+    // determines if the user voted for the same pick more than once
+    function duplicatePick() {
+        return new Promise(async function (resolve, reject) {
+            const structure = 'SELECT * '
                 + 'FROM vote '
                 + 'WHERE vote.pick_id = ? AND vote.user_id = ?';
             const inserts = [event.headers["pick_id"], event.headers["user_id"]];
@@ -507,8 +532,9 @@ function postVote(con, event, callback) {
                 if (error) {
                     reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
                 } else {
-                    if (results[0] > 0) {
-                        reject(createErrorMessage("404", "Vote Error", "You can't vote for your own " + (event.headers["item_is_album"] === "1" ? "album" : "song") + "!", error))
+                    if (results.length > 0) {
+                        reject(createErrorMessage("404", "Vote Error", "You can't vote for this "
+                            + (event.headers["item_is_album"] === "1" ? "album" : "song") + " more than once.", error))
                     } else {
                         resolve();
                     }

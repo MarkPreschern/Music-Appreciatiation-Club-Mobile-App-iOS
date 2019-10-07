@@ -476,7 +476,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="clubSongsCell" rowHeight="96" id="b9e-Ju-q70" customClass="songCell" customModule="Music_Appreciation_Mobile_App_iOs" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="clubSongsCell" rowHeight="96" id="b9e-Ju-q70" customClass="SongCell" customModule="Music_Appreciation_Mobile_App_iOs" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="96"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="b9e-Ju-q70" id="eiI-cG-asK">
@@ -529,8 +529,8 @@
                                         </tableViewCellContentView>
                                         <gestureRecognizers/>
                                         <connections>
-                                            <outlet property="downVote_outlet" destination="jiE-Z4-XLe" id="k1C-UO-dkF"/>
-                                            <outlet property="upVote_outlet" destination="iiD-2u-P1k" id="X4G-Ws-74N"/>
+                                            <outlet property="downVote_outlet" destination="jiE-Z4-XLe" id="zwL-Wl-RZj"/>
+                                            <outlet property="upVote_outlet" destination="iiD-2u-P1k" id="jqX-ZE-daj"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -1180,9 +1180,10 @@
         <image name="uncheck-mark-image" width="137.5" height="91.5"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="vj4-4g-HNT"/>
+        <segue reference="5bF-AY-U8P"/>
+        <segue reference="QKl-cU-Ibm"/>
         <segue reference="8cl-Rs-XGG"/>
-        <segue reference="bN8-zY-ePZ"/>
-        <segue reference="kZf-nR-pmR"/>
+        <segue reference="dQu-lE-dEe"/>
+        <segue reference="VX8-Wf-1eA"/>
     </inferredMetricsTieBreakers>
 </document>

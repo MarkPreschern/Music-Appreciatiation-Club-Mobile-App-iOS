@@ -28,7 +28,9 @@ extension UIAlertController {
                 "item_preview_url": item.previewUrl ?? ""
             ]
             // creates the item and pick
+            sender.showSpinner(onView: sender.view)
             sender.macRequest(urlName: "pick", httpMethod: .post, header: header, successAlert: true, callback: { response -> Void in
+                sender.removeSpinner()
             })
         }))
         // presents the alert
