@@ -55,7 +55,7 @@ class SongView: UIViewController {
         try! session?.setCategory(AVAudioSession.Category.playback)
 
         // prepares to play this song
-        if (self.songData.previewUrl != nil) {
+        if self.songData.previewUrl != nil && self.songData.previewUrl != "" {
             // downloads and prepares song, waiting for a callback to remove loading screen
             self.showSpinner(onView: self.view)
             DispatchQueue.global(qos: .userInitiated).sync {
@@ -99,13 +99,13 @@ class SongView: UIViewController {
     
     // changes the player state from play to puase or visa versa
     @IBAction func changePlayerState(_ sender: Any) {
-        if (self.songData.previewUrl == nil) {
+        if self.songData.previewUrl == nil || self.songData.previewUrl == "" {
             let alert = createAlert(
                 title: "Play Error",
                 message: "Song doesn't have a preview, can't be played",
                 actionTitle: "Close")
             self.present(alert, animated: true, completion: nil)
-        } else if (player == nil) {
+        } else if player == nil {
             let alert = createAlert(
                 title: "Play Error",
                 message: "Player hasn't been initialized, please wait",

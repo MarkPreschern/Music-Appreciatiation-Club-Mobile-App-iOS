@@ -20,10 +20,6 @@ INSERT INTO role (name, description) VALUES
 
 -- TODO: recent favorites reset, remove authorization token after 1 hour
 
-DROP PROCEDURE IF EXISTS removeAuthorization;
-
-DELIMITER //
-
 -- -----------------------------------------------------
 -- Removes a user's authorization token 1 hour after it was requested, for all user's
 -- A user's authorization token can be deemed invalid by the API authorization process by

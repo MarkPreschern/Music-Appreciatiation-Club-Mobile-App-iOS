@@ -13,15 +13,16 @@ import Alamofire
 struct Pick {
     let pickID: Int!
     let itemData: ItemData!
-    let voteData: VoteData!
+    var voteData: VoteData!
     let userData: UserData!
 }
 
 // represents a vote for a pick
 struct VoteData {
-    let totalVotes: Int! // upVotes - downvotes
+    var totalVotes: Int! // upVotes - downvotes
     let upVoteData: JSONStandard!
     let downVoteData: JSONStandard!
+    var userVoteID: Int? // the voteID of a user's vote
 }
 
 // Represents the picks screen. Holds information regarding:
@@ -162,57 +163,162 @@ class PicksScreenSongMain: UIViewController, UITableViewDelegate {
     }
     
     // handles an up vote click
-    @objc func upVote(gesture: UIGestureRecognizer) {
+    @objc func upVote(gesture: VoteTapGesture) {
         if (gesture.view as? UIImageView) != nil {
-    
+            let cell = clubSongCells[gesture.index]
+            let imageDataUp = cell.upVote_outlet.image?.pngData()
+            let imageDataDown = cell.downVote_outlet.image?.pngData()
+            let voteLabel = cell.viewWithTag(4) as! UILabel
             
-            // TODO:
-            // - if currently upVote, delete the upVote
-            // - if currently downVote, delete the downVote and add the upVote
-            // - if currently nothing, add the upVote
-            // - update the UI accordingly
-            
-            let index = (gesture as! VoteTapGesture).index
-            let header: HTTPHeaders = [
-                "pick_id": String(userSongPicks[index].pickID),
-                "up": "1",
-                "comment": ""
-            ]
-            self.macRequest(urlName: "vote", httpMethod: .post, header: header, successAlert: false, callback: { jsonData -> Void in
-                if (jsonData?["statusCode"] as? String == "200") {
-                    // TODO update UI
-                }
-            })
+            // up arrow green and down arrow red should never occur, throw error
+            if UIImage(named: "ArrowGreen")?.pngData() == imageDataUp && UIImage(named: "ArrowRed")?.pngData() == imageDataDown {
+                self.displayVoteFailure(message: "Voting for and against a song should never happen", action: "Close")
+            // delete up vote due to up arrow green
+            } else if UIImage(named: "ArrowGreen")?.pngData() == imageDataUp && UIImage(named: "ArrowGreyDown")?.pngData() == imageDataDown {
+                print(2)
+                self.deleteVote(gesture: gesture, callback: { (response) -> Void in
+                    if (response == "Success") {
+                        self.clubSongPicks[gesture.index].voteData.totalVotes -= 1
+                        cell.upVote_outlet.image = UIImage(named: "ArrowGreyUp")
+                        voteLabel.text = String(self.clubSongPicks[gesture.index].voteData.totalVotes ?? 0)
+                    }
+                })
+            // delete down vote due to down arrow red and post up vote
+            } else if UIImage(named: "ArrowGreyUp")?.pngData() == imageDataUp && UIImage(named: "ArrowRed")?.pngData() == imageDataDown {
+                self.deleteVote(gesture: gesture, callback: { (response) -> Void in
+                    if (response == "Success") {
+                        self.clubSongPicks[gesture.index].voteData.totalVotes += 1
+                        cell.downVote_outlet.image = UIImage(named: "ArrowGreyDown")
+                        voteLabel.text = String(self.clubSongPicks[gesture.index].voteData.totalVotes ?? 0)
+                        self.postVote(gesture: gesture, up: 1, comment: "", callback: {(response) -> Void in
+                            if (response == "Success") {
+                                self.clubSongPicks[gesture.index].voteData.totalVotes += 1
+                                cell.upVote_outlet.image = UIImage(named: "ArrowGreen")
+                                voteLabel.text = String(self.clubSongPicks[gesture.index].voteData.totalVotes ?? 0)
+                            }
+                        })
+                    }
+                })
+            // post up vote
+            } else if UIImage(named: "ArrowGreyUp")?.pngData() == imageDataUp && UIImage(named: "ArrowGreyDown")?.pngData() == imageDataDown {
+                self.postVote(gesture: gesture, up: 1, comment: "", callback: {(response) -> Void in
+                    if (response == "Success") {
+                        self.clubSongPicks[gesture.index].voteData.totalVotes += 1
+                        cell.upVote_outlet.image = UIImage(named: "ArrowGreen")
+                        voteLabel.text = String(self.clubSongPicks[gesture.index].voteData.totalVotes ?? 0)
+                    }
+                })
+            // invalid button click
+            } else {
+                self.displayVoteFailure(message: "Invalid Button Click", action: "Try Again")
+            }
         }
     }
     
     // handles a down vote click
-    @objc func downVote(gesture: UIGestureRecognizer) {
-        
-        // TODO:
-        // - if currently downVote, delete the downVote
-        // - if currently upVote, delete the upVote and add the downVote
-        // - if currenlty nothing, add the downVote
-        // - update the UI accordingly
-        
+    @objc func downVote(gesture: VoteTapGesture) {
         if (gesture.view as? UIImageView) != nil {
+            let cell = clubSongCells[gesture.index]
+            let imageDataUp = cell.upVote_outlet.image?.pngData()
+            let imageDataDown = cell.downVote_outlet.image?.pngData()
+            let voteLabel = cell.viewWithTag(4) as! UILabel
             
-            let index = (gesture as! VoteTapGesture).index
+            // up arrow green and down arrow red should never occur, throw error
+            if UIImage(named: "ArrowGreen")?.pngData() == imageDataUp && UIImage(named: "ArrowRed")?.pngData() == imageDataDown {
+                self.displayVoteFailure(message: "Voting for and against a song should never happen", action: "Close")
+            // delete up vote due to up arrow green and post down vote
+            } else if UIImage(named: "ArrowGreen")?.pngData() == imageDataUp && UIImage(named: "ArrowGreyDown")?.pngData() == imageDataDown {
+                self.deleteVote(gesture: gesture, callback: { (response) -> Void in
+                    if (response == "Success") {
+                        self.clubSongPicks[gesture.index].voteData.totalVotes -= 1
+                        cell.upVote_outlet.image = UIImage(named: "ArrowGreyUp")
+                        voteLabel.text = String(self.clubSongPicks[gesture.index].voteData.totalVotes ?? 0)
+
+                        self.postVote(gesture: gesture, up: 0, comment: "", callback: {(response) -> Void in
+                            if (response == "Success") {
+                                self.clubSongPicks[gesture.index].voteData.totalVotes -= 1
+                                cell.downVote_outlet.image = UIImage(named: "ArrowRed")
+                                voteLabel.text = String(self.clubSongPicks[gesture.index].voteData.totalVotes ?? 0)
+                            }
+                        })
+                    }
+                })
+            // delete down vote due to down arrow red
+            } else if UIImage(named: "ArrowGreyUp")?.pngData() == imageDataUp && UIImage(named: "ArrowRed")?.pngData() == imageDataDown {
+                self.deleteVote(gesture: gesture, callback: { (response) -> Void in
+                    if (response == "Success") {
+                        self.clubSongPicks[gesture.index].voteData.totalVotes += 1
+                        cell.downVote_outlet.image = UIImage(named: "ArrowGreyDown")
+                        voteLabel.text = String(self.clubSongPicks[gesture.index].voteData.totalVotes ?? 0)
+                    }
+                })
+            // post down vote
+            } else if UIImage(named: "ArrowGreyUp")?.pngData() == imageDataUp && UIImage(named: "ArrowGreyDown")?.pngData() == imageDataDown {
+                self.postVote(gesture: gesture, up: 0, comment: "", callback: {(response) -> Void in
+                    if (response == "Success") {
+                        self.clubSongPicks[gesture.index].voteData.totalVotes -= 1
+                        cell.downVote_outlet.image = UIImage(named: "ArrowRed")
+                        voteLabel.text = String(self.clubSongPicks[gesture.index].voteData.totalVotes ?? 0)
+                    }
+                })
+            // invalid button click
+            } else {
+                self.displayVoteFailure(message: "Invalid Button Click", action: "Try Again")
+            }
+        }
+    }
+    
+    // deletes a vote
+    func deleteVote(gesture: VoteTapGesture, callback: @escaping (String) -> Void) {
+        if self.clubSongPicks[gesture.index].voteData.userVoteID == nil {
+            let alert = createAlert(
+                title: "Vote Failed",
+                message: "Missing vote data.",
+                actionTitle: "Try Again")
+            self.present(alert, animated: true, completion: nil)
+        } else {
             let header: HTTPHeaders = [
-                "pick_id": String(userSongPicks[index].pickID),
-                "up": "0",
-                "comment": ""
+                "vote_id": String(clubSongPicks[gesture.index].voteData.userVoteID!)
             ]
-            self.macRequest(urlName: "vote", httpMethod: .post, header: header, successAlert: false, callback: { jsonData -> Void in
+            self.macRequest(urlName: "deleteVote", httpMethod: .post, header: header, successAlert: false, callback: { jsonData -> Void in
                 if (jsonData?["statusCode"] as? String == "200") {
-                    // TODO: Update UI
+                    callback("Success")
+                } else {
+                    let alert = createAlert(title: jsonData?["title"] as? String, message: jsonData?["description"] as? String, actionTitle: "Try Again")
+                    self.present(alert, animated: true, completion: nil)
                 }
             })
         }
     }
     
+    // posts a vote
+    func postVote(gesture: VoteTapGesture, up: Int, comment: String, callback: @escaping (String) -> Void) {
+        let header: HTTPHeaders = [
+            "pick_id": String(clubSongPicks[gesture.index].pickID),
+            "up": String(up),
+            "comment": comment
+        ]
+        self.macRequest(urlName: "vote", httpMethod: .post, header: header, successAlert: false, callback: { jsonData -> Void in
+            if (jsonData?["statusCode"] as? String == "200") {
+                callback("Success")
+            } else {
+                let alert = createAlert(title: jsonData?["title"] as? String, message: jsonData?["description"] as? String, actionTitle: "Try Again")
+                self.present(alert, animated: true, completion: nil)
+            }
+        })
+    }
     
+    // presents vote failure message
+    func displayVoteFailure(message: String, action: String) {
+        let alert = createAlert(
+            title: "Vote Failed",
+            message: message,
+            actionTitle: action)
+        self.present(alert, animated: true, completion: nil)
+    }
 }
+
+
 
 // extension handles table data
 extension PicksScreenSongMain: UITableViewDataSource {
@@ -275,11 +381,36 @@ extension PicksScreenSongMain: UITableViewDataSource {
             cell.downVote_outlet.addGestureRecognizer(tapGestureDown)
             cell.downVote_outlet.isUserInteractionEnabled = true
             
+            // sets the club song cell at this index and parses the vote data
             self.clubSongCells[indexPath.row] = cell
+            self.parseVoteDataAt(index: indexPath.row)
             
             return cell
         } else {
             return UITableViewCell()
+        }
+    }
+    
+    // parses vote data for a userVoteID
+    func parseVoteDataAt(index: Int) {
+        let voteData = self.clubSongPicks[index].voteData
+        if let up = voteData?.upVoteData["votesData"] as? [JSONStandard] {
+            for i in 0..<up.count {
+                let item = up[i]
+                if item["user_id"] as? Int == userData.user_id {
+                    self.clubSongPicks[index].voteData.userVoteID = item["vote_id"] as? Int
+                    self.clubSongCells[index].upVote_outlet.image = UIImage(named: "ArrowGreen")
+                }
+            }
+        }
+        if let down = voteData?.downVoteData["votesData"] as? [JSONStandard] {
+            for i in 0..<down.count {
+                let item = down[i]
+                if item["user_id"] as? Int == userData.user_id {
+                    self.clubSongPicks[index].voteData.userVoteID = item["vote_id"] as? Int
+                    self.clubSongCells[index].downVote_outlet.image = UIImage(named: "ArrowRed")
+                }
+            }
         }
     }
 }
@@ -294,3 +425,4 @@ class SongCell: UITableViewCell {
 class VoteTapGesture: UITapGestureRecognizer {
     var index = Int()
 }
+

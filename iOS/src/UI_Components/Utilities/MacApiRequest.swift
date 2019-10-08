@@ -27,7 +27,7 @@ extension UIViewController {
             headers["authorization_token"] = userData?.authorization_token ?? ""
         }
         
-        Alamofire.request(url, method: httpMethod, parameters: nil, encoding: URLEncoding.default, headers: headers).responseJSON(completionHandler: { response in
+        Alamofire.request(url, method: httpMethod, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON(completionHandler: { response in
             do {
                 var readableJSON = try JSONSerialization.jsonObject(with: response.data!, options: .mutableContainers) as! JSONStandard
                 print(readableJSON)

@@ -551,7 +551,7 @@ function postVote(con, event, callback) {
             const inserts = [event.headers["up"], event.headers["comment"], event.headers["user_id"], event.headers["pick_id"]];
             const sql = MySQL.format(structure, inserts);
 
-            await con.query(sql, function (error, results) {
+            await con.query(sql, function (error) {
                 if (error) {
                     reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
                 } else {
@@ -566,7 +566,7 @@ function postVote(con, event, callback) {
 }
 
 /*
- ****************** DELETE METHODS ***************
+ ****************** DELETE METHODS (Type is POST) ***************
  */
 
 // deletes the pick if it's the user's pick and the pick's item
@@ -588,7 +588,7 @@ function deletePick(con, event, callback) {
             const inserts = [event.headers["pick_id"], event.headers["user_id"]];
             const sql = MySQL.format(structure, inserts);
 
-            await con.query(sql, function (error, results) {
+            await con.query(sql, function (error) {
                 if (error) {
                     reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
                 } else {
@@ -601,12 +601,12 @@ function deletePick(con, event, callback) {
     // delete's the user's pick
     function deletePick() {
         return new Promise(async function (resolve, reject) {
-            const structure = 'DELETE FROM pick'
-                + 'WHERE pick.pick_id = ? AND pick.user_id = ?';
+            const structure = 'DELETE FROM pick '
+                + 'WHERE pick.pick_id = ? AND pick.user_id = ? ';
             const inserts = [event.headers["pick_id"], event.headers["user_id"]];
             const sql = MySQL.format(structure, inserts);
 
-            await con.query(sql, function (error, results) {
+            await con.query(sql, function (error) {
                 if (error) {
                     reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
                 } else {
@@ -621,13 +621,13 @@ function deletePick(con, event, callback) {
 }
 
 // deletes the vote if it's the user's vote
-function deleteVote(con, event, callback) {
-    const structure = 'DELETE FROM vote'
-        + 'WHERE vote.vote_id = ? AND vote.user_id = ?';
+function postDeleteVote(con, event, callback) {
+    const structure = 'DELETE FROM vote '
+        + 'WHERE vote.vote_id = ? AND vote.user_id = ? ';
     const inserts = [event.headers["vote_id"], event.headers["user_id"]];
     const sql = MySQL.format(structure, inserts);
 
-    con.query(sql, function (error, results) {
+    con.query(sql, function (error) {
         if (error) {
             callback(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
         } else {
@@ -696,7 +696,7 @@ function getPickVotes(pick_id, con) {
 
     // gets all up votes for this item
     let getUpVotes = new Promise(async function(resolve, reject) {
-        const structure = 'SELECT * '
+        const structure = 'SELECT vote.vote_id, vote.up, vote.comment, vote.user_id, vote.pick_id '
             + 'FROM vote '
             + 'JOIN pick on vote.pick_id = pick.pick_id  '
             + 'WHERE vote.up = 1 and vote.pick_id = ?';
@@ -717,7 +717,7 @@ function getPickVotes(pick_id, con) {
 
     // gets all down votes for this item
     let getDownVotes = new Promise(async function (resolve, reject) {
-        const structure = 'SELECT * '
+        const structure = 'SELECT vote.vote_id, vote.up, vote.comment, vote.user_id, vote.pick_id '
             + 'FROM vote '
             + 'JOIN pick on vote.pick_id = pick.pick_id '
             + 'WHERE vote.up = 0 and vote.pick_id = ?';

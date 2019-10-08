@@ -44,7 +44,8 @@ extension UIViewController {
                             voteData: VoteData(
                                 totalVotes: votes["totalVotes"] as? Int,
                                 upVoteData: votes["upVoteData"] as? JSONStandard,
-                                downVoteData: votes["downVoteData"] as? JSONStandard),
+                                downVoteData: votes["downVoteData"] as? JSONStandard,
+                                userVoteID: nil),
                             userData: UserData(
                                 user_id: item["user_id"] as? Int,
                                 user_name: item["name"] as? String,
