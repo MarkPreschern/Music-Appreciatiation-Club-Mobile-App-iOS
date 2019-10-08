@@ -38,9 +38,11 @@ exports.handler = async (event) => {
 
                             // executes the user request
                             executeRequest(con, event, path, function(response3) {
+                                con.end();
                                 resolve(response3);
                             });
                         } else {
+                            con.end();
                             resolve(response2);
                         }
                     });
@@ -86,6 +88,7 @@ function establishDatabaseConnection(callbackLocal) {
     // attempts to connect to the database
     con.connect(function (error) {
         if (error) {
+            con.end();
             callbackLocal(createErrorMessage("404", "Connection Error", "Failed to connect to database", error), con);
         } else {
             callbackLocal({

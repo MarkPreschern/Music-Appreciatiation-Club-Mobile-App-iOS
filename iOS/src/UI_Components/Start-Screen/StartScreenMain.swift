@@ -170,15 +170,29 @@ class StartScreenMain: UIViewController, UITextFieldDelegate {
                     callback("Failure")
                 }
             } catch {
-                print("Error info: \(error)")
-                if loginRequest {
-                    let alert = createAlert(
-                        title: "Login Failed",
-                        message: "Error occured during login",
-                        actionTitle: "Try Again")
-                    self.present(alert, animated: true, completion: nil)
+                do {
+                    var readableJSON = try JSONSerialization.jsonObject(with: response.data!, options: .mutableContainers) as! JSONStandard
+                    print("Error info: \(error)")
+                    if loginRequest {
+                        let alert = createAlert(
+                            title: readableJSON["title"] as? String,
+                            message: readableJSON["description"] as? String,
+                            actionTitle: "Try Again")
+                        self.present(alert, animated: true, completion: nil)
+                    }
+                    callback("Failure")
+                } catch {
+                    print("Error info: \(error)")
+                    if loginRequest {
+                        let alert = createAlert(
+                            title: "Login Failed",
+                            message: "Error occured during request",
+                            actionTitle: "Try Again")
+                        self.present(alert, animated: true, completion: nil)
+                    }
+                    callback("Failure")
                 }
-                callback("Failure")
+                
             }
         })
     }
