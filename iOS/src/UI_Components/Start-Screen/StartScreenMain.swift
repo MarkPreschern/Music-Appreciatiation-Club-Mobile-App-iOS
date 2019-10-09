@@ -141,29 +141,39 @@ class StartScreenMain: UIViewController, UITextFieldDelegate {
             response in
             do {
                 var readableJSON = try JSONSerialization.jsonObject(with: response.data!, options: .mutableContainers) as! JSONStandard
-                let statusCode = readableJSON["statusCode"] as! String
-                // reads user data if the request was successful
-                if (statusCode == "200") {
-                    let user = readableJSON["user"] as! JSONStandard
-                    userData = UserData(
-                        user_id: user["user_id"] as? Int,
-                        user_name: user["name"] as? String,
-                        user_nuid: user["nuid"] as? String,
-                        authorization_token: user["authorization"] as? String,
-                        role_id: user["role_id"] as? Int,
-                        access_id: user["access_id"] as? Int)
-                    if (self.isChecked) {
-                        let nameData = NSKeyedArchiver.archivedData(withRootObject: name ?? "")
-                        let nuidData = NSKeyedArchiver.archivedData(withRootObject: nuid ?? "")
-                        UserDefaults.standard.set(nameData, forKey: "user_name")
-                        UserDefaults.standard.set(nuidData, forKey: "user_nuid")
+                if let statusCode = readableJSON["statusCode"] as? String {
+                    // reads user data if the request was successful
+                    if (statusCode == "200") {
+                        let user = readableJSON["user"] as! JSONStandard
+                        userData = UserData(
+                            user_id: user["user_id"] as? Int,
+                            user_name: user["name"] as? String,
+                            user_nuid: user["nuid"] as? String,
+                            authorization_token: user["authorization"] as? String,
+                            role_id: user["role_id"] as? Int,
+                            access_id: user["access_id"] as? Int)
+                        if (self.isChecked) {
+                            let nameData = NSKeyedArchiver.archivedData(withRootObject: name ?? "")
+                            let nuidData = NSKeyedArchiver.archivedData(withRootObject: nuid ?? "")
+                            UserDefaults.standard.set(nameData, forKey: "user_name")
+                            UserDefaults.standard.set(nuidData, forKey: "user_nuid")
+                        }
+                        callback("Success")
+                    } else {
+                        if loginRequest {
+                            let alert = createAlert(
+                                title: readableJSON["title"] as? String,
+                                message: readableJSON["description"] as? String,
+                                actionTitle: "Try Again")
+                            self.present(alert, animated: true, completion: nil)
+                        }
+                        callback("Failure")
                     }
-                    callback("Success")
                 } else {
                     if loginRequest {
                         let alert = createAlert(
                             title: "Login Failed",
-                            message: "Invalid login information",
+                            message: "Server-side error occured",
                             actionTitle: "Try Again")
                         self.present(alert, animated: true, completion: nil)
                     }

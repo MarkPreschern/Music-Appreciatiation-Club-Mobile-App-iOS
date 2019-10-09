@@ -78,7 +78,7 @@
 		A495E2E9222B891E00D8607D /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		A495E303222E003F00D8607D /* StartScreenMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartScreenMain.swift; sourceTree = "<group>"; };
 		A495E30A22300AAA00D8607D /* NewsScreenMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsScreenMain.swift; sourceTree = "<group>"; };
-		A4B2CDE4222B62EA00DB64AC /* M.A.C..app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = M.A.C..app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A4B2CDE4222B62EA00DB64AC /* MAC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MAC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4B2CDE7222B62EA00DB64AC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A4B2CDEC222B62EA00DB64AC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A4B2CDEE222B62EB00DB64AC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -233,7 +233,7 @@
 		A4B2CDE5222B62EA00DB64AC /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A4B2CDE4222B62EA00DB64AC /* M.A.C..app */,
+				A4B2CDE4222B62EA00DB64AC /* MAC.app */,
 				A4B2CDF8222B62EB00DB64AC /* Music-Appreciation-Mobile-App-iOsTests.xctest */,
 				A4B2CE03222B62EB00DB64AC /* Music-Appreciation-Mobile-App-iOsUITests.xctest */,
 			);
@@ -312,7 +312,7 @@
 			);
 			name = "Music-Appreciation-Mobile-App-iOs";
 			productName = "Music-Appreciation-Mobile-App-iOs";
-			productReference = A4B2CDE4222B62EA00DB64AC /* M.A.C..app */;
+			productReference = A4B2CDE4222B62EA00DB64AC /* MAC.app */;
 			productType = "com.apple.product-type.application";
 		};
 		A4B2CDF7222B62EB00DB64AC /* Music-Appreciation-Mobile-App-iOsTests */ = {
@@ -726,7 +726,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/src/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Music-Appreciation-Club.Music-Appreciation-Mobile-App-iOs";
-				PRODUCT_NAME = M.A.C.;
+				PRODUCT_NAME = MAC;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
@@ -745,7 +745,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/src/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Music-Appreciation-Club.Music-Appreciation-Mobile-App-iOs";
-				PRODUCT_NAME = M.A.C.;
+				PRODUCT_NAME = MAC;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -180,7 +180,6 @@ class PicksScreenSongMain: UIViewController, UITableViewDelegate {
                     if (response == "Success") {
                         self.clubSongPicks[gesture.index].voteData.totalVotes -= 1
                         cell.upVote_outlet.image = UIImage(named: "ArrowGreyUp")
-                        voteLabel.text = String(self.clubSongPicks[gesture.index].voteData.totalVotes ?? 0)
                     }
                 })
             // delete down vote due to down arrow red and post up vote
@@ -189,12 +188,10 @@ class PicksScreenSongMain: UIViewController, UITableViewDelegate {
                     if (response == "Success") {
                         self.clubSongPicks[gesture.index].voteData.totalVotes += 1
                         cell.downVote_outlet.image = UIImage(named: "ArrowGreyDown")
-                        voteLabel.text = String(self.clubSongPicks[gesture.index].voteData.totalVotes ?? 0)
                         self.postVote(gesture: gesture, up: 1, comment: "", callback: {(response) -> Void in
                             if (response == "Success") {
                                 self.clubSongPicks[gesture.index].voteData.totalVotes += 1
                                 cell.upVote_outlet.image = UIImage(named: "ArrowGreen")
-                                voteLabel.text = String(self.clubSongPicks[gesture.index].voteData.totalVotes ?? 0)
                             }
                         })
                     }
@@ -205,13 +202,13 @@ class PicksScreenSongMain: UIViewController, UITableViewDelegate {
                     if (response == "Success") {
                         self.clubSongPicks[gesture.index].voteData.totalVotes += 1
                         cell.upVote_outlet.image = UIImage(named: "ArrowGreen")
-                        voteLabel.text = String(self.clubSongPicks[gesture.index].voteData.totalVotes ?? 0)
                     }
                 })
             // invalid button click
             } else {
                 self.displayVoteFailure(message: "Invalid Button Click", action: "Try Again")
             }
+            voteLabel.text = String(self.clubSongPicks[gesture.index].voteData.totalVotes ?? 0)
         }
     }
     
@@ -232,13 +229,10 @@ class PicksScreenSongMain: UIViewController, UITableViewDelegate {
                     if (response == "Success") {
                         self.clubSongPicks[gesture.index].voteData.totalVotes -= 1
                         cell.upVote_outlet.image = UIImage(named: "ArrowGreyUp")
-                        voteLabel.text = String(self.clubSongPicks[gesture.index].voteData.totalVotes ?? 0)
-
                         self.postVote(gesture: gesture, up: 0, comment: "", callback: {(response) -> Void in
                             if (response == "Success") {
                                 self.clubSongPicks[gesture.index].voteData.totalVotes -= 1
                                 cell.downVote_outlet.image = UIImage(named: "ArrowRed")
-                                voteLabel.text = String(self.clubSongPicks[gesture.index].voteData.totalVotes ?? 0)
                             }
                         })
                     }
@@ -249,7 +243,6 @@ class PicksScreenSongMain: UIViewController, UITableViewDelegate {
                     if (response == "Success") {
                         self.clubSongPicks[gesture.index].voteData.totalVotes += 1
                         cell.downVote_outlet.image = UIImage(named: "ArrowGreyDown")
-                        voteLabel.text = String(self.clubSongPicks[gesture.index].voteData.totalVotes ?? 0)
                     }
                 })
             // post down vote
@@ -258,13 +251,13 @@ class PicksScreenSongMain: UIViewController, UITableViewDelegate {
                     if (response == "Success") {
                         self.clubSongPicks[gesture.index].voteData.totalVotes -= 1
                         cell.downVote_outlet.image = UIImage(named: "ArrowRed")
-                        voteLabel.text = String(self.clubSongPicks[gesture.index].voteData.totalVotes ?? 0)
                     }
                 })
             // invalid button click
             } else {
                 self.displayVoteFailure(message: "Invalid Button Click", action: "Try Again")
             }
+            voteLabel.text = String(self.clubSongPicks[gesture.index].voteData.totalVotes ?? 0)
         }
     }
     
@@ -397,18 +390,20 @@ extension PicksScreenSongMain: UITableViewDataSource {
         if let up = voteData?.upVoteData["votesData"] as? [JSONStandard] {
             for i in 0..<up.count {
                 let item = up[i]
-                if item["user_id"] as? Int == userData.user_id {
+                if item["user_id"] as! Int == userData.user_id! {
                     self.clubSongPicks[index].voteData.userVoteID = item["vote_id"] as? Int
                     self.clubSongCells[index].upVote_outlet.image = UIImage(named: "ArrowGreen")
+                    return
                 }
             }
         }
         if let down = voteData?.downVoteData["votesData"] as? [JSONStandard] {
             for i in 0..<down.count {
                 let item = down[i]
-                if item["user_id"] as? Int == userData.user_id {
+                if item["user_id"] as! Int == userData.user_id! {
                     self.clubSongPicks[index].voteData.userVoteID = item["vote_id"] as? Int
                     self.clubSongCells[index].downVote_outlet.image = UIImage(named: "ArrowRed")
+                    return
                 }
             }
         }
@@ -419,6 +414,7 @@ extension PicksScreenSongMain: UITableViewDataSource {
 class SongCell: UITableViewCell {
     @IBOutlet weak var upVote_outlet: UIImageView!
     @IBOutlet weak var downVote_outlet: UIImageView!
+    
 }
 
 // custom tap gesture wtih the index of the table column

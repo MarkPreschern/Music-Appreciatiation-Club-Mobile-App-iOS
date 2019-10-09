@@ -2,11 +2,27 @@
 const MySQL = require('mysql');
 const UUID4 = require('uuid4');
 
+
 // Music Appreciation Club API
 exports.handler = async (event) => {
     // prints the event
     console.log('\nEvent: ' + JSON.stringify(event, null, 2) + "\n");
 
+    // ends MySQL connection when the application terminates
+    function exitHandler(options, err) {
+        con.end();
+        if (options.cleanup)
+            console.log('clean');
+        if (err)
+            console.log(err.stack);
+        if (options.exit)
+            process.exit();
+    }
+
+    //executed when the app is closing
+    process.on('exit', exitHandler.bind(null, {cleanup: true}));
+
+    let con;
     // creates database connection, authorizes the request, and executes the specified request respectively
     // response is of the form if successful:
     // {
@@ -27,7 +43,7 @@ exports.handler = async (event) => {
 
                     console.log("Established Database Connection");
                     // MySQL database connection
-                    const con = sqlConnection;
+                    con = sqlConnection;
                     // abbreviated http path without "/" and "api.mac.com"
                     const path = event.path.replace(/\//g, '').replace("api.mac.com", '');
 
@@ -38,11 +54,9 @@ exports.handler = async (event) => {
 
                             // executes the user request
                             executeRequest(con, event, path, function(response3) {
-                                con.end();
                                 resolve(response3);
                             });
                         } else {
-                            con.end();
                             resolve(response2);
                         }
                     });
@@ -319,7 +333,7 @@ function postAuthorization(con, event, callback) {
     function insertAuthorizationToken(user, callbackLocal) {
         const uuid = UUID4();
         const structure2 = 'UPDATE user '
-            + 'SET authorization = ? , login_date = ?'
+            + 'SET authorization = ? , login_date = ? '
             + 'WHERE user_id = ?';
         const inserts2 = [uuid, dateTime(), user["user_id"]];
         const sql2 = MySQL.format(structure2, inserts2);
