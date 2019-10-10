@@ -96,7 +96,6 @@ class PicksScreenSongMain: UIViewController, UITableViewDelegate {
                     } else if (response2 == "Done") {
                         if (self.userSongPicks.count > 0) {
                             self.myPicksTable_outlet.reloadData()
-                            self.myPicksTable_outlet.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
                         }
                         if (self.clubSongPicks.count > 0) {
                             self.clubPicksTable_outlet.reloadData()
@@ -171,7 +170,6 @@ class PicksScreenSongMain: UIViewController, UITableViewDelegate {
             let cell = clubSongCells[gesture.index]
             let imageDataUp = cell.upVote_outlet.image?.pngData()
             let imageDataDown = cell.downVote_outlet.image?.pngData()
-            let voteLabel = cell.viewWithTag(4) as! UILabel
             
             // up arrow green and down arrow red should never occur, throw error
             if UIImage(named: "ArrowGreen")?.pngData() == imageDataUp && UIImage(named: "ArrowRed")?.pngData() == imageDataDown {
@@ -181,7 +179,7 @@ class PicksScreenSongMain: UIViewController, UITableViewDelegate {
                 self.deleteVote(gesture: gesture, callback: { (response) -> Void in
                     if (response == "Success") {
                         self.clubSongPicks[gesture.index].voteData.totalVotes -= 1
-                        voteLabel.text = String(self.clubSongPicks[gesture.index].voteData.totalVotes ?? 0)
+                        self.updateVoteLable(index: gesture.index, cell: nil)
                         cell.upVote_outlet.image = UIImage(named: "ArrowGreyUp")
                     }
                 })
@@ -190,12 +188,12 @@ class PicksScreenSongMain: UIViewController, UITableViewDelegate {
                 self.deleteVote(gesture: gesture, callback: { (response) -> Void in
                     if (response == "Success") {
                         self.clubSongPicks[gesture.index].voteData.totalVotes += 1
-                        voteLabel.text = String(self.clubSongPicks[gesture.index].voteData.totalVotes ?? 0)
+                        self.updateVoteLable(index: gesture.index, cell: nil)
                         cell.downVote_outlet.image = UIImage(named: "ArrowGreyDown")
                         self.postVote(gesture: gesture, up: 1, comment: "", callback: {(response) -> Void in
                             if (response == "Success") {
                                 self.clubSongPicks[gesture.index].voteData.totalVotes += 1
-                                voteLabel.text = String(self.clubSongPicks[gesture.index].voteData.totalVotes ?? 0)
+                                self.updateVoteLable(index: gesture.index, cell: nil)
                                 cell.upVote_outlet.image = UIImage(named: "ArrowGreen")
                             }
                         })
@@ -206,7 +204,7 @@ class PicksScreenSongMain: UIViewController, UITableViewDelegate {
                 self.postVote(gesture: gesture, up: 1, comment: "", callback: {(response) -> Void in
                     if (response == "Success") {
                         self.clubSongPicks[gesture.index].voteData.totalVotes += 1
-                        voteLabel.text = String(self.clubSongPicks[gesture.index].voteData.totalVotes ?? 0)
+                        self.updateVoteLable(index: gesture.index, cell: nil)
                         cell.upVote_outlet.image = UIImage(named: "ArrowGreen")
                     }
                 })
@@ -223,7 +221,6 @@ class PicksScreenSongMain: UIViewController, UITableViewDelegate {
             let cell = clubSongCells[gesture.index]
             let imageDataUp = cell.upVote_outlet.image?.pngData()
             let imageDataDown = cell.downVote_outlet.image?.pngData()
-            let voteLabel = cell.viewWithTag(4) as! UILabel
             
             // up arrow green and down arrow red should never occur, throw error
             if UIImage(named: "ArrowGreen")?.pngData() == imageDataUp && UIImage(named: "ArrowRed")?.pngData() == imageDataDown {
@@ -233,12 +230,12 @@ class PicksScreenSongMain: UIViewController, UITableViewDelegate {
                 self.deleteVote(gesture: gesture, callback: { (response) -> Void in
                     if (response == "Success") {
                         self.clubSongPicks[gesture.index].voteData.totalVotes -= 1
-                        voteLabel.text = String(self.clubSongPicks[gesture.index].voteData.totalVotes ?? 0)
+                        self.updateVoteLable(index: gesture.index, cell: nil)
                         cell.upVote_outlet.image = UIImage(named: "ArrowGreyUp")
                         self.postVote(gesture: gesture, up: 0, comment: "", callback: {(response) -> Void in
                             if (response == "Success") {
                                 self.clubSongPicks[gesture.index].voteData.totalVotes -= 1
-                                voteLabel.text = String(self.clubSongPicks[gesture.index].voteData.totalVotes ?? 0)
+                                self.updateVoteLable(index: gesture.index, cell: nil)
                                 cell.downVote_outlet.image = UIImage(named: "ArrowRed")
                             }
                         })
@@ -249,7 +246,7 @@ class PicksScreenSongMain: UIViewController, UITableViewDelegate {
                 self.deleteVote(gesture: gesture, callback: { (response) -> Void in
                     if (response == "Success") {
                         self.clubSongPicks[gesture.index].voteData.totalVotes += 1
-                        voteLabel.text = String(self.clubSongPicks[gesture.index].voteData.totalVotes ?? 0)
+                        self.updateVoteLable(index: gesture.index, cell: nil)
                         cell.downVote_outlet.image = UIImage(named: "ArrowGreyDown")
                     }
                 })
@@ -258,7 +255,7 @@ class PicksScreenSongMain: UIViewController, UITableViewDelegate {
                 self.postVote(gesture: gesture, up: 0, comment: "", callback: {(response) -> Void in
                     if (response == "Success") {
                         self.clubSongPicks[gesture.index].voteData.totalVotes -= 1
-                        voteLabel.text = String(self.clubSongPicks[gesture.index].voteData.totalVotes ?? 0)
+                        self.updateVoteLable(index: gesture.index, cell: nil)
                         cell.downVote_outlet.image = UIImage(named: "ArrowRed")
                     }
                 })
@@ -319,6 +316,27 @@ class PicksScreenSongMain: UIViewController, UITableViewDelegate {
             actionTitle: action)
         self.present(alert, animated: true, completion: nil)
     }
+    
+    // updates the vote label at this index based on it's vote count or the specified cell
+    func updateVoteLable(index: Int, cell: SongCell?) {
+        let voteLabel: UILabel
+        let votes: Int
+        if (cell == nil) {
+            voteLabel = self.clubSongCells[index].viewWithTag(4) as! UILabel
+            votes = self.clubSongPicks[index].voteData.totalVotes ?? 0
+        } else {
+            voteLabel = cell?.viewWithTag(4) as! UILabel
+            votes = self.userSongPicks[index].voteData.totalVotes ?? 0
+        }
+        voteLabel.text = String(abs(votes))
+        if votes > 0 {
+            voteLabel.textColor = UIColor(red: 0.2, green: 0.7, blue: 0.2, alpha: 1.0)
+        } else if votes < 0 {
+            voteLabel.textColor = UIColor.red
+        } else {
+            voteLabel.textColor = UIColor.gray
+        }
+    }
 }
 
 
@@ -353,12 +371,12 @@ extension PicksScreenSongMain: UITableViewDataSource {
             let mainImageView = cell.viewWithTag(2) as! UIImageView
             mainImageView.image = userSongPicks[indexPath.row].itemData.image
             // sets the vote label
-            let voteLabel = cell.viewWithTag(4) as! UILabel
-            voteLabel.text = String(userSongPicks[indexPath.row].voteData.totalVotes ?? 0)
-            
+            self.updateVoteLable(index: indexPath.row, cell: cell)
+
             return cell
         } else if (tableView.restorationIdentifier == "ClubSongPicksTable") {
             let cell = tableView.dequeueReusableCell(withIdentifier: "clubSongsCell") as! SongCell
+            self.clubSongCells[indexPath.row] = cell
             //sets the label
             let mainLabel = cell.viewWithTag(1) as! UILabel
             mainLabel.text = clubSongPicks[indexPath.row].itemData.name
@@ -369,8 +387,7 @@ extension PicksScreenSongMain: UITableViewDataSource {
             let nameLabel = cell.viewWithTag(3) as! UILabel
             nameLabel.text = clubSongPicks[indexPath.row].userData.user_name
             // sets the vote label
-            let voteLabel = cell.viewWithTag(4) as! UILabel
-            voteLabel.text = String(clubSongPicks[indexPath.row].voteData.totalVotes ?? 0)
+            self.updateVoteLable(index: indexPath.row, cell: nil)
             
             // creates up vote image gesture recognizers
             let tapGestureUp = VoteTapGesture(target: self, action: #selector(PicksScreenSongMain.upVote(gesture:)))
@@ -384,8 +401,7 @@ extension PicksScreenSongMain: UITableViewDataSource {
             cell.downVote_outlet.addGestureRecognizer(tapGestureDown)
             cell.downVote_outlet.isUserInteractionEnabled = true
             
-            // sets the club song cell at this index and parses the vote data
-            self.clubSongCells[indexPath.row] = cell
+            // parses the vote data of this cell
             self.parseVoteDataAt(index: indexPath.row)
             
             return cell
@@ -424,7 +440,6 @@ extension PicksScreenSongMain: UITableViewDataSource {
 class SongCell: UITableViewCell {
     @IBOutlet weak var upVote_outlet: UIImageView!
     @IBOutlet weak var downVote_outlet: UIImageView!
-    
 }
 
 // custom tap gesture wtih the index of the table column

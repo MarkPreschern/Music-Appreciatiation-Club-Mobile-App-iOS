@@ -111,7 +111,6 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
                         // reloads table view data and scrolls to top of table view
                         DispatchQueue.main.sync {
                             self.tableView.reloadData()
-                            self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
                             completion("Complete")
                         }
                     }

@@ -72,7 +72,6 @@ class AlbumView: UIViewController, UITableViewDelegate {
                 // reloads table view data and scrolls to top of table view
                 DispatchQueue.main.sync {
                     self.tableView_outlet.reloadData()
-                    self.tableView_outlet.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
                     completion("Complete")
                 }
             }

@@ -8,20 +8,6 @@ exports.handler = async (event) => {
     // prints the event
     console.log('\nEvent: ' + JSON.stringify(event, null, 2) + "\n");
 
-    // ends MySQL connection when the application terminates
-    function exitHandler(options, err) {
-        con.end();
-        if (options.cleanup)
-            console.log('clean');
-        if (err)
-            console.log(err.stack);
-        if (options.exit)
-            process.exit();
-    }
-
-    //executed when the app is closing
-    process.on('exit', exitHandler.bind(null, {cleanup: true}));
-
     let con;
     // creates database connection, authorizes the request, and executes the specified request respectively
     // response is of the form if successful:
@@ -68,8 +54,10 @@ exports.handler = async (event) => {
             reject(error);
         }
     }).then(data => {
+        con.end();
         return jsonFormat(data);
     }).catch(error => {
+        con.end();
         return jsonFormat(createErrorMessage("404", "Server-side error", "Unknown exception occurred", error))
     });
 };
