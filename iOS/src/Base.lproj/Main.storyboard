@@ -13,7 +13,7 @@
         <!--Start Screen Main-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController storyboardIdentifier="StartScreenID" id="BYZ-38-t0r" customClass="StartScreenMain" customModule="M_A_C_" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="StartScreenID" id="BYZ-38-t0r" customClass="StartScreenMain" customModule="MAC" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -25,7 +25,7 @@
                             <view contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="wCK-nW-Gu9">
                                 <rect key="frame" x="35" y="211.66666666666663" width="305" height="399"/>
                                 <subviews>
-                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="bottom" borderStyle="line" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="PyS-qa-YZl" customClass="TextFieldCredentials" customModule="M_A_C_" customModuleProvider="target">
+                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="bottom" borderStyle="line" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="PyS-qa-YZl" customClass="TextFieldCredentials" customModule="MAC" customModuleProvider="target">
                                         <rect key="frame" x="18" y="141" width="268" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="20"/>
@@ -38,7 +38,7 @@
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="bottom" borderStyle="line" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="G28-ks-U94" customClass="TextFieldCredentials" customModule="M_A_C_" customModuleProvider="target">
+                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="bottom" borderStyle="line" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="G28-ks-U94" customClass="TextFieldCredentials" customModule="MAC" customModuleProvider="target">
                                         <rect key="frame" x="18" y="208" width="268" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="20"/>
@@ -112,7 +112,7 @@
         <!--News Screen Main-->
         <scene sceneID="jhB-6i-WYZ">
             <objects>
-                <viewController restorationIdentifier="NewsScreenMain" storyboardIdentifier="NewsScreenMain" id="mFt-ek-JDN" customClass="NewsScreenMain" customModule="M_A_C_" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController restorationIdentifier="NewsScreenMain" storyboardIdentifier="NewsScreenMain" id="mFt-ek-JDN" customClass="NewsScreenMain" customModule="MAC" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="KPm-ua-g9P">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -205,7 +205,7 @@
         <!--Profile Screen Main-->
         <scene sceneID="FLG-JX-viD">
             <objects>
-                <viewController id="ggj-w3-doe" customClass="ProfileScreenMain" customModule="M_A_C_" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="ggj-w3-doe" customClass="ProfileScreenMain" customModule="MAC" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Zph-Vx-aRg">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -316,7 +316,7 @@
         <!--Picks Screen Song Main-->
         <scene sceneID="Tjv-p7-7ny">
             <objects>
-                <viewController storyboardIdentifier="picksScreenSongID" id="lxe-gg-s9f" customClass="PicksScreenSongMain" customModule="M_A_C_" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="picksScreenSongID" id="lxe-gg-s9f" customClass="PicksScreenSongMain" customModule="MAC" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="EQM-LM-Au8">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -416,7 +416,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="mySongsCell" rowHeight="96" id="mKz-cI-70s" customClass="SongCell" customModule="M_A_C_" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="mySongsCell" rowHeight="96" id="mKz-cI-70s" customClass="SongCell" customModule="MAC" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="96"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="mKz-cI-70s" id="Xee-EL-FQZ">
@@ -476,7 +476,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="clubSongsCell" rowHeight="96" id="b9e-Ju-q70" customClass="SongCell" customModule="M_A_C_" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="clubSongsCell" rowHeight="96" id="b9e-Ju-q70" customClass="SongCell" customModule="MAC" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="96"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="b9e-Ju-q70" id="eiI-cG-asK">
@@ -489,22 +489,14 @@
                                                         <constraint firstAttribute="width" secondItem="I8S-Lk-VKK" secondAttribute="height" multiplier="1:1" id="h8H-xg-doA"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hNv-d8-hXe">
-                                                    <rect key="frame" x="98" y="37.333333333333329" width="220" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" tag="4" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pVa-iX-mML">
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="4" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pVa-iX-mML">
                                                     <rect key="frame" x="328" y="36" width="32" height="25"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iVW-3y-q8q">
-                                                    <rect key="frame" x="98" y="57" width="220" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iVW-3y-q8q">
+                                                    <rect key="frame" x="97" y="57" width="222" height="29"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
@@ -517,6 +509,12 @@
                                                     <rect key="frame" x="332" y="60" width="24" height="26"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hNv-d8-hXe">
+                                                    <rect key="frame" x="97" y="17" width="220" height="38"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="I8S-Lk-VKK" secondAttribute="bottom" constant="9.6666666666666714" id="2J5-53-aLl"/>
@@ -524,7 +522,15 @@
                                                 <constraint firstItem="I8S-Lk-VKK" firstAttribute="top" secondItem="eiI-cG-asK" secondAttribute="top" constant="11" id="Ggo-sO-EOM"/>
                                                 <constraint firstAttribute="width" secondItem="I8S-Lk-VKK" secondAttribute="height" multiplier="5:1" id="KAC-9O-B84"/>
                                                 <constraint firstItem="hNv-d8-hXe" firstAttribute="leading" secondItem="I8S-Lk-VKK" secondAttribute="trailing" constant="8" id="KLe-Ph-l41"/>
+                                                <constraint firstItem="pVa-iX-mML" firstAttribute="width" secondItem="eiI-cG-asK" secondAttribute="height" multiplier="32:95" id="KVT-cN-UEc"/>
+                                                <constraint firstItem="iVW-3y-q8q" firstAttribute="width" secondItem="eiI-cG-asK" secondAttribute="height" multiplier="44:19" id="OF8-JP-onX"/>
+                                                <constraint firstItem="iVW-3y-q8q" firstAttribute="top" secondItem="hNv-d8-hXe" secondAttribute="bottom" constant="-1.3333333333333144" id="W8W-4a-2hi"/>
                                                 <constraint firstItem="I8S-Lk-VKK" firstAttribute="leading" secondItem="eiI-cG-asK" secondAttribute="leading" constant="15" id="Ye9-97-gyP"/>
+                                                <constraint firstItem="iVW-3y-q8q" firstAttribute="leading" secondItem="I8S-Lk-VKK" secondAttribute="trailing" constant="8" id="bYJ-ZW-Bbn"/>
+                                                <constraint firstAttribute="bottom" secondItem="iVW-3y-q8q" secondAttribute="bottom" constant="22.000000000000014" id="fOG-Nf-uCn"/>
+                                                <constraint firstItem="pVa-iX-mML" firstAttribute="centerY" secondItem="eiI-cG-asK" secondAttribute="centerY" id="jUu-Gt-E8J"/>
+                                                <constraint firstItem="hNv-d8-hXe" firstAttribute="width" secondItem="eiI-cG-asK" secondAttribute="height" multiplier="44:19" id="t1P-Sm-NFz"/>
+                                                <constraint firstItem="pVa-iX-mML" firstAttribute="leading" secondItem="hNv-d8-hXe" secondAttribute="trailing" constant="10" id="uJJ-66-Tcp"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <gestureRecognizers/>
@@ -572,7 +578,7 @@
         <!--Search Screen Main-->
         <scene sceneID="xET-mQ-jhY">
             <objects>
-                <viewController storyboardIdentifier="searchScreenID" id="hAZ-Lh-0mV" customClass="SearchScreenMain" customModule="M_A_C_" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="searchScreenID" id="hAZ-Lh-0mV" customClass="SearchScreenMain" customModule="MAC" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="PeO-rn-Ulp">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -686,7 +692,7 @@
                                 </prototypes>
                                 <sections/>
                             </tableView>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="bottom" borderStyle="line" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="2O9-Oe-1uY" customClass="SearchTextBox" customModule="M_A_C_" customModuleProvider="target">
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="bottom" borderStyle="line" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="2O9-Oe-1uY" customClass="SearchTextBox" customModule="MAC" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="44" width="379" height="68"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -711,7 +717,7 @@
         <!--Song View-->
         <scene sceneID="sF3-p3-h4w">
             <objects>
-                <viewController storyboardIdentifier="songViewID" id="ff8-at-suJ" customClass="SongView" customModule="M_A_C_" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="songViewID" id="ff8-at-suJ" customClass="SongView" customModule="MAC" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="wzk-8V-Njx">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -799,7 +805,7 @@
         <!--Album View-->
         <scene sceneID="OKk-3D-Y6q">
             <objects>
-                <viewController storyboardIdentifier="albumViewID" id="lIm-Tz-PeR" customClass="AlbumView" customModule="M_A_C_" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="albumViewID" id="lIm-Tz-PeR" customClass="AlbumView" customModule="MAC" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="CSd-Ni-tzz">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -912,7 +918,7 @@
         <!--Picks Screen Album Main-->
         <scene sceneID="CXh-Ff-Wqv">
             <objects>
-                <viewController storyboardIdentifier="picksScreenAlbumID" id="HPl-qA-wtO" customClass="PicksScreenAlbumMain" customModule="M_A_C_" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="picksScreenAlbumID" id="HPl-qA-wtO" customClass="PicksScreenAlbumMain" customModule="MAC" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gBT-HA-we2">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1181,7 +1187,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="QKl-cU-Ibm"/>
-        <segue reference="8cl-Rs-XGG"/>
+        <segue reference="FRC-yp-F3f"/>
         <segue reference="dQu-lE-dEe"/>
         <segue reference="VX8-Wf-1eA"/>
     </inferredMetricsTieBreakers>

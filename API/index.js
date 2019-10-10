@@ -76,10 +76,6 @@ exports.handler = async (event) => {
 
 // creates an instance of the database and makes a connection to it
 function establishDatabaseConnection(callbackLocal) {
-    // prints the event input
-
-    //for remote use
-
     // creates mysql connection using environment variables
     /*const con = MySQL.createConnection({
         "host": process.env.host,
@@ -89,7 +85,6 @@ function establishDatabaseConnection(callbackLocal) {
     });*/
 
     // for local use
-
     // creates mysql connection using environment variables
     const json = require('/Users/markpreschern/Documents/env.json');
     const con = MySQL.createConnection({
@@ -509,6 +504,8 @@ function postVote(con, event, callback) {
         return duplicatePick();
     }).then(function() {
         return addVote()
+    }).then(function() {
+        return getVoteID();
     }).catch(error => {
         return error;
     }));
@@ -572,13 +569,39 @@ function postVote(con, event, callback) {
                 if (error) {
                     reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
                 } else {
-                    resolve({
-                        "statusCode": "200",
-                        "message": "Successfully voted"
-                    });
+                    resolve();
                 }
             });
         });
+    }
+
+    // gets the vote id using it's user_id and pick_id as the two form a unique constraint
+    function getVoteID() {
+        return new Promise(async function (resolve, reject) {
+            const structure = 'SELECT vote_id '
+                + 'FROM vote '
+                + 'WHERE vote.user_id = ? AND vote.pick_id = ?';
+            const inserts = [event.headers["user_id"], event.headers["pick_id"]];
+            const sql = MySQL.format(structure, inserts);
+
+            await con.query(sql, function (error, results) {
+                if (error) {
+                    reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+                } else {
+                    if (results.length === 0) {
+                        reject(createErrorMessage("404", "Server-side Error", "Missing vote data", error));
+                    } else if (results.length > 1) {
+                        reject(createErrorMessage("404", "Server-side Error", "Invalid vote data, duplicate items", error));
+                    } else {
+                        resolve({
+                            "statusCode": "200",
+                            "message": "Successfully voted",
+                            "vote_id": results[0].vote_id
+                        });
+                    }
+                }
+            });
+        })
     }
 }
 
