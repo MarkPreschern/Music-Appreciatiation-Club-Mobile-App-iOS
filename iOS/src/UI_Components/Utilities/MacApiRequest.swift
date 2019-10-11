@@ -49,6 +49,7 @@ extension UIViewController {
                         message: "Error occured during request",
                         actionTitle: "Try Again")
                     self.present(alert, animated: true, completion: nil)
+                    callback(["statusCode": "404" as AnyObject])
                 }
             } catch {
                 print("Error info: \(error)")
@@ -57,6 +58,7 @@ extension UIViewController {
                     message: "Error occured during request",
                     actionTitle: "Try Again")
                 self.present(alert, animated: true, completion: nil)
+                callback(["statusCode": "404" as AnyObject])
             }
         })
     }

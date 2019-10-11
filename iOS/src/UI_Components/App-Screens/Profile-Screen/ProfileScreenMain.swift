@@ -11,11 +11,12 @@ import AVFoundation
 
 // Represents the profile screen. Holds information regarding:
 // - User information (name, nuid)
-// - User's top picks (songs & albums)
+// - User's popular top picks (songs & albums)
 class ProfileScreenMain: UIViewController {
     
     @IBOutlet weak var view_outlet: UIView!
     @IBOutlet weak var nameLabel_outlet: UILabel!
+    @IBOutlet weak var roleLabel_outlet: UILabel!
     @IBOutlet weak var logOut_outlet: UIButton!
     
     // initialization on view loading
@@ -26,9 +27,7 @@ class ProfileScreenMain: UIViewController {
         self.view_outlet.layer.borderWidth = 1
         self.view_outlet.layer.borderColor = UIColor(red:222/255, green:225/255, blue:227/255, alpha: 1).cgColor
         
-        // sets name label border and to user name
-        self.nameLabel_outlet.layer.borderWidth = 1
-        self.nameLabel_outlet.layer.borderColor = UIColor(red:222/255, green:225/255, blue:227/255, alpha: 1).cgColor
+        // sets name label to user name
         self.nameLabel_outlet.text = userData?.user_name
         
         // sets log out button border

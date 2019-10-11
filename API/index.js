@@ -598,7 +598,7 @@ function postVote(con, event, callback) {
  */
 
 // deletes the pick if it's the user's pick and the pick's item
-function deletePick(con, event, callback) {
+function postDeletePick(con, event, callback) {
 
     callback(deleteItem().then(function() {
         return deletePick();

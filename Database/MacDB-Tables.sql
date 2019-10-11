@@ -3,7 +3,8 @@
 -- Represents the music appreciate club database schema
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `MacDB` DEFAULT CHARACTER SET utf8 ;
-USE `MacDB` ;
+USE `MacDB`;
+
 
 -- -----------------------------------------------------
 -- Table `MacDB`.`role`
@@ -30,6 +31,19 @@ CREATE TABLE IF NOT EXISTS `MacDB`.`access` (
   UNIQUE INDEX `role_id_UNIQUE` (`access_id` ASC))
 ENGINE = InnoDB;
 
+
+-- -----------------------------------------------------
+-- Table `MacDB`.`image`
+-- Represents a user's image, stored in a separate table for efficiency purposes
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `MacDB`.`image` (
+  `image_id` INT NOT NULL AUTO_INCREMENT,
+  `image_blob` BLOB NOT NULL,
+  PRIMARY KEY (`image_id`),
+  UNIQUE INDEX `image_id_UNIQUE` (`image_id` ASC))
+ENGINE = InnoDB;
+
+
 -- -----------------------------------------------------
 -- Table `MacDB`.`user`
 -- Represents a user in the club
@@ -42,10 +56,12 @@ CREATE TABLE IF NOT EXISTS `MacDB`.`user` (
   `login_date` DATETIME NOT NULL,
   `role_id` INT NOT NULL,
   `access_id` INT NOT NULL,
+  `image_id` INT NULL DEFAULT NULL,
   PRIMARY KEY (`user_id`, `role_id`, `access_id`),
   UNIQUE INDEX `user_id_UNIQUE` (`user_id` ASC),
   INDEX `fk_user_role1_idx` (`role_id` ASC),
   INDEX `fk_user_access1_idx` (`access_id` ASC),
+  INDEX `fk_user_image1_idx` (`image_id` ASC),
   CONSTRAINT `fk_user_role1`
     FOREIGN KEY (`role_id`)
     REFERENCES `MacDB`.`role` (`role_id`)
@@ -55,8 +71,14 @@ CREATE TABLE IF NOT EXISTS `MacDB`.`user` (
     FOREIGN KEY (`access_id`)
     REFERENCES `MacDB`.`access` (`access_id`)
     ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_user_image1`
+    FOREIGN KEY (`image_id`)
+    REFERENCES `MacDB`.`image` (`image_id`)
+    ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
 
 -- -----------------------------------------------------
 -- Table `MacDB`.`item`
@@ -73,6 +95,7 @@ CREATE TABLE IF NOT EXISTS `MacDB`.`item` (
   UNIQUE INDEX `item_id_UNIQUE` (`item_id` ASC))
 ENGINE = InnoDB;
 
+
 -- -----------------------------------------------------
 -- Table `MacDB`.`event`
 -- Represents an event timeframe for favorites to be saved in recent favorites
@@ -86,6 +109,7 @@ CREATE TABLE IF NOT EXISTS `MacDB`.`event` (
   PRIMARY KEY (`event_id`),
   UNIQUE INDEX `favorite_recent_id_UNIQUE` (`event_id` ASC))
 ENGINE = InnoDB;
+
 
 -- -----------------------------------------------------
 -- Table `MacDB`.`pick`
@@ -119,6 +143,7 @@ CREATE TABLE IF NOT EXISTS `MacDB`.`pick` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+
 -- -----------------------------------------------------
 -- Table `MacDB`.`vote`
 -- Represents a user's vote for another user's weekly favorite
@@ -141,6 +166,27 @@ CREATE TABLE IF NOT EXISTS `MacDB`.`vote` (
   CONSTRAINT `fk_vote_pick1`
     FOREIGN KEY (`pick_id`)
     REFERENCES `MacDB`.`pick` (`pick_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `MacDB`.`popular`
+-- Represents a user's popular picks, stored in a separate table for efficiency purposes
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `MacDB`.`popular` (
+  `popular_id` INT NOT NULL AUTO_INCREMENT,
+  `pick_id` INT NOT NULL,
+  `user_id` INT NOT NULL,
+  `item_id` VARCHAR(100) NOT NULL,
+  `event_id` INT NOT NULL,
+  PRIMARY KEY (`popular_id`, `pick_id`, `user_id`, `item_id`, `event_id`),
+  UNIQUE INDEX `popular_id_UNIQUE` (`popular_id` ASC),
+  INDEX `fk_popular_pick1_idx` (`pick_id` ASC, `user_id` ASC, `item_id` ASC, `event_id` ASC),
+  CONSTRAINT `fk_popular_pick1`
+    FOREIGN KEY (`pick_id` , `user_id` , `item_id` , `event_id`)
+    REFERENCES `MacDB`.`pick` (`pick_id` , `user_id` , `item_id` , `event_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
