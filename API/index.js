@@ -114,7 +114,7 @@ function authorizeRequest(event, con, path, callbackLocal) {
         // constructs the sql statement
         const structure = 'SELECT * '
             + 'FROM user '
-            + 'WHERE authorization = ? and user_id = ?';
+            + 'WHERE user.authorization = ? AND user.user_id = ? AND timestampdiff(hour, user.login_date, current_timestamp()) < 1 ';
         const inserts = [event.headers.authorization_token, event.headers.user_id];
         const sql = MySQL.format(structure, inserts);
 

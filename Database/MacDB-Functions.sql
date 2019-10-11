@@ -18,15 +18,83 @@ INSERT INTO role (name, description) VALUES
 -- Triggers
 -- -----------------------------------------------------
 
--- TODO: recent favorites reset, remove authorization token after 1 hour
+-- Updates database when an event ends
+DELIMITER //
+CREATE PROCEDURE endEvent()
+BEGIN
 
--- -----------------------------------------------------
--- Removes a user's authorization token 1 hour after it was requested, for all user's
--- A user's authorization token can be deemed invalid by the API authorization process by
--- checking if the user's login time > 1 hour before the current time
--- create a job for endEvent that is called when the event datetime is past
--- -----------------------------------------------------
+ -- The event ID
+declare ending_event_id INT;
+
+-- Gets the event ID of the recently ended event
+SELECT event_id, MAX(end_date)
+INTO ending_event_id
+FROM event;
+
+-- Temporary table stores the popular picks from this event
+DROP TABLE IF EXISTS event_popular_picks;
+CREATE TABLE IF NOT EXISTS event_popular_picks (
+`pick_id` INT NOT NULL,
+`date_picked` DATETIME NOT NULL,
+`user_id` INT NOT NULL,
+`item_id` VARCHAR(100) NOT NULL,
+`event_id` INT NOT NULL);
+
+-- Inserts the top 5 albums and Songs from this event into the event_popular_picks table
+INSERT INTO event_popular_picks
+SELECT *
+FROM 
+(
+	SELECT pick.*
+    FROM pick
+    JOIN item on pick.item_id like item.item_id
+    WHERE event_id = ending_event_id AND item.is_album = 0
+    ORDER BY totalVotes(pick.pick_id) DESC
+    LIMIT 5
+),
+(
+	SELECT pick.*
+    FROM pick
+	JOIN item on pick.item_id like item.item_id
+	WHERE event_id = ending_event_id AND item.is_album = 1
+    ORDER BY totalVotes(pick.pick_id) DESC
+    LIMIT 5
+);
+
+-- TODO: Insert event_popular_picks into MacDB.popular table
+-- TODO: Delete MacDB.pick data that aren't popular picks
+-- TODO: Delete MacDB.item data that aren't popular pick items
+-- TODO: Delete all votes
+-- TODO: Create a new event
 
 
--- TODO: Create job to reset user.authorization token to null after 1 hour after user.login_date
+DROP TABLE IF EXISTS event_popular_picks;
 
+END //
+DELIMITER ;
+
+
+
+-- Gets the total number of votes for a given pick
+DELIMITER //
+CREATE PROCEDURE totalVotes(input_pick_id INT)
+BEGIN
+
+SELECT
+(
+	SELECT COUNT(vote.vote_id)
+	FROM vote 
+	JOIN pick on vote.pick_id = pick.pick_id
+	WHERE vote.up = 1 and vote.pick_id = input_pick_id
+)
+-
+(
+	SELECT COUNT(vote.vote_id)
+	FROM vote 
+	JOIN pick on vote.pick_id = pick.pick_id
+	WHERE vote.up = 0 and vote.pick_id = input_pick_id
+);
+
+END //
+DELIMITER ;
+ 

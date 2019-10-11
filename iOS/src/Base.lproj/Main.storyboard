@@ -1110,7 +1110,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="myAlbumsCell" rowHeight="96" id="3kt-Jn-MRs">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="myAlbumsCell" rowHeight="96" id="3kt-Jn-MRs" customClass="AlbumCell" customModule="MAC" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="96"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="3kt-Jn-MRs" id="bfp-wa-2dT">
@@ -1129,8 +1129,8 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" tag="4" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bmb-Te-H16">
-                                                    <rect key="frame" x="327.66666666666669" y="36" width="32.333333333333314" height="25"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="4" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bmb-Te-H16">
+                                                    <rect key="frame" x="327.66666666666669" y="38" width="32.333333333333314" height="19.666666666666671"/>
                                                     <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -1138,6 +1138,7 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="6ka-KX-Dtz" firstAttribute="top" secondItem="bfp-wa-2dT" secondAttribute="top" constant="11" id="HxD-Kj-Ve0"/>
+                                                <constraint firstItem="bmb-Te-H16" firstAttribute="centerY" secondItem="bfp-wa-2dT" secondAttribute="centerY" id="Ka9-Zw-haC"/>
                                                 <constraint firstItem="hdx-1x-TZ2" firstAttribute="centerY" secondItem="bfp-wa-2dT" secondAttribute="centerY" id="WYr-s7-zqM"/>
                                                 <constraint firstItem="6ka-KX-Dtz" firstAttribute="leading" secondItem="bfp-wa-2dT" secondAttribute="leading" constant="15" id="XQI-Jp-eS8"/>
                                                 <constraint firstItem="bmb-Te-H16" firstAttribute="width" secondItem="bfp-wa-2dT" secondAttribute="height" multiplier="32:95" id="YCZ-1Z-FkD"/>
@@ -1305,9 +1306,9 @@
         <image name="uncheck-mark-image" width="137.5" height="91.5"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="DbS-FS-GeG"/>
-        <segue reference="kWr-4v-gEE"/>
-        <segue reference="dQu-lE-dEe"/>
-        <segue reference="VEZ-L3-ekw"/>
+        <segue reference="vj4-4g-HNT"/>
+        <segue reference="8cl-Rs-XGG"/>
+        <segue reference="bN8-zY-ePZ"/>
+        <segue reference="kZf-nR-pmR"/>
     </inferredMetricsTieBreakers>
 </document>
