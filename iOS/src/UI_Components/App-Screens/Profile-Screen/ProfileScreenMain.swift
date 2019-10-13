@@ -17,6 +17,9 @@ class ProfileScreenMain: UIViewController {
     @IBOutlet weak var view_outlet: UIView!
     @IBOutlet weak var nameLabel_outlet: UILabel!
     @IBOutlet weak var roleLabel_outlet: UILabel!
+    @IBOutlet weak var userImage_outlet: UIImageView!
+    @IBOutlet weak var settings_outlet: UIImageView!
+    @IBOutlet weak var members_outlet: UIImageView!
     @IBOutlet weak var logOut_outlet: UIButton!
     
     // initialization on view loading

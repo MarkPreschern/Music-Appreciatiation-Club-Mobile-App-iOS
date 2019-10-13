@@ -15,7 +15,7 @@ INSERT INTO role (name, description) VALUES
 ('Member', 'Member of the club');
 
 -- -----------------------------------------------------
--- Triggers
+-- Functions and Stored Procedures
 -- -----------------------------------------------------
 
 -- Updates database when an event ends
@@ -27,9 +27,11 @@ BEGIN
 declare ending_event_id INT;
 
 -- Gets the event ID of the recently ended event
-SELECT event_id, MAX(end_date)
+SELECT event_id
 INTO ending_event_id
-FROM event;
+FROM event
+ORDER BY end_date DESC
+LIMIT 1;
 
 -- Temporary table stores the popular picks from this event
 DROP TABLE IF EXISTS event_popular_picks;
@@ -45,56 +47,84 @@ INSERT INTO event_popular_picks
 SELECT *
 FROM 
 (
-	SELECT pick.*
-    FROM pick
-    JOIN item on pick.item_id like item.item_id
-    WHERE event_id = ending_event_id AND item.is_album = 0
-    ORDER BY totalVotes(pick.pick_id) DESC
+	SELECT p1.*
+    FROM pick as p1
+    JOIN item on p1.item_id like item.item_id
+    WHERE p1.event_id = ending_event_id AND item.is_album = 0
+    ORDER BY totalVotes(p1.pick_id) DESC
     LIMIT 5
-),
+) as songs,
 (
-	SELECT pick.*
-    FROM pick
-	JOIN item on pick.item_id like item.item_id
-	WHERE event_id = ending_event_id AND item.is_album = 1
-    ORDER BY totalVotes(pick.pick_id) DESC
+	SELECT p2.*
+    FROM pick as p2
+	JOIN item on p2.item_id like item.item_id
+	WHERE p2.event_id = ending_event_id AND item.is_album = 1
+    ORDER BY totalVotes(p2.pick_id) DESC
     LIMIT 5
+) as albums;
+
+-- Inserts event_popular_picks into MacDB.popular table
+INSERT INTO popular (pick_id, user_id, item_id, event_id)
+SELECT pep.pick_id, pep.user_id, pep.item_id, pep.event_id
+FROM popular_event_picks pep;
+
+-- Deletes MacDB.pick data that aren't popular picks
+DELETE FROM pick
+WHERE pick.pick_id NOT IN 
+(
+	SELECT pick_id
+    FROM event_popular_picks
 );
 
--- TODO: Insert event_popular_picks into MacDB.popular table
--- TODO: Delete MacDB.pick data that aren't popular picks
--- TODO: Delete MacDB.item data that aren't popular pick items
--- TODO: Delete all votes
--- TODO: Create a new event
+-- Deletes MacDB.item data that aren't popular pick items
+DELETE FROM item
+WHERE item.item_id NOT IN
+(
+	SELECT item_id
+    FROM event_popular_picks
+);
 
+-- Deletes all votes
+DELETE FROM vote;
 
+-- Creates a new event
+INSERT INTO event (name, description, start_date, end_date) VALUES
+('Weekly Event', 'The Music Appreciation Club\'s weekly event', current_timestamp(), timestamp(date_add(curdate(), INTERVAL 1 WEEK), '23:59:59'));
+
+-- Drops the temporary table
 DROP TABLE IF EXISTS event_popular_picks;
 
 END //
 DELIMITER ;
 
-
+call endEvent();
 
 -- Gets the total number of votes for a given pick
 DELIMITER //
-CREATE PROCEDURE totalVotes(input_pick_id INT)
+CREATE FUNCTION totalVotes(input_pick_id INT)
+RETURNS INT
+READS SQL DATA
+DETERMINISTIC
 BEGIN
+
+DECLARE count int;
 
 SELECT
 (
 	SELECT COUNT(vote.vote_id)
-	FROM vote 
+	FROM vote
 	JOIN pick on vote.pick_id = pick.pick_id
 	WHERE vote.up = 1 and vote.pick_id = input_pick_id
 )
 -
 (
 	SELECT COUNT(vote.vote_id)
-	FROM vote 
+	FROM vote
 	JOIN pick on vote.pick_id = pick.pick_id
 	WHERE vote.up = 0 and vote.pick_id = input_pick_id
-);
+)
+INTO count;
 
+RETURN count;
 END //
 DELIMITER ;
- 

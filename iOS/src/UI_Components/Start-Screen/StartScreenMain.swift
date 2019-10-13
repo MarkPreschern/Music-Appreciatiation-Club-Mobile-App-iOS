@@ -11,12 +11,21 @@ import Alamofire
 
 // Represents user data
 struct UserData {
+    // user specific data
     let user_id : Int? // user's id
     let user_name : String? // user's name
     let user_nuid : String? // user's nuid
     let authorization_token: String? // user's authorization token
     let role_id: Int? // user's role id
     let access_id: Int? //user access id
+    
+    // user role data
+    let role_name: String?
+    let role_description: String?
+    
+    // user access data
+    let access_name: String?
+    let access_destription: String?
 }
 
 // represents this user
@@ -68,17 +77,20 @@ class StartScreenMain: UIViewController, UITextFieldDelegate {
         let user_name = NSKeyedUnarchiver.unarchiveObject(with: nameData ?? Data())
         let user_nuid = NSKeyedUnarchiver.unarchiveObject(with: nuidData ?? Data())
         
-        self.requestAuthorization(loginRequest: false,
-                                  name: user_name as? String,
-                                  nuid: user_nuid as? String,
-                                  callback: { response -> Void in
-                                    if (response == "Success") {
-                                        let nextVC = self.storyboard!.instantiateViewController(withIdentifier: "NewsScreenMain")
-                                        self.present(nextVC, animated:true, completion: nil)
-                                        self.removeSpinner()
-                                    } else if (response == "Failure"){
-                                        self.removeSpinner()
-                                    }
+        self.requestAuthorization(loginRequest: false, name: user_name as? String, nuid: user_nuid as? String, callback: { response -> Void in
+            if (response == "Success") {
+                self.retrieveUserData(callback: { response2 -> Void in
+                    if (response2 == "Success") {
+                        self.removeSpinner()
+                        let nextVC = self.storyboard!.instantiateViewController(withIdentifier: "NewsScreenMain")
+                        self.present(nextVC, animated:true, completion: nil)
+                    } else if (response2 == "Failure") {
+                        self.removeSpinner();
+                    }
+                })
+            } else if (response == "Failure"){
+                self.removeSpinner()
+            }
         })
     }
     
@@ -105,17 +117,20 @@ class StartScreenMain: UIViewController, UITextFieldDelegate {
     @IBAction func loginButtonClicked(_ sender: UIButton) {
         if (sender.restorationIdentifier == "LoginToNewsButton") {
             self.showSpinner(onView: self.view)
-            self.requestAuthorization(loginRequest: true,
-                                      name: self.name_outlet.text ?? "",
-                                      nuid: self.nuid_outlet.text ?? "",
-                                      callback: { response -> Void in
-                                        if (response == "Success") {
-                                            self.removeSpinner()
-                                            let nextVC = self.storyboard!.instantiateViewController(withIdentifier: "NewsScreenMain")
-                                            self.present(nextVC, animated:true, completion: nil)
-                                        } else if (response == "Failure") {
-                                            self.removeSpinner()
-                                        }
+            self.requestAuthorization(loginRequest: true, name: self.name_outlet.text ?? "", nuid: self.nuid_outlet.text ?? "", callback: { response -> Void in
+                if (response == "Success") {
+                    self.retrieveUserData(callback: { response2 -> Void in
+                        if (response2 == "Success") {
+                            self.removeSpinner()
+                            let nextVC = self.storyboard!.instantiateViewController(withIdentifier: "NewsScreenMain")
+                            self.present(nextVC, animated:true, completion: nil)
+                        } else if (response2 == "Failure") {
+                            self.removeSpinner();
+                        }
+                    })
+                } else if (response == "Failure") {
+                    self.removeSpinner()
+                }
             })
         } else {
             let alert = createAlert(
@@ -151,7 +166,11 @@ class StartScreenMain: UIViewController, UITextFieldDelegate {
                             user_nuid: user["nuid"] as? String,
                             authorization_token: user["authorization"] as? String,
                             role_id: user["role_id"] as? Int,
-                            access_id: user["access_id"] as? Int)
+                            access_id: user["access_id"] as? Int,
+                            role_name: nil,
+                            role_description: nil,
+                            access_name: nil,
+                            access_destription: nil)
                         if (self.isChecked) {
                             let nameData = NSKeyedArchiver.archivedData(withRootObject: name ?? "")
                             let nuidData = NSKeyedArchiver.archivedData(withRootObject: nuid ?? "")
@@ -205,5 +224,12 @@ class StartScreenMain: UIViewController, UITextFieldDelegate {
                 
             }
         })
+    }
+    
+    // Gets the user's specific role and access data
+    func retrieveUserData(callback: @escaping (String) -> Void) {
+        //TODO: send 2 MAC API Requests, update API to handle requests
+        callback("Success")
+        callback("Failure")
     }
 }
