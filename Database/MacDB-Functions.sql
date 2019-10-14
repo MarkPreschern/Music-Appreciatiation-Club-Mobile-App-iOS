@@ -5,7 +5,7 @@ USE MacDB;
 -- -----------------------------------------------------
 INSERT INTO access (name, description) VALUES
 ('Developer', 'Admin access and can: Add/Remove any users'),
-('Admin', 'Moderator access and can: Add new users with user or moderator access and with any role, can remove users with user and moderator access, can create new roles, can schedule events, can end events'),
+('Admin', 'Moderator access and can: Add new users with user or moderator access and with any role, can remove users with user and moderator access, can create new roles and delete existing roles, can schedule events, can end events'),
 ('Moderator', 'User access and can: Add new users with user access and member role'),
 ('User', 'Can use the application as a normal user');
 
@@ -40,33 +40,35 @@ CREATE TABLE IF NOT EXISTS event_popular_picks (
 `date_picked` DATETIME NOT NULL,
 `user_id` INT NOT NULL,
 `item_id` VARCHAR(100) NOT NULL,
-`event_id` INT NOT NULL);
+`event_id` INT NOT NULL,
+`votes` INT NOT NULL);
 
 -- Inserts the top 5 albums and Songs from this event into the event_popular_picks table
 INSERT INTO event_popular_picks
 SELECT *
 FROM 
 (
-	SELECT p1.*
+	SELECT p1.*, totalVotes(p1.pick_id)
     FROM pick as p1
     JOIN item on p1.item_id like item.item_id
     WHERE p1.event_id = ending_event_id AND item.is_album = 0
     ORDER BY totalVotes(p1.pick_id) DESC
     LIMIT 5
-) as songs,
+) as songs
+UNION
 (
-	SELECT p2.*
-    FROM pick as p2
+	SELECT p2.*, totalVotes(p2.pick_id)
+	FROM pick as p2
 	JOIN item on p2.item_id like item.item_id
 	WHERE p2.event_id = ending_event_id AND item.is_album = 1
-    ORDER BY totalVotes(p2.pick_id) DESC
-    LIMIT 5
-) as albums;
+	ORDER BY totalVotes(p2.pick_id) DESC
+	LIMIT 5
+);
 
 -- Inserts event_popular_picks into MacDB.popular table
-INSERT INTO popular (pick_id, user_id, item_id, event_id)
-SELECT pep.pick_id, pep.user_id, pep.item_id, pep.event_id
-FROM popular_event_picks pep;
+INSERT INTO popular (pick_id, user_id, item_id, event_id, votes)
+SELECT epp.pick_id, epp.user_id, epp.item_id, epp.event_id, epp.votes
+FROM event_popular_picks epp;
 
 -- Deletes MacDB.pick data that aren't popular picks
 DELETE FROM pick
@@ -96,8 +98,6 @@ DROP TABLE IF EXISTS event_popular_picks;
 
 END //
 DELIMITER ;
-
-call endEvent();
 
 -- Gets the total number of votes for a given pick
 DELIMITER //

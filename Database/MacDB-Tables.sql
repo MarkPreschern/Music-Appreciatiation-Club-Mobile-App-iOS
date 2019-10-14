@@ -170,7 +170,6 @@ CREATE TABLE IF NOT EXISTS `MacDB`.`vote` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-
 -- -----------------------------------------------------
 -- Table `MacDB`.`popular`
 -- Represents a user's popular picks, stored in a separate table for efficiency purposes
@@ -181,6 +180,7 @@ CREATE TABLE IF NOT EXISTS `MacDB`.`popular` (
   `user_id` INT NOT NULL,
   `item_id` VARCHAR(100) NOT NULL,
   `event_id` INT NOT NULL,
+  `votes` INT NOT NULL,
   PRIMARY KEY (`popular_id`, `pick_id`, `user_id`, `item_id`, `event_id`),
   UNIQUE INDEX `popular_id_UNIQUE` (`popular_id` ASC),
   INDEX `fk_popular_pick1_idx` (`pick_id` ASC, `user_id` ASC, `item_id` ASC, `event_id` ASC),

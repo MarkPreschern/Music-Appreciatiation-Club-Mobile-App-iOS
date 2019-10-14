@@ -2,7 +2,6 @@
 const MySQL = require('mysql');
 const UUID4 = require('uuid4');
 
-
 // Music Appreciation Club API
 exports.handler = async (event) => {
     // prints the event
@@ -38,9 +37,17 @@ exports.handler = async (event) => {
                         if (response2.statusCode === "200") {
                             console.log("Authorized Request");
 
-                            // executes the user request
-                            executeRequest(con, event, path, function(response3) {
-                                resolve(response3);
+                            getCurrentEventID(con, function (response3) {
+                                if (response3.statusCode === "200") {
+
+                                    let eventID = response3.event_id;
+                                    // executes the user request
+                                    executeRequest(con, eventID, event, path, function(response4) {
+                                        resolve(response4);
+                                    });
+                                } else {
+                                    resolve(response3)
+                                }
                             });
                         } else {
                             resolve(response2);
@@ -135,16 +142,43 @@ function authorizeRequest(event, con, path, callbackLocal) {
     }
 }
 
+// Returns the current event ID
+function getCurrentEventID(con, callback) {
+    const structure = 'SELECT * '
+        + 'FROM event '
+        + 'WHERE ? BETWEEN start_date AND end_date '
+        + 'ORDER BY end_date DESC '
+        + 'LIMIT 1';
+    const inserts = [dateTime()];
+    const sql = MySQL.format(structure, inserts);
+
+    // attempts to insert the authorization token
+    con.query(sql, function (error, results) {
+        if (error) {
+            callback(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+        } else {
+            if (results.length === 0) {
+                callback(createErrorMessage("404", "Server-side Error", "Missing Event Data", error));
+            } else {
+                callback({
+                    "statusCode": "200",
+                    "event_id": results[0]["event_id"]
+                });
+            }
+        }
+    });
+}
+
 // executes the provided event request
 // HTTP Request Format: http://com.mac.api/requestPath/
 // - where 'requestPath' is part of the function call
-function executeRequest(con, event, path, callback) {
+function executeRequest(con, eventID, event, path, callback) {
     const functionName = event.httpMethod.toLowerCase()
         + path.charAt(0).toUpperCase()
         + path.slice(1);
 
     console.log("Evaluating: " + functionName);
-    eval(functionName)(con, event, function(response) {
+    eval(functionName)(con, eventID, event, function(response) {
         callback(response);
     });
 }
@@ -155,11 +189,11 @@ function executeRequest(con, event, path, callback) {
  */
 
 // gets the user's access
-function getAccess(con, event, callback) {
-    const structure = 'SELECT * '
+function getAccess(con, eventID, event, callback) {
+    const structure = 'SELECT access.* '
         + 'FROM access '
-        + 'JOIN user on (access_id) '
-        + 'WHERE user_id = ?';
+        + 'JOIN user ON access.access_id = user.access_id '
+        + 'WHERE user_id = ? ';
     const inserts = [event.headers.user_id];
     const sql = MySQL.format(structure, inserts);
 
@@ -176,14 +210,36 @@ function getAccess(con, event, callback) {
     });
 }
 
+// gets the user's role
+function getRole(con, eventID, event, callback) {
+    const structure = 'SELECT role.* '
+        + 'FROM role '
+        + 'JOIN user ON role.role_id = user.role_id '
+        + 'WHERE user_id = ? ';
+    const inserts = [event.headers.user_id];
+    const sql = MySQL.format(structure, inserts);
+
+    con.query(sql, function (error, results) {
+        if (error) {
+            callback(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+        } else {
+            callback({
+                statusCode: "200",
+                message: "Successfully retrieved user's role",
+                items: results
+            });
+        }
+    });
+}
+
 // gets the user's recent song picks
-function getUserSongPicks(con, event, callback) {
+function getUserSongPicks(con, eventID, event, callback) {
     const structure = 'SELECT item.item_id, item.is_album, item.item_name, item.item_artist, item.item_image_url, item.item_preview_url, pick.pick_id, user.user_id, user.name '
         + 'FROM item '
         + 'JOIN pick ON item.item_id = pick.item_id '
         + 'JOIN user ON pick.user_id = user.user_id '
-        + 'WHERE is_album = 0 and pick.user_id = ? ';
-    const inserts = [event.headers.user_id];
+        + 'WHERE is_album = 0 and pick.user_id = ? and pick.event_id = ? ';
+    const inserts = [event.headers.user_id, eventID];
     const sql = MySQL.format(structure, inserts);
 
     con.query(sql, function (error, results) {
@@ -198,13 +254,13 @@ function getUserSongPicks(con, event, callback) {
 }
 
 // gets the user's recent album picks
-function getUserAlbumPicks(con, event, callback) {
+function getUserAlbumPicks(con, eventID, event, callback) {
     const structure = 'SELECT item.item_id, item.is_album, item.item_name, item.item_artist, item.item_image_url, item.item_preview_url, pick.pick_id, user.user_id, user.name '
         + 'FROM item '
         + 'JOIN pick ON item.item_id = pick.item_id '
         + 'JOIN user ON pick.user_id = user.user_id '
-        + 'WHERE is_album = 1 and pick.user_id = ? ';
-    const inserts = [event.headers.user_id];
+        + 'WHERE is_album = 1 and pick.user_id = ? and pick.event_id = ? ';
+    const inserts = [event.headers.user_id, eventID];
     const sql = MySQL.format(structure, inserts);
 
     con.query(sql, function (error, results) {
@@ -219,12 +275,14 @@ function getUserAlbumPicks(con, event, callback) {
 }
 
 // gets recent song picks
-function getClubSongPicks(con, event, callback) {
-    const sql = 'SELECT item.item_id, item.is_album, item.item_name, item.item_artist, item.item_image_url, item.item_preview_url, pick.pick_id, user.user_id, user.name '
+function getClubSongPicks(con, eventID, event, callback) {
+    const structure = 'SELECT item.item_id, item.is_album, item.item_name, item.item_artist, item.item_image_url, item.item_preview_url, pick.pick_id, user.user_id, user.name '
         + 'FROM item '
         + 'JOIN pick ON item.item_id = pick.item_id '
         + 'JOIN user ON pick.user_id = user.user_id '
-        + 'WHERE is_album = 0';
+        + 'WHERE is_album = 0 and pick.event_id = ? ';
+    const inserts = [eventID];
+    const sql = MySQL.format(structure, inserts);
 
     con.query(sql, function (error, results) {
         if (error) {
@@ -238,12 +296,14 @@ function getClubSongPicks(con, event, callback) {
 }
 
 // gets recent song picks
-function getClubAlbumPicks(con, event, callback) {
-    const sql = 'SELECT item.item_id, item.is_album, item.item_name, item.item_artist, item.item_image_url, item.item_preview_url, pick.pick_id, user.user_id, user.name '
+function getClubAlbumPicks(con, eventID, event, callback) {
+    const structure = 'SELECT item.item_id, item.is_album, item.item_name, item.item_artist, item.item_image_url, item.item_preview_url, pick.pick_id, user.user_id, user.name '
         + 'FROM item '
         + 'JOIN pick ON item.item_id = pick.item_id '
         + 'JOIN user ON pick.user_id = user.user_id '
-        + 'WHERE is_album = 1';
+        + 'WHERE is_album = 1 and pick.event_id = ? ';
+    const inserts = [eventID];
+    const sql = MySQL.format(structure, inserts);
 
     con.query(sql, function (error, results) {
         if (error) {
@@ -256,7 +316,28 @@ function getClubAlbumPicks(con, event, callback) {
     });
 }
 
+// gets the user's popular song and album picks
+function getUserPopularPicks(con, eventID, event, callback) {
+    const structure = 'SELECT item.item_id, item.is_album, item.item_name, item.item_artist, item.item_image_url, item.item_preview_url, popular.popular_id, popular.votes '
+        + 'FROM item '
+        + 'JOIN popular ON item.item_id = popular.item_id '
+        + 'JOIN user ON popular.user_id = user.user_id '
+        + 'WHERE popular.user_id = ? and popular.event_id = ? ';
+    const inserts = [event.headers.user_id, eventID];
+    const sql = MySQL.format(structure, inserts);
 
+    con.query(sql, function (error, results) {
+        if (error) {
+            callback(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+        } else {
+            callback({
+                statusCode: "200",
+                message: "Successfully retrieved user's popular picks",
+                popular_picks: results
+            });
+        }
+    });
+}
 
 
 /*
@@ -265,7 +346,7 @@ function getClubAlbumPicks(con, event, callback) {
 
 // validates that the user with the specified name and nuid exists, and generates an
 // authorization token for the user if so
-function postAuthorization(con, event, callback) {
+function postAuthorization(con, eventID, event, callback) {
 
     // validates the user and updates their validation token
     callback(new Promise(function(resolve, reject) {
@@ -344,14 +425,12 @@ function postAuthorization(con, event, callback) {
 }
 
 // creates the item associated with this pick, and the pick with the newly created item
-function postPick(con, event, callback) {
+function postPick(con, eventID, event, callback) {
 
     callback(picksCount().then(function() {
         return addItem();
     }).then(function() {
-        return getEventID();
-    }).then(eventID => {
-        return addPick(eventID);
+        return addPick();
     }).then(function() {
         return getPickID();
     }).catch(error => {
@@ -398,7 +477,7 @@ function postPick(con, event, callback) {
             con.query(sql, function (error) {
                 if (error) {
                     if (error["code"] === "ER_DUP_ENTRY") { // don't want to allow multiple users to pick the same item
-                        reject(createErrorMessage("404", "Duplicate Entry", "This " + (event.headers["item_is_album"] === "1" ? "album" : "song") + " has already been chosen for this event", error))
+                        reject(createErrorMessage("404", "Duplicate Entry", "This " + (event.headers["item_is_album"] === "1" ? "album" : "song") + " has already been chosen for this event or was popular in a previous event", error))
                     } else {
                         reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
                     }
@@ -436,11 +515,11 @@ function postPick(con, event, callback) {
     }
 
     // adds the pick
-    function addPick(event_id) {
+    function addPick() {
         return new Promise(function (resolve, reject) {
             const structure = 'INSERT INTO pick (date_picked, user_id, item_id, event_id) '
                 + 'VALUES ( ? , ? , ? , ? ) ';
-            const inserts = [dateTime(), event.headers["user_id"], event.headers["item_id"], event_id];
+            const inserts = [dateTime(), event.headers["user_id"], event.headers["item_id"], eventID];
             const sql = MySQL.format(structure, inserts);
 
             // attempts to insert the authorization token
@@ -486,7 +565,7 @@ function postPick(con, event, callback) {
 }
 
 // creates the vote if the user isn't voting for their own pick
-function postVote(con, event, callback) {
+function postVote(con, eventID, event, callback) {
 
     callback(ownPick().then(function() {
         return duplicatePick();
@@ -593,12 +672,42 @@ function postVote(con, event, callback) {
     }
 }
 
+// deletes the role if user's access is high enough
+function postRole(con, eventID, event, callback) {
+    callback(validAccess(con, event).then(function() {
+        return postRole();
+    }).catch(error => {
+        return error;
+    }));
+
+    // delete's the user's pick
+    function postRole() {
+        return new Promise(async function (resolve, reject) {
+            const structure = 'INSERT INTO role (name, description) '
+                + 'VALUES ( ? , ? ) ';
+            const inserts = [event.headers["role_name"], event.headers["role_description"]];
+            const sql = MySQL.format(structure, inserts);
+
+            await con.query(sql, function (error) {
+                if (error) {
+                    reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+                } else {
+                    resolve({
+                        "statusCode": "200",
+                        "message": "Successfully created role"
+                    });
+                }
+            });
+        });
+    }
+}
+
 /*
  ****************** DELETE METHODS (Type is POST) ***************
  */
 
 // deletes the pick if it's the user's pick and the pick's item
-function postDeletePick(con, event, callback) {
+function postDeletePick(con, eventID, event, callback) {
 
     callback(deleteItem().then(function() {
         return deletePick();
@@ -649,7 +758,7 @@ function postDeletePick(con, event, callback) {
 }
 
 // deletes the vote if it's the user's vote
-function postDeleteVote(con, event, callback) {
+function postDeleteVote(con, eventID, event, callback) {
     const structure = 'DELETE FROM vote '
         + 'WHERE vote.vote_id = ? AND vote.user_id = ? ';
     const inserts = [event.headers["vote_id"], event.headers["user_id"]];
@@ -665,6 +774,36 @@ function postDeleteVote(con, event, callback) {
             });
         }
     });
+}
+
+// deletes the role if user's access is high enough
+function postDeleteRole(con, eventID, event, callback) {
+    callback(validAccess(con, event).then(function() {
+        return deleteRole();
+    }).catch(error => {
+        return error;
+    }));
+
+    // delete's the user's pick
+    function deleteRole() {
+        return new Promise(async function (resolve, reject) {
+            const structure = 'DELETE FROM role '
+                + 'WHERE role.role_id = ? ';
+            const inserts = [event.headers["role_id"]];
+            const sql = MySQL.format(structure, inserts);
+
+            await con.query(sql, function (error) {
+                if (error) {
+                    reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+                } else {
+                    resolve({
+                        "statusCode": "200",
+                        "message": "Successfully deleted role"
+                    });
+                }
+            });
+        });
+    }
 }
 
 
@@ -772,5 +911,31 @@ function getPickVotes(pick_id, con) {
         };
     }).catch(error => {
         return error;
+    });
+}
+
+// delete's the user's pick's item
+function validAccess(con, event) {
+    return new Promise(async function (resolve, reject) {
+        const structure = 'SELECT user.* '
+            + 'FROM user '
+            + 'JOIN access ON user.access_id = access.access_id '
+            + 'WHERE user.user_id = ? AND (access.name LIKE \'Admin\' OR access.name LIKE \'Developer\') ';
+        const inserts = [event.headers["user_id"]];
+        const sql = MySQL.format(structure, inserts);
+
+        await con.query(sql, function (error, results) {
+            if (error) {
+                reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+            } else {
+                if (results.length === 0) {
+                    reject(createErrorMessage("404", "Access Error", "Insufficient Access to delete a role", error));
+                } else if (results.length > 1) {
+                    reject(createErrorMessage("404", "Server-side Error", "Invalid access data, duplicate users", error));
+                } else {
+                    resolve();
+                }
+            }
+        });
     });
 }
