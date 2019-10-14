@@ -302,7 +302,7 @@ class PicksScreenAlbumMain: UIViewController, UITableViewDelegate {
     }
     
     // updates the vote label at this index based on it's vote count or the specified cell
-    func updateVoteLable(index: Int, cell: AlbumCell?) {
+    func updateVoteLable(index: Int, cell: UITableViewCell?) {
         let voteLabel: UILabel
         let votes: Int
         if (cell == nil) {
@@ -319,6 +319,14 @@ class PicksScreenAlbumMain: UIViewController, UITableViewDelegate {
             voteLabel.textColor = UIColor.red
         } else {
             voteLabel.textColor = UIColor.gray
+        }
+    }
+    
+    // handles when a user clicks the trash icon, prompting the user to delete the pick
+    @objc func trash(gesture: VoteTapGesture) {
+        if (gesture.view as? UIImageView) != nil {
+            UIAlertController(title: "", message: "", preferredStyle: UIAlertController.Style.alert)
+                .deleteItemAlert(pick: self.userAlbumPicks[gesture.index], type: ItemType.ALBUM, sender: self)
         }
     }
 }
@@ -345,7 +353,7 @@ extension PicksScreenAlbumMain: UITableViewDataSource {
     //updates table view data including the image and label
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if (tableView.restorationIdentifier == "MyAlbumPicksTable") {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "myAlbumsCell") as! AlbumCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "myAlbumsCell") as! UserAlbumCell
             //sets the label
             let mainLabel = cell.viewWithTag(1) as! UILabel
             mainLabel.text = userAlbumPicks[indexPath.row].itemData.name
@@ -354,6 +362,12 @@ extension PicksScreenAlbumMain: UITableViewDataSource {
             mainImageView.image = userAlbumPicks[indexPath.row].itemData.image
             // sets the vote label
             self.updateVoteLable(index: indexPath.row, cell: cell)
+            
+            // creates a trash icon image gesture recognizer
+            let tapGestureTrash = VoteTapGesture(target: self, action: #selector(PicksScreenSongMain.trash(gesture:)))
+            tapGestureTrash.index = indexPath.row
+            cell.trash_outlet.addGestureRecognizer(tapGestureTrash)
+            
             return cell
         } else if (tableView.restorationIdentifier == "ClubAlbumPicksTable") {
             let cell = tableView.dequeueReusableCell(withIdentifier: "clubAlbumsCell") as! AlbumCell
@@ -422,4 +436,10 @@ class AlbumCell: UITableViewCell {
     @IBOutlet weak var upVote_outlet: UIImageView!
     @IBOutlet weak var downVote_outlet: UIImageView!
 }
+
+class UserAlbumCell: UITableViewCell {
+    @IBOutlet weak var trash_outlet: UIImageView!
+}
+
+
 

@@ -18,6 +18,29 @@ INSERT INTO role (name, description) VALUES
 -- Functions and Stored Procedures
 -- -----------------------------------------------------
 
+-- Creates an event schedule that only triggers 
+DROP EVENT IF EXISTS schedule_end_event;
+DELIMITER //
+CREATE EVENT IF NOT EXISTS schedule_end_event
+ON SCHEDULE 
+	EVERY 1 DAY
+    STARTS timestamp(curdate(), '23:00:00')
+DO
+BEGIN
+	DECLARE eventIsEnding INT; -- the number of events that are ending today
+	
+    -- gets the number of events ending today
+    SELECT count(*)
+    INTO eventIsEnding
+    FROM event
+    WHERE DATE(event.end_date) = curdate();
+
+	-- ends the event if applicable
+	IF eventIsEnding = 1 THEN
+		CALL endEvent();
+    END IF;
+END //
+
 -- Updates database when an event ends
 DELIMITER //
 CREATE PROCEDURE endEvent()
@@ -89,9 +112,9 @@ WHERE item.item_id NOT IN
 -- Deletes all votes
 DELETE FROM vote;
 
--- Creates a new event
+-- Creates a new event at 11:00 PM the following week
 INSERT INTO event (name, description, start_date, end_date) VALUES
-('Weekly Event', 'The Music Appreciation Club\'s weekly event', current_timestamp(), timestamp(date_add(curdate(), INTERVAL 1 WEEK), '23:59:59'));
+('Weekly Event', 'The Music Appreciation Club\'s weekly event', current_timestamp(), timestamp(date_add(curdate(), INTERVAL 1 WEEK), '23:00:00'));
 
 -- Drops the temporary table
 DROP TABLE IF EXISTS event_popular_picks;

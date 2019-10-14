@@ -32,6 +32,7 @@
 		A4B59E1A2334F3E8002C3EFA /* ParsePickData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B59E192334F3E8002C3EFA /* ParsePickData.swift */; };
 		A4C884052350B98100BBACD8 /* SettingsScreenMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C884042350B98100BBACD8 /* SettingsScreenMain.swift */; };
 		A4C884072350B9AB00BBACD8 /* MembersScreenMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C884062350B9AB00BBACD8 /* MembersScreenMain.swift */; };
+		A4C884092354E8FC00BBACD8 /* DeleteItemAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C884082354E8FC00BBACD8 /* DeleteItemAlert.swift */; };
 		A4D2AA2322EE5AFE009007B3 /* TextFieldCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D2AA2222EE5AFE009007B3 /* TextFieldCredentials.swift */; };
 		A4D2AA2722EE5B6E009007B3 /* SearchTextBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D2AA2622EE5B6E009007B3 /* SearchTextBox.swift */; };
 		A4D2AA3422F46B19009007B3 /* SongView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D2AA3322F46B19009007B3 /* SongView.swift */; };
@@ -95,6 +96,7 @@
 		A4B59E192334F3E8002C3EFA /* ParsePickData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParsePickData.swift; sourceTree = "<group>"; };
 		A4C884042350B98100BBACD8 /* SettingsScreenMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreenMain.swift; sourceTree = "<group>"; };
 		A4C884062350B9AB00BBACD8 /* MembersScreenMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MembersScreenMain.swift; sourceTree = "<group>"; };
+		A4C884082354E8FC00BBACD8 /* DeleteItemAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteItemAlert.swift; sourceTree = "<group>"; };
 		A4D2AA2222EE5AFE009007B3 /* TextFieldCredentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldCredentials.swift; sourceTree = "<group>"; };
 		A4D2AA2622EE5B6E009007B3 /* SearchTextBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTextBox.swift; sourceTree = "<group>"; };
 		A4D2AA3322F46B19009007B3 /* SongView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongView.swift; sourceTree = "<group>"; };
@@ -134,6 +136,7 @@
 			isa = PBXGroup;
 			children = (
 				A40FA78D230EE6FC00D19537 /* AddItemAlert.swift */,
+				A4C884082354E8FC00BBACD8 /* DeleteItemAlert.swift */,
 				A40FA784230ED43E00D19537 /* AverageColor.swift */,
 				A40FA79123102EFC00D19537 /* FadeInOutAudio.swift */,
 				A40FA788230EDACD00D19537 /* ImageAsColor.swift */,
@@ -551,6 +554,7 @@
 				A46EAB56223A911D00F1B702 /* SearchScreenMain.swift in Sources */,
 				A40FA785230ED43E00D19537 /* AverageColor.swift in Sources */,
 				A4D2AA2722EE5B6E009007B3 /* SearchTextBox.swift in Sources */,
+				A4C884092354E8FC00BBACD8 /* DeleteItemAlert.swift in Sources */,
 				A40FA78E230EE6FC00D19537 /* AddItemAlert.swift in Sources */,
 				A495E30B22300AAA00D8607D /* NewsScreenMain.swift in Sources */,
 				A46EAB54223A910100F1B702 /* PicksScreenSongMain.swift in Sources */,

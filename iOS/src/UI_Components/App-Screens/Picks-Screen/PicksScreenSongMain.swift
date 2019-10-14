@@ -318,7 +318,7 @@ class PicksScreenSongMain: UIViewController, UITableViewDelegate {
     }
     
     // updates the vote label at this index based on it's vote count or the specified cell
-    func updateVoteLable(index: Int, cell: SongCell?) {
+    func updateVoteLable(index: Int, cell: UITableViewCell?) {
         let voteLabel: UILabel
         let votes: Int
         if (cell == nil) {
@@ -337,8 +337,15 @@ class PicksScreenSongMain: UIViewController, UITableViewDelegate {
             voteLabel.textColor = UIColor.gray
         }
     }
+    
+    // handles when a user clicks the trash icon, prompting the user to delete the pick
+    @objc func trash(gesture: VoteTapGesture) {
+        if (gesture.view as? UIImageView) != nil {
+            UIAlertController(title: "", message: "", preferredStyle: UIAlertController.Style.alert)
+                .deleteItemAlert(pick: self.userSongPicks[gesture.index], type: ItemType.SONG, sender: self)
+        }
+    }
 }
-
 
 
 // extension handles table data
@@ -363,7 +370,7 @@ extension PicksScreenSongMain: UITableViewDataSource {
     //updates table view data including the image and label
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if (tableView.restorationIdentifier == "MySongPicksTable") {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "mySongsCell") as! SongCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "mySongsCell") as! UserSongCell
             //sets the label
             let mainLabel = cell.viewWithTag(1) as! UILabel
             mainLabel.text = userSongPicks[indexPath.row].itemData.name
@@ -372,6 +379,11 @@ extension PicksScreenSongMain: UITableViewDataSource {
             mainImageView.image = userSongPicks[indexPath.row].itemData.image
             // sets the vote label
             self.updateVoteLable(index: indexPath.row, cell: cell)
+            
+            // creates a trash icon image gesture recognizer
+            let tapGestureTrash = VoteTapGesture(target: self, action: #selector(PicksScreenSongMain.trash(gesture:)))
+            tapGestureTrash.index = indexPath.row
+            cell.trash_outlet.addGestureRecognizer(tapGestureTrash)
 
             return cell
         } else if (tableView.restorationIdentifier == "ClubSongPicksTable") {
@@ -440,6 +452,11 @@ extension PicksScreenSongMain: UITableViewDataSource {
 class SongCell: UITableViewCell {
     @IBOutlet weak var upVote_outlet: UIImageView!
     @IBOutlet weak var downVote_outlet: UIImageView!
+}
+
+// custom table cell containing trash icon outlet
+class UserSongCell: UITableViewCell {
+    @IBOutlet weak var trash_outlet: UIImageView!
 }
 
 // custom tap gesture wtih the index of the table column

@@ -52,7 +52,11 @@ extension UIViewController {
                                 user_nuid: nil,
                                 authorization_token: nil,
                                 role_id: nil,
-                                access_id: nil))
+                                access_id: nil,
+                                role_name: nil,
+                                role_description: nil,
+                                access_name: nil,
+                                access_destription: nil))
                         picks.append(pick)
                         if (i == items.count - 1) {
                             callback(picks)
