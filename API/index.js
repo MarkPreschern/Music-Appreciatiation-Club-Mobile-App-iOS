@@ -709,20 +709,20 @@ function postRole(con, eventID, event, callback) {
 // deletes the pick if it's the user's pick and the pick's item
 function postDeletePick(con, eventID, event, callback) {
 
-    callback(deleteItem().then(function() {
+    callback(deleteVotes().then(function() {
         return deletePick();
+    }).then(function () {
+        return deleteItem();
     }).catch(error => {
         return error;
     }));
 
-    // delete's the user's pick's item
-    function deleteItem() {
+    // delete's the user's pick's votes
+    function deleteVotes() {
         return new Promise(async function (resolve, reject) {
-            const structure = 'DELETE FROM item '
-                + 'WHERE item.item_id IN (SELECT item_id '
-                +                       '(FROM pick'
-                +                       '(WHERE pick.pick_id = ? AND pick.user_id = ? )';
-            const inserts = [event.headers["pick_id"], event.headers["user_id"]];
+            const structure = 'DELETE FROM vote '
+                + 'WHERE vote.pick_id = ? ';
+            const inserts = [event.headers["pick_id"]];
             const sql = MySQL.format(structure, inserts);
 
             await con.query(sql, function (error) {
@@ -741,6 +741,24 @@ function postDeletePick(con, eventID, event, callback) {
             const structure = 'DELETE FROM pick '
                 + 'WHERE pick.pick_id = ? AND pick.user_id = ? ';
             const inserts = [event.headers["pick_id"], event.headers["user_id"]];
+            const sql = MySQL.format(structure, inserts);
+
+            await con.query(sql, function (error) {
+                if (error) {
+                    reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+                } else {
+                    resolve();
+                }
+            });
+        });
+    }
+
+    // delete's the user's pick's item
+    function deleteItem() {
+        return new Promise(async function (resolve, reject) {
+            const structure = 'DELETE FROM item '
+                + 'WHERE item.item_id = ? ';
+            const inserts = [event.headers["item_id"]];
             const sql = MySQL.format(structure, inserts);
 
             await con.query(sql, function (error) {
@@ -839,7 +857,7 @@ function parsePicksVoteData(is_album, con, results, callback) {
     if (results.length === 0) {
         callback({
             "statusCode": "200",
-            "message": "Successfully retrieved recent album picks",
+            "message": "Successfully retrieved " + (is_album === true ? "album" : "song") + " picks",
             "items": []
         });
     } else {

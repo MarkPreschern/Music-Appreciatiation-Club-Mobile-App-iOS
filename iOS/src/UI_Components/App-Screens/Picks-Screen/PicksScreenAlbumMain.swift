@@ -64,12 +64,14 @@ class PicksScreenAlbumMain: UIViewController, UITableViewDelegate {
         self.clubPicksTable_outlet.dataSource = self
         self.clubPicksTable_outlet.delegate = self
         
-        self.requestUserAndClubAlbumData()
+        self.requestUserAndClubAlbumData(showSpinner: true)
     }
     
     // requests user and club album data from mac api
-    func requestUserAndClubAlbumData() {
-        self.showSpinner(onView: self.view)
+    func requestUserAndClubAlbumData(showSpinner: Bool) {
+        if showSpinner {
+            self.showSpinner(onView: self.view)
+        }
         self.requestUserData(callback: { (response1) -> Void in
             if (response1 == "Error") {
                 self.removeSpinner()
@@ -78,12 +80,8 @@ class PicksScreenAlbumMain: UIViewController, UITableViewDelegate {
                     if (response2 == "Error") {
                         self.removeSpinner()
                     } else if (response2 == "Done") {
-                        if (self.userAlbumPicks.count > 0) {
-                            self.myPicksTable_outlet.reloadData()
-                        }
-                        if (self.clubAlbumPicks.count > 0) {
-                            self.clubPicksTable_outlet.reloadData()
-                        }
+                        self.myPicksTable_outlet.reloadData()
+                        self.clubPicksTable_outlet.reloadData()
                         self.removeSpinner()
                     }
                 })
@@ -120,7 +118,7 @@ class PicksScreenAlbumMain: UIViewController, UITableViewDelegate {
                     if (picks == nil) {
                         callback("Error")
                     } else if (picks![0].itemData == nil) {
-                        self.userAlbumPicks = []
+                        self.clubAlbumPicks = []
                         callback("Done")
                     } else {
                         self.clubAlbumPicks = picks!
@@ -325,8 +323,16 @@ class PicksScreenAlbumMain: UIViewController, UITableViewDelegate {
     // handles when a user clicks the trash icon, prompting the user to delete the pick
     @objc func trash(gesture: VoteTapGesture) {
         if (gesture.view as? UIImageView) != nil {
+            self.showSpinner(onView: self.view)
             UIAlertController(title: "", message: "", preferredStyle: UIAlertController.Style.alert)
-                .deleteItemAlert(pick: self.userAlbumPicks[gesture.index], type: ItemType.ALBUM, sender: self)
+                .deleteItemAlert(pick: self.userAlbumPicks[gesture.index], type: ItemType.ALBUM, sender: self, callback: { response -> Void in
+                    if (response == "Done") {
+                        self.userAlbumPicks = [Pick]()
+                        self.clubAlbumPicks = [Pick]()
+                        self.clubAlbumCells = [AlbumCell]()
+                        self.requestUserAndClubAlbumData(showSpinner: false)
+                    }
+                })
         }
     }
 }
@@ -437,6 +443,7 @@ class AlbumCell: UITableViewCell {
     @IBOutlet weak var downVote_outlet: UIImageView!
 }
 
+// custom table cell containing trash icon outlet
 class UserAlbumCell: UITableViewCell {
     @IBOutlet weak var trash_outlet: UIImageView!
 }

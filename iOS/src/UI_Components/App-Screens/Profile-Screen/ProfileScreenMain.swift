@@ -49,8 +49,6 @@ class ProfileScreenMain: UIViewController {
             // resets global variables
             self.resetGlobalVariables()
             
-            // TODO: - Update SQLite user information
-            
             // presents the start screen
             let nextVC = self.storyboard!.instantiateViewController(withIdentifier: "StartScreenID")
             self.present(nextVC, animated:true, completion: nil)
