@@ -56,7 +56,8 @@ extension UIViewController {
                                 role_name: nil,
                                 role_description: nil,
                                 access_name: nil,
-                                access_destription: nil))
+                                access_description: nil,
+                                image_data: nil))
                         picks.append(pick)
                         if (i == items.count - 1) {
                             callback(picks)

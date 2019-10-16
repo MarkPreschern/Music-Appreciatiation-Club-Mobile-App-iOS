@@ -21,6 +21,7 @@ class ProfileScreenMain: UIViewController {
     @IBOutlet weak var settings_outlet: UIImageView!
     @IBOutlet weak var members_outlet: UIImageView!
     @IBOutlet weak var logOut_outlet: UIButton!
+    @IBOutlet weak var userDataView_outlet: UIView!
     
     // initialization on view loading
     override func viewDidLoad() {
@@ -30,8 +31,20 @@ class ProfileScreenMain: UIViewController {
         self.view_outlet.layer.borderWidth = 1
         self.view_outlet.layer.borderColor = UIColor(red:222/255, green:225/255, blue:227/255, alpha: 1).cgColor
         
-        // sets name label to user name
-        self.nameLabel_outlet.text = userData?.user_name
+        // sets user data view border
+        self.userDataView_outlet.layer.borderWidth = 1
+        self.userDataView_outlet.layer.borderColor = UIColor(red:222/255, green:225/255, blue:227/255, alpha: 1).cgColor
+        
+        // sets name and role labels
+        self.nameLabel_outlet.text = userData!.user_name!
+        self.roleLabel_outlet.text = userData!.role_name! + ": " + userData!.role_description!
+        
+        // sets the user image
+        if userData.image_data == nil {
+            self.userImage_outlet.image = UIImage(named: "default-profile-image")
+        } else {
+            self.userImage_outlet.image = userData.image_data
+        }
         
         // sets log out button border
         self.logOut_outlet.layer.borderWidth = 1

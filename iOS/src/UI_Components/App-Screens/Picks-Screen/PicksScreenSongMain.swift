@@ -37,6 +37,9 @@ class PicksScreenSongMain: UIViewController, UITableViewDelegate {
     
     // cell's containing club songs
     var clubSongCells = [SongCell]()
+    
+    // if vote data has already been parsed at this index
+    var voteDataParsed = [Bool]()
 
     @IBOutlet weak var view_outlet: UIView!
     @IBOutlet weak var songLabel_outlet: UIButton!
@@ -420,7 +423,7 @@ extension PicksScreenSongMain: UITableViewDataSource {
             cell.downVote_outlet.isUserInteractionEnabled = true
             
             // parses the vote data of this cell
-            self.parseVoteDataAt(index: indexPath.row)
+            self.parseVoteDataAt(index: indexPath.row, cell: cell)
             
             return cell
         } else {
@@ -429,7 +432,7 @@ extension PicksScreenSongMain: UITableViewDataSource {
     }
     
     // parses vote data for a userVoteID
-    func parseVoteDataAt(index: Int) {
+    func parseVoteDataAt(index: Int, cell: SongCell) {
         let voteData = self.clubSongPicks[index].voteData
         if let up = voteData?.upVoteData["votesData"] as? [JSONStandard] {
             for i in 0..<up.count {

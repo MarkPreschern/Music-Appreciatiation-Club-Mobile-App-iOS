@@ -232,6 +232,28 @@ function getRole(con, eventID, event, callback) {
     });
 }
 
+// gets the user's image
+function getImage(con, eventID, event, callback) {
+    const structure = 'SELECT image.* '
+        + 'FROM image '
+        + 'JOIN user ON image.image_id = user.image_id '
+        + 'WHERE user_id = ? ';
+    const inserts = [event.headers.user_id];
+    const sql = MySQL.format(structure, inserts);
+
+    con.query(sql, function (error, results) {
+        if (error) {
+            callback(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+        } else {
+            callback({
+                statusCode: "200",
+                message: "Successfully retrieved user's image",
+                items: results
+            })
+        }
+    });
+}
+
 // gets the user's recent song picks
 function getUserSongPicks(con, eventID, event, callback) {
     const structure = 'SELECT item.item_id, item.is_album, item.item_name, item.item_artist, item.item_image_url, item.item_preview_url, pick.pick_id, user.user_id, user.name '

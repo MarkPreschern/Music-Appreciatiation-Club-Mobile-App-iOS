@@ -20,12 +20,15 @@ struct UserData {
     let access_id: Int? //user access id
     
     // user role data
-    let role_name: String?
-    let role_description: String?
+    var role_name: String?
+    var role_description: String?
     
     // user access data
-    let access_name: String?
-    let access_destription: String?
+    var access_name: String?
+    var access_description: String?
+    
+    // user image
+    var image_data: UIImage?
 }
 
 // represents this user
@@ -170,7 +173,8 @@ class StartScreenMain: UIViewController, UITextFieldDelegate {
                             role_name: nil,
                             role_description: nil,
                             access_name: nil,
-                            access_destription: nil)
+                            access_description: nil,
+                            image_data: nil)
                         if (self.isChecked) {
                             let nameData = NSKeyedArchiver.archivedData(withRootObject: name ?? "")
                             let nuidData = NSKeyedArchiver.archivedData(withRootObject: nuid ?? "")
@@ -228,8 +232,152 @@ class StartScreenMain: UIViewController, UITextFieldDelegate {
     
     // Gets the user's specific role and access data
     func retrieveUserData(callback: @escaping (String) -> Void) {
-        //TODO: send 2 MAC API Requests, update API to handle requests
-        callback("Success")
-        callback("Failure")
+        self.retrieveRoleData(callback: { response1 -> Void in
+            if response1 == "Success" {
+                self.retrieveAccessData(callback: { response2 -> Void in
+                    if response2 == "Success" {
+                        self.retrieveImageData(callback: { response3 -> Void in
+                            if response3 == "Success" || response3 == "Failure" {
+                                callback(response3)
+                            }
+                        })
+                    } else if response2 == "Failure" {
+                        callback(response2)
+                    }
+                })
+            } else if response1 == "Failure" {
+                callback(response1)
+            }
+        })
+    }
+    
+    // Gets the user's specific role data
+    func retrieveRoleData(callback: @escaping (String) -> Void) {
+        self.macRequest(urlName: "role", httpMethod: .get, header: [:], successAlert: false, callback: { jsonData -> Void in
+            if let statusCode = jsonData?["statusCode"] as? String {
+                if (statusCode == "200") {
+                    if let items = jsonData?["items"] as? [JSONStandard] {
+                        if items.count == 0 {
+                            let alert = createAlert(
+                                title: "Role Request Failed",
+                                message: "Missing Role Data",
+                                actionTitle: "Contact club moderator")
+                            self.present(alert, animated: true, completion: nil)
+                            callback("Failure")
+                        } else {
+                            userData.role_name = items[0]["name"] as? String
+                            userData.role_description = items[0]["description"] as? String
+                            callback("Success")
+                        }
+                    } else {
+                        let alert = createAlert(
+                            title: "Role Request Failed",
+                            message: "Server-side error occured",
+                            actionTitle: "Try Again")
+                        self.present(alert, animated: true, completion: nil)
+                        callback("Failure")
+                    }
+                } else {
+                    let alert = createAlert(
+                        title: jsonData?["title"] as? String,
+                        message: jsonData?["description"] as? String,
+                        actionTitle: "Try Again")
+                    self.present(alert, animated: true, completion: nil)
+                    callback("Failure")
+                }
+            } else {
+                let alert = createAlert(
+                    title: "Role Request Failed",
+                    message: "Server-side error occured",
+                    actionTitle: "Try Again")
+                self.present(alert, animated: true, completion: nil)
+                callback("Failure")
+            }
+        })
+    }
+    
+    // Gets the user's specific access data
+    func retrieveAccessData(callback: @escaping (String) -> Void) {
+        self.macRequest(urlName: "access", httpMethod: .get, header: [:], successAlert: false, callback: { jsonData -> Void in
+            if let statusCode = jsonData?["statusCode"] as? String {
+                if (statusCode == "200") {
+                    if let items = jsonData?["items"] as? [JSONStandard] {
+                        if items.count == 0 {
+                            let alert = createAlert(
+                                title: "Access Request Failed",
+                                message: "Missing Access Data",
+                                actionTitle: "Contact club moderator")
+                            self.present(alert, animated: true, completion: nil)
+                            callback("Failure")
+                        } else {
+                            userData.access_name = items[0]["name"] as? String
+                            userData.access_description = items[0]["description"] as? String
+                            callback("Success")
+                        }
+                    } else {
+                        let alert = createAlert(
+                            title: "Access Request Failed",
+                            message: "Server-side error occured",
+                            actionTitle: "Try Again")
+                        self.present(alert, animated: true, completion: nil)
+                        callback("Failure")
+                    }
+                } else {
+                    let alert = createAlert(
+                        title: jsonData?["title"] as? String,
+                        message: jsonData?["description"] as? String,
+                        actionTitle: "Try Again")
+                    self.present(alert, animated: true, completion: nil)
+                    callback("Failure")
+                }
+            } else {
+                let alert = createAlert(
+                    title: "Access Request Failed",
+                    message: "Server-side error occured",
+                    actionTitle: "Try Again")
+                self.present(alert, animated: true, completion: nil)
+                callback("Failure")
+            }
+        })
+    }
+    
+    // Gets the user's specific image data
+    func retrieveImageData(callback: @escaping (String) -> Void) {
+        self.macRequest(urlName: "image", httpMethod: .get, header: [:], successAlert: false, callback: { jsonData -> Void in
+            if let statusCode = jsonData?["statusCode"] as? String {
+                if (statusCode == "200") {
+                    if let items = jsonData?["items"] as? [JSONStandard] {
+                        if items.count == 0 {
+                            userData.image_data = nil
+                            callback("Success")
+                        } else {
+                            // TODO: parse image blob data and make image from it
+                            callback("Success")
+                        }
+                    } else {
+                        let alert = createAlert(
+                            title: "Image Request Failed",
+                            message: "Server-side error occured",
+                            actionTitle: "Try Again")
+                        self.present(alert, animated: true, completion: nil)
+                        callback("Failure")
+                    }
+                } else {
+                    let alert = createAlert(
+                        title: jsonData?["title"] as? String,
+                        message: jsonData?["description"] as? String,
+                        actionTitle: "Try Again")
+                    self.present(alert, animated: true, completion: nil)
+                    callback("Failure")
+                }
+            } else {
+                let alert = createAlert(
+                    title: "Image Request Failed",
+                    message: "Server-side error occured",
+                    actionTitle: "Try Again")
+                self.present(alert, animated: true, completion: nil)
+                callback("Failure")
+            }
+        })
     }
 }
