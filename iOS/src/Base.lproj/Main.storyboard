@@ -307,7 +307,7 @@
                                         <rect key="frame" x="335" y="17" width="25" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6W4-Rz-pnr">
+                                    <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="default-profile-image" translatesAutoresizingMaskIntoConstraints="NO" id="6W4-Rz-pnr">
                                         <rect key="frame" x="11" y="17" width="80" height="80"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
@@ -1321,6 +1321,7 @@
         <image name="Trash" width="225" height="247"/>
         <image name="background-image" width="84" height="149.5"/>
         <image name="check-mark-image" width="115.5" height="109.5"/>
+        <image name="default-profile-image" width="600" height="600"/>
         <image name="hamburger" width="325" height="243"/>
         <image name="news" width="366" height="305"/>
         <image name="picks" width="3664" height="3194"/>

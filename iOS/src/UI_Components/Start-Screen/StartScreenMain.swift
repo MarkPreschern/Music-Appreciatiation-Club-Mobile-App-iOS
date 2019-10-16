@@ -351,7 +351,9 @@ class StartScreenMain: UIViewController, UITextFieldDelegate {
                             userData.image_data = nil
                             callback("Success")
                         } else {
-                            // TODO: parse image blob data and make image from it
+                            let imageData = items[0]["image_data"] as! String
+                            let imagePNG = NSData(base64Encoded: imageData, options: NSData.Base64DecodingOptions(rawValue: 0))!
+                            userData.image_data = UIImage(data: imagePNG as Data)!
                             callback("Success")
                         }
                     } else {

@@ -5,7 +5,6 @@
 CREATE SCHEMA IF NOT EXISTS `MacDB` DEFAULT CHARACTER SET utf8 ;
 USE `MacDB`;
 
-
 -- -----------------------------------------------------
 -- Table `MacDB`.`role`
 -- Represents roles that users in the club can have
@@ -31,18 +30,16 @@ CREATE TABLE IF NOT EXISTS `MacDB`.`access` (
   UNIQUE INDEX `role_id_UNIQUE` (`access_id` ASC))
 ENGINE = InnoDB;
 
-
 -- -----------------------------------------------------
 -- Table `MacDB`.`image`
 -- Represents a user's image, stored in a separate table for efficiency purposes
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `MacDB`.`image` (
   `image_id` INT NOT NULL AUTO_INCREMENT,
-  `image_blob` BLOB NOT NULL,
+  `image_data` MEDIUMTEXT CHARACTER SET BINARY NOT NULL,
   PRIMARY KEY (`image_id`),
   UNIQUE INDEX `image_id_UNIQUE` (`image_id` ASC))
 ENGINE = InnoDB;
-
 
 -- -----------------------------------------------------
 -- Table `MacDB`.`user`

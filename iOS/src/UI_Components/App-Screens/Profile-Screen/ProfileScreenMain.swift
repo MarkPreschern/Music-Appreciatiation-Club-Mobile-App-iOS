@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import Alamofire
 
 // Represents the profile screen. Holds information regarding:
 // - User information (name, nuid)
@@ -45,11 +46,61 @@ class ProfileScreenMain: UIViewController {
         } else {
             self.userImage_outlet.image = userData.image_data
         }
+        // creates a user image gesture recognizer
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ProfileScreenMain.imageClicked(gesture:)))
+        self.userImage_outlet.addGestureRecognizer(tapGesture)
         
         // sets log out button border
         self.logOut_outlet.layer.borderWidth = 1
         self.logOut_outlet.layer.borderColor = UIColor(red:222/255, green:225/255, blue:227/255, alpha: 1).cgColor
         
+    }
+    
+    // handles when a user clicks the user image, prompting the user to select a new image
+    @objc func imageClicked(gesture: UITapGestureRecognizer) {
+        if (gesture.view as? UIImageView) != nil {
+            let imageManager = ImagePickerManager.init()
+            imageManager.pickImage(self, { image -> Void in
+                self.showSpinner(onView: self.view)
+                self.postImage(image: image, callback: { response -> Void in
+                    if response == "Success" {
+                        self.userImage_outlet.image = image
+                        self.removeSpinner()
+                    } else if response == "Failure" {
+                        self.removeSpinner()
+                    }
+                })
+            })
+        }
+    }
+    
+    // posts the image using the MAC API
+    func postImage(image: UIImage, callback: @escaping (String) -> Void) {
+        let header: HTTPHeaders = [
+            "image_data": image.pngData()!.base64EncodedString(options: Data.Base64EncodingOptions.lineLength64Characters)
+        ]
+        print(header)
+        self.macRequest(urlName: "image", httpMethod: .post, header: header, successAlert: false, callback: { jsonData -> Void in
+            if let statusCode = jsonData?["statusCode"] as? String {
+                if (statusCode == "200") {
+                    callback("Success")
+                } else {
+                    let alert = createAlert(
+                        title: jsonData?["title"] as? String,
+                        message: jsonData?["description"] as? String,
+                        actionTitle: "Try Again")
+                    self.present(alert, animated: true, completion: nil)
+                    callback("Failure")
+                }
+            } else {
+                let alert = createAlert(
+                    title: "Image Request Failed",
+                    message: "Server-side error occured",
+                    actionTitle: "Try Again")
+                self.present(alert, animated: true, completion: nil)
+                callback("Failure")
+            }
+        })
     }
     
     // when the log out button is clicked, the user will be promted with an alert to logout

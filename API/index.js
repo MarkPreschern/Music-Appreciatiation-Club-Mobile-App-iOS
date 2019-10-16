@@ -649,7 +649,7 @@ function postVote(con, eventID, event, callback) {
     // adds the vote from this user to this pick
     function addVote() {
         return new Promise(async function (resolve, reject) {
-            const structure = 'INSERT INTO vote (up, comment, user_id, pick_id)'
+            const structure = 'INSERT INTO vote (up, comment, user_id, pick_id) '
                 + 'VALUES ( ? , ? , ? , ? )';
             const inserts = [event.headers["up"], event.headers["comment"], event.headers["user_id"], event.headers["pick_id"]];
             const sql = MySQL.format(structure, inserts);
@@ -718,6 +718,80 @@ function postRole(con, eventID, event, callback) {
                         "statusCode": "200",
                         "message": "Successfully created role"
                     });
+                }
+            });
+        });
+    }
+}
+
+// post the user's image
+function postImage(con, eventID, event, callback) {
+
+    callback(createImage().then(function() {
+        return getImageID();
+    }).then(imageID => {
+        return setUserImageID()
+    }).catch(error => {
+        return error;
+    }));
+
+    // adds the image data
+    function createImage() {
+        return new Promise(async function (resolve, reject) {
+            const structure = 'INSERT INTO image (image_data) '
+                + 'VALUES ( ? )';
+            const inserts = [event.headers["image_data"]];
+            const sql = MySQL.format(structure, inserts);
+
+            await con.query(sql, function (error) {
+                if (error) {
+                    reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+                } else {
+                    resolve();
+                }
+            });
+        });
+    }
+
+    // gets the image ID of this image data
+    function getImageID() {
+        return new Promise(async function (resolve, reject) {
+            const structure = 'SELECT image_id '
+                + 'FROM image '
+                + 'WHERE image.image_data = ?';
+            const inserts = [event.headers["image_data"]];
+            const sql = MySQL.format(structure, inserts);
+
+            await con.query(sql, function (error, results) {
+                if (error) {
+                    reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+                } else {
+                    if (results.length === 0) {
+                        reject(createErrorMessage("404", "Server-side Error", "Missing image data", error));
+                    } else if (results.length > 1) {
+                        reject(createErrorMessage("404", "Server-side Error", "Invalid image data, duplicate items", error));
+                    } else {
+                        resolve(results[0]["image_id"]);
+                    }
+                }
+            });
+        })
+    }
+
+    // sets the user's imageID to this image
+    function setUserImageID(imageID) {
+        return new Promise(async function (resolve, reject) {
+            const structure = 'UPDATE user '
+                + 'SET user.image_id = ? '
+                + 'WHERE user.user_id = ? ';
+            const inserts = [imageID, event.headers.user_id];
+            const sql = MySQL.format(structure, inserts);
+
+            await con.query(sql, function (error) {
+                if (error) {
+                    reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+                } else {
+                    resolve();
                 }
             });
         });
