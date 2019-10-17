@@ -9,6 +9,7 @@
   "author": "Mark Preschern",
   "license": "ISC",
   "dependencies": {
+    "file-system": "^2.2.2",
     "mysql": "^2.17.1",
     "uuid4": "^1.1.4"
   }

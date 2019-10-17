@@ -31,6 +31,9 @@ struct UserData {
     var image_data: UIImage?
 }
 
+// Mac API base URL
+let API_URL = "https://50pnu03u26.execute-api.us-east-2.amazonaws.com/MacTesting/api.mac.com/"
+
 // represents this user
 var userData : UserData!
 
@@ -148,7 +151,7 @@ class StartScreenMain: UIViewController, UITextFieldDelegate {
     // requests authorization from the user
     func requestAuthorization(loginRequest: Bool, name: String?, nuid: String?, callback: @escaping (String) -> Void) {
         //header information for spotify url call
-        let url = "https://50pnu03u26.execute-api.us-east-2.amazonaws.com/MacTesting/api.mac.com/authorization"
+        let url = API_URL + "authorization"
         let headers : HTTPHeaders = [
             "name" : name ?? "",
             "nuid" : nuid ?? ""

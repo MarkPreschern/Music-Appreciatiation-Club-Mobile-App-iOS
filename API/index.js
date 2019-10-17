@@ -1,6 +1,7 @@
 // imports
 const MySQL = require('mysql');
 const UUID4 = require('uuid4');
+const fs = require("file-system");
 
 // Music Appreciation Club API
 exports.handler = async (event) => {
@@ -727,8 +728,9 @@ function postRole(con, eventID, event, callback) {
 // post the user's image
 function postImage(con, eventID, event, callback) {
 
-    callback(createImage().then(function() {
-        return getImageID();
+    let image = base64_encode('image_data.jpg');
+    callback(createImage(image).then(function() {
+        return getImageID(image);
     }).then(imageID => {
         return setUserImageID()
     }).catch(error => {
@@ -736,11 +738,11 @@ function postImage(con, eventID, event, callback) {
     }));
 
     // adds the image data
-    function createImage() {
+    function createImage(image) {
         return new Promise(async function (resolve, reject) {
             const structure = 'INSERT INTO image (image_data) '
                 + 'VALUES ( ? )';
-            const inserts = [event.headers["image_data"]];
+            const inserts = [image];
             const sql = MySQL.format(structure, inserts);
 
             await con.query(sql, function (error) {
@@ -759,7 +761,7 @@ function postImage(con, eventID, event, callback) {
             const structure = 'SELECT image_id '
                 + 'FROM image '
                 + 'WHERE image.image_data = ?';
-            const inserts = [event.headers["image_data"]];
+            const inserts = [image];
             const sql = MySQL.format(structure, inserts);
 
             await con.query(sql, function (error, results) {
@@ -946,6 +948,14 @@ function jsonFormat(body) {
 // gets a sql formatted datetime of now
 function dateTime() {
     return new Date().toISOString().slice(0, 19).replace('T', ' ');
+}
+
+// function to encode file data to base64 encoded string
+function base64_encode(file) {
+    // read binary data
+    let bitmap = fs.readFileSync(file);
+    // convert binary data to base64 encoded string
+    return new bitmap.toString('base64');
 }
 
 // parses a list of picks data for their respective votes

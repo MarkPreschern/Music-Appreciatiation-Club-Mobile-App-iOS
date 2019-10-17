@@ -13,7 +13,7 @@ extension UIViewController {
 
     // Requests data from the mac api given a urlName and httpMethod, waits for a callback
     func macRequest(urlName : String!, httpMethod : HTTPMethod!, header : HTTPHeaders?, successAlert : Bool!, callback: @escaping (JSONStandard?) -> Void) {
-        let url = "https://50pnu03u26.execute-api.us-east-2.amazonaws.com/MacTesting/api.mac.com/" + urlName
+        let url = API_URL + urlName
         
         var headers: HTTPHeaders = [:];
         if (header == nil) {
