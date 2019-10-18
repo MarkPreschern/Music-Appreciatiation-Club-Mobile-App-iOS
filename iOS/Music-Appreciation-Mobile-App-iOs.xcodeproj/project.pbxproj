@@ -194,8 +194,8 @@
 			isa = PBXGroup;
 			children = (
 				A4309CA622383C35002B6A13 /* ProfileScreenMain.swift */,
-				A4C884042350B98100BBACD8 /* SettingsScreenMain.swift */,
 				A4C884062350B9AB00BBACD8 /* MembersScreenMain.swift */,
+				A4C884042350B98100BBACD8 /* SettingsScreenMain.swift */,
 			);
 			path = "Profile-Screen";
 			sourceTree = "<group>";

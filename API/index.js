@@ -363,6 +363,30 @@ function getUserPopularPicks(con, eventID, event, callback) {
     });
 }
 
+// gets all user's and their necessary user information except for the user who sent the request
+function getUsers(con, eventID, event, callback) {
+    const structure = 'SELECT user.user_id, user.name AS user_name, role.name AS role_name, role.description, image.image_data '
+        + 'FROM user '
+        + 'JOIN role ON user.role_id = role.role_id '
+        + 'LEFT JOIN image ON user.image_id = image.image_id '
+        + 'WHERE user.user_id != ? '
+        + 'ORDER BY user.name ASC ';
+    const inserts = [event.headers.user_id];
+    const sql = MySQL.format(structure, inserts);
+
+    con.query(sql, function (error, results) {
+        if (error) {
+            callback(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+        } else {
+            callback({
+                statusCode: "200",
+                message: "Successfully retrieved users",
+                users: results
+            });
+        }
+    });
+}
+
 
 /*
  ****************** POST METHODS ***************
