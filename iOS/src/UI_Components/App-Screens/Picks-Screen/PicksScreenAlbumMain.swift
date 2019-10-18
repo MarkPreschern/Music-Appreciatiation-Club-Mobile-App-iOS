@@ -20,7 +20,7 @@ class PicksScreenAlbumMain: UIViewController, UITableViewDelegate {
     var clubAlbumPicks = [Pick]()
     
     // cell's containing club albums
-    var clubAlbumCells = [AlbumCell]()
+    var clubAlbumCells = [Int: AlbumCell]()
     
     @IBOutlet weak var view_outlet: UIView!
     @IBOutlet weak var songLabel_outlet: UIButton!
@@ -150,8 +150,8 @@ class PicksScreenAlbumMain: UIViewController, UITableViewDelegate {
     @objc func upVote(gesture: VoteTapGesture) {
         if (gesture.view as? UIImageView) != nil {
             let cell = clubAlbumCells[gesture.index]
-            let imageDataUp = cell.upVote_outlet.image?.pngData()
-            let imageDataDown = cell.downVote_outlet.image?.pngData()
+            let imageDataUp = cell?.upVote_outlet.image?.pngData()
+            let imageDataDown = cell?.downVote_outlet.image?.pngData()
             
             // up arrow green and down arrow red should never occur, throw error
             if UIImage(named: "ArrowGreen")?.pngData() == imageDataUp && UIImage(named: "ArrowRed")?.pngData() == imageDataDown {
@@ -162,7 +162,7 @@ class PicksScreenAlbumMain: UIViewController, UITableViewDelegate {
                     if (response == "Success") {
                         self.clubAlbumPicks[gesture.index].voteData.totalVotes -= 1
                         self.updateVoteLable(index: gesture.index, cell: nil)
-                        cell.upVote_outlet.image = UIImage(named: "ArrowGreyUp")
+                        cell?.upVote_outlet.image = UIImage(named: "ArrowGreyUp")
                     }
                 })
                 // delete down vote due to down arrow red and post up vote
@@ -171,12 +171,12 @@ class PicksScreenAlbumMain: UIViewController, UITableViewDelegate {
                     if (response == "Success") {
                         self.clubAlbumPicks[gesture.index].voteData.totalVotes += 1
                         self.updateVoteLable(index: gesture.index, cell: nil)
-                        cell.downVote_outlet.image = UIImage(named: "ArrowGreyDown")
+                        cell?.downVote_outlet.image = UIImage(named: "ArrowGreyDown")
                         self.postVote(gesture: gesture, up: 1, comment: "", callback: {(response) -> Void in
                             if (response == "Success") {
                                 self.clubAlbumPicks[gesture.index].voteData.totalVotes += 1
                                 self.updateVoteLable(index: gesture.index, cell: nil)
-                                cell.upVote_outlet.image = UIImage(named: "ArrowGreen")
+                                cell?.upVote_outlet.image = UIImage(named: "ArrowGreen")
                             }
                         })
                     }
@@ -187,7 +187,7 @@ class PicksScreenAlbumMain: UIViewController, UITableViewDelegate {
                     if (response == "Success") {
                         self.clubAlbumPicks[gesture.index].voteData.totalVotes += 1
                         self.updateVoteLable(index: gesture.index, cell: nil)
-                        cell.upVote_outlet.image = UIImage(named: "ArrowGreen")
+                        cell?.upVote_outlet.image = UIImage(named: "ArrowGreen")
                     }
                 })
                 // invalid button click
@@ -201,8 +201,8 @@ class PicksScreenAlbumMain: UIViewController, UITableViewDelegate {
     @objc func downVote(gesture: VoteTapGesture) {
         if (gesture.view as? UIImageView) != nil {
             let cell = clubAlbumCells[gesture.index]
-            let imageDataUp = cell.upVote_outlet.image?.pngData()
-            let imageDataDown = cell.downVote_outlet.image?.pngData()
+            let imageDataUp = cell?.upVote_outlet.image?.pngData()
+            let imageDataDown = cell?.downVote_outlet.image?.pngData()
             
             // up arrow green and down arrow red should never occur, throw error
             if UIImage(named: "ArrowGreen")?.pngData() == imageDataUp && UIImage(named: "ArrowRed")?.pngData() == imageDataDown {
@@ -213,12 +213,12 @@ class PicksScreenAlbumMain: UIViewController, UITableViewDelegate {
                     if (response == "Success") {
                         self.clubAlbumPicks[gesture.index].voteData.totalVotes -= 1
                         self.updateVoteLable(index: gesture.index, cell: nil)
-                        cell.upVote_outlet.image = UIImage(named: "ArrowGreyUp")
+                        cell?.upVote_outlet.image = UIImage(named: "ArrowGreyUp")
                         self.postVote(gesture: gesture, up: 0, comment: "", callback: {(response) -> Void in
                             if (response == "Success") {
                                 self.clubAlbumPicks[gesture.index].voteData.totalVotes -= 1
                                 self.updateVoteLable(index: gesture.index, cell: nil)
-                                cell.downVote_outlet.image = UIImage(named: "ArrowRed")
+                                cell?.downVote_outlet.image = UIImage(named: "ArrowRed")
                             }
                         })
                     }
@@ -229,7 +229,7 @@ class PicksScreenAlbumMain: UIViewController, UITableViewDelegate {
                     if (response == "Success") {
                         self.clubAlbumPicks[gesture.index].voteData.totalVotes += 1
                         self.updateVoteLable(index: gesture.index, cell: nil)
-                        cell.downVote_outlet.image = UIImage(named: "ArrowGreyDown")
+                        cell?.downVote_outlet.image = UIImage(named: "ArrowGreyDown")
                     }
                 })
                 // post down vote
@@ -238,7 +238,7 @@ class PicksScreenAlbumMain: UIViewController, UITableViewDelegate {
                     if (response == "Success") {
                         self.clubAlbumPicks[gesture.index].voteData.totalVotes -= 1
                         self.updateVoteLable(index: gesture.index, cell: nil)
-                        cell.downVote_outlet.image = UIImage(named: "ArrowRed")
+                        cell?.downVote_outlet.image = UIImage(named: "ArrowRed")
                     }
                 })
                 // invalid button click
@@ -303,7 +303,7 @@ class PicksScreenAlbumMain: UIViewController, UITableViewDelegate {
         let voteLabel: UILabel
         let votes: Int
         if (cell == nil) {
-            voteLabel = self.clubAlbumCells[index].viewWithTag(4) as! UILabel
+            voteLabel = self.clubAlbumCells[index]?.viewWithTag(4) as! UILabel
             votes = self.clubAlbumPicks[index].voteData.totalVotes ?? 0
         } else {
             voteLabel = cell?.viewWithTag(4) as! UILabel
@@ -328,7 +328,7 @@ class PicksScreenAlbumMain: UIViewController, UITableViewDelegate {
                     if (response == "Done") {
                         self.userAlbumPicks = [Pick]()
                         self.clubAlbumPicks = [Pick]()
-                        self.clubAlbumCells = [AlbumCell]()
+                        self.clubAlbumCells = [Int: AlbumCell]()
                         self.requestUserAndClubAlbumData(showSpinner: false)
                     }
                 })
@@ -344,11 +344,6 @@ extension PicksScreenAlbumMain: UITableViewDataSource {
         if (tableView.restorationIdentifier == "MyAlbumPicksTable") {
             return userAlbumPicks.count
         } else if (tableView.restorationIdentifier == "ClubAlbumPicksTable") {
-            self.clubAlbumCells = [AlbumCell]()
-            self.clubAlbumCells.reserveCapacity(clubAlbumPicks.count)
-            for _ in 0..<self.clubAlbumPicks.count {
-                self.clubAlbumCells.append(AlbumCell())
-            }
             return clubAlbumPicks.count
         } else {
             return 0
@@ -376,7 +371,7 @@ extension PicksScreenAlbumMain: UITableViewDataSource {
             return cell
         } else if (tableView.restorationIdentifier == "ClubAlbumPicksTable") {
             let cell = tableView.dequeueReusableCell(withIdentifier: "clubAlbumsCell") as! AlbumCell
-            self.clubAlbumCells[indexPath.row] = cell
+            self.clubAlbumCells.updateValue(cell, forKey: indexPath.row)
             //sets the label
             let mainLabel = cell.viewWithTag(1) as! UILabel
             mainLabel.text = clubAlbumPicks[indexPath.row].itemData.name
@@ -418,7 +413,7 @@ extension PicksScreenAlbumMain: UITableViewDataSource {
                 let item = up[i]
                 if item["user_id"] as! Int == userData.user_id! {
                     self.clubAlbumPicks[index].voteData.userVoteID = item["vote_id"] as? Int
-                    self.clubAlbumCells[index].upVote_outlet.image = UIImage(named: "ArrowGreen")
+                    self.clubAlbumCells[index]?.upVote_outlet.image = UIImage(named: "ArrowGreen")
                     return
                 }
             }
@@ -428,7 +423,7 @@ extension PicksScreenAlbumMain: UITableViewDataSource {
                 let item = down[i]
                 if item["user_id"] as! Int == userData.user_id! {
                     self.clubAlbumPicks[index].voteData.userVoteID = item["vote_id"] as? Int
-                    self.clubAlbumCells[index].downVote_outlet.image = UIImage(named: "ArrowRed")
+                    self.clubAlbumCells[index]?.downVote_outlet.image = UIImage(named: "ArrowRed")
                     return
                 }
             }

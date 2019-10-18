@@ -345,7 +345,8 @@ function getUserPopularPicks(con, eventID, event, callback) {
         + 'FROM item '
         + 'JOIN popular ON item.item_id = popular.item_id '
         + 'JOIN user ON popular.user_id = user.user_id '
-        + 'WHERE popular.user_id = ? and popular.event_id = ? ';
+        + 'WHERE popular.user_id = ? and popular.event_id = ? '
+        + 'ORDER BY popular.votes DESC';
     const inserts = [event.headers.user_id, eventID];
     const sql = MySQL.format(structure, inserts);
 
