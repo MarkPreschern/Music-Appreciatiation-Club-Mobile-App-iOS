@@ -347,7 +347,7 @@ function getUserPopularPicks(con, eventID, event, callback) {
         + 'JOIN user ON popular.user_id = user.user_id '
         + 'WHERE popular.user_id = ? and popular.event_id = ? '
         + 'ORDER BY popular.votes DESC';
-    const inserts = [event.headers.user_id, eventID];
+    const inserts = [event.headers["member_id"], eventID];
     const sql = MySQL.format(structure, inserts);
 
     con.query(sql, function (error, results) {

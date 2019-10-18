@@ -18,6 +18,12 @@ class ProfileScreenMain: UIViewController, UITableViewDelegate {
     // popular user picks
     var popularPicks = [Pick]()
     
+    // if the profile screen is of the current user
+    var currentUser = true
+    
+    // the user details of this user's profile
+    var userDetails: UserData? = nil
+    
     @IBOutlet weak var view_outlet: UIView!
     @IBOutlet weak var nameLabel_outlet: UILabel!
     @IBOutlet weak var roleLabel_outlet: UILabel!
@@ -26,12 +32,16 @@ class ProfileScreenMain: UIViewController, UITableViewDelegate {
     @IBOutlet weak var members_outlet: UIImageView!
     @IBOutlet weak var logOut_outlet: UIButton!
     @IBOutlet weak var userDataView_outlet: UIView!
+    @IBOutlet weak var backButton_outlet: UIButton!
     
     @IBOutlet weak var table_outlet: UITableView!
     
     // initialization on view loading
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // sets user details to this user's data if nil
+        self.userDetails = (self.userDetails == nil ? userData : self.userDetails)
         
         // sets task bar border
         self.view_outlet.layer.borderWidth = 1
@@ -42,24 +52,35 @@ class ProfileScreenMain: UIViewController, UITableViewDelegate {
         self.userDataView_outlet.layer.borderColor = UIColor(red:222/255, green:225/255, blue:227/255, alpha: 1).cgColor
         
         // sets name and role labels
-        self.nameLabel_outlet.text = userData!.user_name!
-        self.roleLabel_outlet.text = userData!.role_name! + ": " + userData!.role_description!
+        self.nameLabel_outlet.text = self.userDetails!.user_name!
+        self.roleLabel_outlet.text = self.userDetails!.role_name! + ": " + userDetails!.role_description!
         
         // sets the user image
-        if userData.image_data == nil {
+        if self.userDetails!.image_data == nil {
             self.userImage_outlet.image = UIImage(named: "default-profile-image")
         } else {
-            self.userImage_outlet.image = userData.image_data
+            self.userImage_outlet.image = self.userDetails!.image_data
         }
+        
         // creates a user image gesture recognizer
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ProfileScreenMain.imageClicked(gesture:)))
         self.userImage_outlet.addGestureRecognizer(tapGesture)
-        // creates a settings image gesture recognizer
-        let tapGesture2 = UITapGestureRecognizer(target: self, action: #selector(ProfileScreenMain.settingsClicked(gesture:)))
-        self.settings_outlet.addGestureRecognizer(tapGesture2)
-        // creates a members image gesture recognizer
-        let tapGesture3 = UITapGestureRecognizer(target: self, action: #selector(ProfileScreenMain.membersClicked(gesture:)))
-        self.members_outlet.addGestureRecognizer(tapGesture3)
+        
+        if self.currentUser {
+            // disable back button
+            self.backButton_outlet.isEnabled = false
+            self.backButton_outlet.isHidden = true
+            
+            // creates a settings image gesture recognizer
+            let tapGesture2 = UITapGestureRecognizer(target: self, action: #selector(ProfileScreenMain.settingsClicked(gesture:)))
+            self.settings_outlet.addGestureRecognizer(tapGesture2)
+            // creates a members image gesture recognizer
+            let tapGesture3 = UITapGestureRecognizer(target: self, action: #selector(ProfileScreenMain.membersClicked(gesture:)))
+            self.members_outlet.addGestureRecognizer(tapGesture3)
+        } else {
+            self.settings_outlet.image = nil
+            self.members_outlet.image = nil
+        }
         
         //sets table outlet's datasource to this class's extension
         self.table_outlet.register(UITableViewCell.self, forCellReuseIdentifier: "UITableViewCell")
@@ -75,8 +96,12 @@ class ProfileScreenMain: UIViewController, UITableViewDelegate {
     
     // retrieves the popular picks of this user for the MAC API
     func retrievePopularPicks() {
+        let header: HTTPHeaders = [
+            "member_id": String(self.userDetails?.user_id ?? -1),
+        ]
+        
         self.showSpinner(onView: self.view)
-        self.macRequest(urlName: "userPopularPicks", httpMethod: .get, header: [:], successAlert: false, callback: { jsonData -> Void in
+        self.macRequest(urlName: "userPopularPicks", httpMethod: .get, header: header, successAlert: false, callback: { jsonData -> Void in
             if let statusCode = jsonData?["statusCode"] as? String {
                 if statusCode == "200" {
                     if let items = jsonData?["popular_picks"] as? [JSONStandard] {
@@ -259,6 +284,12 @@ class ProfileScreenMain: UIViewController, UITableViewDelegate {
         player = AVAudioPlayer()
         session = AVAudioSession()
         vSpinner = UIView()
+    }
+    
+    // go to the members View Controller when clicked
+    @IBAction func backButtonClicked(_ sender: Any) {
+        let nextVC = self.storyboard!.instantiateViewController(withIdentifier: "membersScreenID")
+        self.present(nextVC, animated:true, completion: nil)
     }
     
     // when table view cell is tapped, move to controller of cell type
