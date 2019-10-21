@@ -50,7 +50,7 @@ class SettingsScreenMain: UIViewController, UITableViewDelegate {
     func loadSettings(callback: @escaping (String) -> Void) {
         let access = userData.access_name
         
-        if access == "Member" {
+        if access == "User" {
             settings.append(Setting(name: "Log Out", popup: LogOut()))
             callback("Done")
         }

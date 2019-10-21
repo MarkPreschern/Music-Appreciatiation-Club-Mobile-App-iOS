@@ -5,6 +5,7 @@
 CREATE SCHEMA IF NOT EXISTS `MacDB` DEFAULT CHARACTER SET utf8 ;
 USE `MacDB`;
 
+
 -- -----------------------------------------------------
 -- Table `MacDB`.`role`
 -- Represents roles that users in the club can have
@@ -167,6 +168,7 @@ CREATE TABLE IF NOT EXISTS `MacDB`.`vote` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+
 -- -----------------------------------------------------
 -- Table `MacDB`.`popular`
 -- Represents a user's popular picks, stored in a separate table for efficiency purposes
@@ -184,6 +186,52 @@ CREATE TABLE IF NOT EXISTS `MacDB`.`popular` (
   CONSTRAINT `fk_popular_pick1`
     FOREIGN KEY (`pick_id` , `user_id` , `item_id` , `event_id`)
     REFERENCES `MacDB`.`pick` (`pick_id` , `user_id` , `item_id` , `event_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `MacDB`.`post`
+-- Represents a user's post, regarding club news
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `MacDB`.`post` (
+  `post_id` INT NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(50) NOT NULL,
+  `content` VARCHAR(250) NOT NULL,
+  `user_id` INT NOT NULL,
+  PRIMARY KEY (`post_id`, `user_id`),
+  UNIQUE INDEX `post_id_UNIQUE` (`post_id` ASC),
+  INDEX `fk_post_user1_idx` (`user_id` ASC),
+  CONSTRAINT `fk_post_user1`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `MacDB`.`user` (`user_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `MacDB`.`comment`
+-- Represents a comment on a post
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `MacDB`.`comment` (
+  `comment_id` INT NOT NULL AUTO_INCREMENT,
+  `content` VARCHAR(100) NOT NULL,
+  `post_id` INT NOT NULL,
+  `user_id` INT NOT NULL,
+  PRIMARY KEY (`comment_id`, `post_id`, `user_id`),
+  UNIQUE INDEX `comment_id_UNIQUE` (`comment_id` ASC),
+  INDEX `fk_comment_post1_idx` (`post_id` ASC),
+  INDEX `fk_comment_user1_idx` (`user_id` ASC),
+  CONSTRAINT `fk_comment_post1`
+    FOREIGN KEY (`post_id`)
+    REFERENCES `MacDB`.`post` (`post_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_comment_user1`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `MacDB`.`user` (`user_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

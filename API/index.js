@@ -473,6 +473,49 @@ function postAuthorization(con, eventID, event, callback) {
 }
 
 // creates the item associated with this pick, and the pick with the newly created item
+function postUser(con, eventID, event, callback) {
+
+    callback(getAccessPromise(con, event).then(data => {
+        if (data.statusCode === "200") {
+            if ( // verifying correct access rights for action
+                (data.access === "Moderator" && event.headers["access"] === "User" && event.headers["role"] === "Member") ||
+                (data.access === "Admin" && (event.headers["access"] === "User" || event.headers["access"] === "Moderator")) ||
+                data.access === "Developer") {
+                return insertUser();
+            } else {
+                return createErrorMessage("404", "Invalid Access", "Failed to query requested data due to invalid access", null);
+            }
+        } else {
+            return data;
+        }
+    }).catch(error => {
+        return error;
+    }));
+
+    // inserts the user
+    function insertUser() {
+        return new Promise(function (resolve, reject) {
+            const structure = 'INSERT INTO user (name, nuid, login_date, access_id, role_id) '
+                + 'VALUES ( ? , ? , ? , ? , ? ) ';
+            const inserts = [event.headers["user_name"], event.headers["user_nuid"], dateTime(), event.headers["access_id"], event.headers["role_id"]];
+            const sql = MySQL.format(structure, inserts);
+
+            // attempts to insert the authorization token
+            con.query(sql, function (error, results) {
+                if (error) {
+                    reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+                } else {
+                    resolve({
+                        "statusCode": "200",
+                        "message": "Success added user"
+                    });
+                }
+            });
+        })
+    }
+}
+
+// creates the item associated with this pick, and the pick with the newly created item
 function postPick(con, eventID, event, callback) {
 
     callback(picksCount().then(function() {
@@ -722,8 +765,16 @@ function postVote(con, eventID, event, callback) {
 
 // deletes the role if user's access is high enough
 function postRole(con, eventID, event, callback) {
-    callback(validAccess(con, event).then(function() {
-        return postRole();
+    callback(getAccessPromise(con, event).then(data => {
+        if (data.statusCode === "200") {
+            if (data.access === "Admin" || data.access === "Developer") {
+                return postRole();
+            } else {
+                return createErrorMessage("404", "Invalid Access", "Failed to query requested data due to invalid access", null);
+            }
+        } else {
+            return data;
+        }
     }).catch(error => {
         return error;
     }));
@@ -919,8 +970,16 @@ function postDeleteVote(con, eventID, event, callback) {
 
 // deletes the role if user's access is high enough
 function postDeleteRole(con, eventID, event, callback) {
-    callback(validAccess(con, event).then(function() {
-        return deleteRole();
+    callback(getAccessPromise(con, event).then(data => {
+        if (data.statusCode === "200") {
+            if (data.access === "Admin" || data.access === "Developer") {
+                return deleteRole();
+            } else {
+                return createErrorMessage("404", "Invalid Access", "Failed to query requested data due to invalid access", null);
+            }
+        } else {
+            return data;
+        }
     }).catch(error => {
         return error;
     }));
@@ -1064,12 +1123,12 @@ function getPickVotes(pick_id, con) {
 }
 
 // delete's the user's pick's item
-function validAccess(con, event) {
+function getAccessPromise(con, event) {
     return new Promise(async function (resolve, reject) {
-        const structure = 'SELECT user.* '
-            + 'FROM user '
-            + 'JOIN access ON user.access_id = access.access_id '
-            + 'WHERE user.user_id = ? AND (access.name LIKE \'Admin\' OR access.name LIKE \'Developer\') ';
+        const structure = 'SELECT access.name '
+            + 'FROM access '
+            + 'JOIN user ON user.access_id = access.access_id '
+            + 'WHERE user.user_id = ? ';
         const inserts = [event.headers["user_id"]];
         const sql = MySQL.format(structure, inserts);
 
@@ -1078,11 +1137,14 @@ function validAccess(con, event) {
                 reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
             } else {
                 if (results.length === 0) {
-                    reject(createErrorMessage("404", "Access Error", "Insufficient Access to delete a role", error));
+                    reject(createErrorMessage("404", "Access Error", "Insufficient Access to perform action", error));
                 } else if (results.length > 1) {
-                    reject(createErrorMessage("404", "Server-side Error", "Invalid access data, duplicate users", error));
+                    reject(createErrorMessage("404", "Server-side Error", "Invalid access data, duplicate access", error));
                 } else {
-                    resolve();
+                    resolve({
+                        "statusCode": "200",
+                        "access": results[0]["name"]
+                    });
                 }
             }
         });

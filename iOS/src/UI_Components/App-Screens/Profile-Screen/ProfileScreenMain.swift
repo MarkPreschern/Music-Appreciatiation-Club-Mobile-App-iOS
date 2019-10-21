@@ -30,9 +30,7 @@ class ProfileScreenMain: UIViewController, UITableViewDelegate {
     @IBOutlet weak var userImage_outlet: UIImageView!
     @IBOutlet weak var settings_outlet: UIImageView!
     @IBOutlet weak var members_outlet: UIImageView!
-    @IBOutlet weak var logOut_outlet: UIButton!
     @IBOutlet weak var userDataView_outlet: UIView!
-    @IBOutlet weak var backButton_outlet: UIButton!
     
     @IBOutlet weak var table_outlet: UITableView!
     
@@ -65,31 +63,17 @@ class ProfileScreenMain: UIViewController, UITableViewDelegate {
         // creates a user image gesture recognizer
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ProfileScreenMain.imageClicked(gesture:)))
         self.userImage_outlet.addGestureRecognizer(tapGesture)
-        
-        if self.currentUser {
-            // disable back button
-            self.backButton_outlet.isEnabled = false
-            self.backButton_outlet.isHidden = true
-            
-            // creates a settings image gesture recognizer
-            let tapGesture2 = UITapGestureRecognizer(target: self, action: #selector(ProfileScreenMain.settingsClicked(gesture:)))
-            self.settings_outlet.addGestureRecognizer(tapGesture2)
-            // creates a members image gesture recognizer
-            let tapGesture3 = UITapGestureRecognizer(target: self, action: #selector(ProfileScreenMain.membersClicked(gesture:)))
-            self.members_outlet.addGestureRecognizer(tapGesture3)
-        } else {
-            self.settings_outlet.image = nil
-            self.members_outlet.image = nil
-        }
+        // creates a settings image gesture recognizer
+        let tapGesture2 = UITapGestureRecognizer(target: self, action: #selector(ProfileScreenMain.settingsClicked(gesture:)))
+        self.settings_outlet.addGestureRecognizer(tapGesture2)
+        // creates a members image gesture recognizer
+        let tapGesture3 = UITapGestureRecognizer(target: self, action: #selector(ProfileScreenMain.membersClicked(gesture:)))
+        self.members_outlet.addGestureRecognizer(tapGesture3)
         
         //sets table outlet's datasource to this class's extension
         self.table_outlet.register(UITableViewCell.self, forCellReuseIdentifier: "UITableViewCell")
         self.table_outlet.dataSource = self
         self.table_outlet.delegate = self
-        
-        // sets log out button border
-        self.logOut_outlet.layer.borderWidth = 1
-        self.logOut_outlet.layer.borderColor = UIColor(red:222/255, green:225/255, blue:227/255, alpha: 1).cgColor
         
         self.retrievePopularPicks()
     }

@@ -36,7 +36,7 @@ BEGIN
     WHERE DATE(event.end_date) = curdate();
 
 	-- ends the event if applicable
-	IF eventIsEnding = 1 THEN
+	IF eventIsEnding > 0 THEN
 		CALL endEvent();
     END IF;
 END //

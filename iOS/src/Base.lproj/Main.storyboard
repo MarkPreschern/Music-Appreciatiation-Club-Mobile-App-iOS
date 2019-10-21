@@ -305,20 +305,6 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lqA-pM-hYP">
-                                        <rect key="frame" x="327" y="32" width="40" height="40"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" cocoaTouchSystemColor="lightTextColor"/>
-                                        <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="22"/>
-                                        <state key="normal" title="&lt;">
-                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="backButtonClicked:" destination="8ok-cK-mp9" eventType="touchUpInside" id="anC-e7-nq9"/>
-                                            <action selector="backButtonClicked:" destination="ff8-at-suJ" eventType="touchUpInside" id="t9i-NZ-CtF"/>
-                                            <action selector="backButtonClicked:" destination="ggj-w3-doe" eventType="touchUpInside" id="tq5-8y-KZy"/>
-                                        </connections>
-                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
@@ -375,7 +361,6 @@
                         <viewLayoutGuide key="safeArea" id="fB5-CC-Nl5"/>
                     </view>
                     <connections>
-                        <outlet property="backButton_outlet" destination="lqA-pM-hYP" id="zhc-aQ-aSC"/>
                         <outlet property="members_outlet" destination="0cQ-uj-lxu" id="r3O-uU-Y0u"/>
                         <outlet property="nameLabel_outlet" destination="69r-5x-f23" id="WEU-V2-bQz"/>
                         <outlet property="roleLabel_outlet" destination="poH-n8-4ZF" id="jJr-Wd-s4j"/>
