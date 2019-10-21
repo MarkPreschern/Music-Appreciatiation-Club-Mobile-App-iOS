@@ -93,7 +93,6 @@ class MembersScreenMain: UIViewController, UITableViewDelegate {
     // when table view cell is tapped, move to controller of cell type
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let nextVC = self.storyboard!.instantiateViewController(withIdentifier: "profileScreenID") as! ProfileScreenMain
-        // TODO: identify that the profile screen being presented isn't the current user's profile
         nextVC.currentUser = false
         nextVC.userDetails = self.users[indexPath.row]
         self.present(nextVC, animated:true, completion: nil)

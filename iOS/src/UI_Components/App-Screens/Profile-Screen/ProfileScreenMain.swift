@@ -250,25 +250,6 @@ class ProfileScreenMain: UIViewController, UITableViewDelegate {
             self.present(nextVC, animated:true, completion: nil)
         }
     }
-
-    
-    // when the log out button is clicked, the user will be promted with an alert to logout
-    @IBAction func logOutClicked(_ sender: Any) {
-        let alert = UIAlertController(title: "Log Out", message: "Are you sure you want to log out?", preferredStyle: UIAlertController.Style.alert)
-        // handles if the user clicks "no"
-        alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
-        // handles if the user clicks "yes"
-        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { action in
-            // resets global variables
-            self.resetGlobalVariables()
-            
-            // presents the start screen
-            let nextVC = self.storyboard!.instantiateViewController(withIdentifier: "StartScreenID")
-            self.present(nextVC, animated:true, completion: nil)
-        }))
-        // presents the alert
-        self.present(alert, animated: true, completion: nil)
-    }
     
     // resets all global variables to empty values and userDefaults values
     func resetGlobalVariables() {
