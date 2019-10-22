@@ -199,6 +199,7 @@ CREATE TABLE IF NOT EXISTS `MacDB`.`post` (
   `post_id` INT NOT NULL AUTO_INCREMENT,
   `title` VARCHAR(50) NOT NULL,
   `content` VARCHAR(250) NOT NULL,
+  `date_created` DATETIME NOT NULL,
   `user_id` INT NOT NULL,
   PRIMARY KEY (`post_id`, `user_id`),
   UNIQUE INDEX `post_id_UNIQUE` (`post_id` ASC),
@@ -218,6 +219,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `MacDB`.`comment` (
   `comment_id` INT NOT NULL AUTO_INCREMENT,
   `content` VARCHAR(100) NOT NULL,
+  `date_created` DATETIME NOT NULL,
   `post_id` INT NOT NULL,
   `user_id` INT NOT NULL,
   PRIMARY KEY (`comment_id`, `post_id`, `user_id`),

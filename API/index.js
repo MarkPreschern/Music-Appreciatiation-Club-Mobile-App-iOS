@@ -387,6 +387,63 @@ function getUsers(con, eventID, event, callback) {
     });
 }
 
+// gets all post's and their necessary user information
+function getPosts(con, eventID, event, callback) {
+    const structure = 'SELECT post.*, user.name as user_name, role.name as role_name'
+        + 'FROM post '
+        + 'JOIN user ON user.user_id = post.user_id '
+        + 'JOIN role ON role.role_id = user.role_id '
+        + 'ORDER BY post.date_created DESC ';
+    const inserts = [event.headers.user_id];
+    const sql = MySQL.format(structure, inserts);
+
+    con.query(sql, function (error, results) {
+        if (error) {
+            callback(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+        } else {
+            if (results.length === 0) {
+                callback({
+                    statusCode: "200",
+                    message: "Successfully retrieved posts",
+                    users: results
+                });
+            } else {
+                let promises = results.map(async post => {
+                    post["comments"] = await getPostComments(post["post_id"]);
+                });
+                callback(Promise.all(promises).then(function () {
+                    return {
+                        "statusCode": "200",
+                        "message": "Successfully retrieved posts",
+                        "posts": results
+                    };
+                }).catch(error => {
+                    return error;
+                }));
+            }
+        }
+    });
+
+    // gets all comments for this post
+    function getPostComments(post_id) {
+        return new Promise(async function (resolve, reject) {
+            const structure = 'SELECT comment.* '
+                + 'FROM comment '
+                + 'WHERE comment.post_id = ? ';
+            const inserts = [post_id];
+            const sql = MySQL.format(structure, inserts);
+
+            await con.query(sql, function (error, results) {
+                if (error) {
+                    reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+                } else {
+                    resolve(results);
+                }
+            });
+        });
+    }
+}
+
 
 /*
  ****************** POST METHODS ***************
@@ -474,45 +531,22 @@ function postAuthorization(con, eventID, event, callback) {
 
 // creates the item associated with this pick, and the pick with the newly created item
 function postUser(con, eventID, event, callback) {
+    const structure = 'INSERT INTO user (name, nuid, login_date, access_id, role_id) '
+        + 'VALUES ( ? , ? , ? , ? , ? ) ';
+    const inserts = [event.headers["user_name"], event.headers["user_nuid"], dateTime(), event.headers["access_id"], event.headers["role_id"]];
+    const sql = MySQL.format(structure, inserts);
 
-    callback(getAccessPromise(con, event).then(data => {
-        if (data.statusCode === "200") {
-            if ( // verifying correct access rights for action
-                (data.access === "Moderator" && event.headers["access"] === "User" && event.headers["role"] === "Member") ||
-                (data.access === "Admin" && (event.headers["access"] === "User" || event.headers["access"] === "Moderator")) ||
-                data.access === "Developer") {
-                return insertUser();
-            } else {
-                return createErrorMessage("404", "Invalid Access", "Failed to query requested data due to invalid access", null);
-            }
+    // attempts to insert the authorization token
+    con.query(sql, function (error, results) {
+        if (error) {
+            callback(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
         } else {
-            return data;
-        }
-    }).catch(error => {
-        return error;
-    }));
-
-    // inserts the user
-    function insertUser() {
-        return new Promise(function (resolve, reject) {
-            const structure = 'INSERT INTO user (name, nuid, login_date, access_id, role_id) '
-                + 'VALUES ( ? , ? , ? , ? , ? ) ';
-            const inserts = [event.headers["user_name"], event.headers["user_nuid"], dateTime(), event.headers["access_id"], event.headers["role_id"]];
-            const sql = MySQL.format(structure, inserts);
-
-            // attempts to insert the authorization token
-            con.query(sql, function (error, results) {
-                if (error) {
-                    reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
-                } else {
-                    resolve({
-                        "statusCode": "200",
-                        "message": "Success added user"
-                    });
-                }
+            callback({
+                "statusCode": "200",
+                "message": "Success added user"
             });
-        })
-    }
+        }
+    });
 }
 
 // creates the item associated with this pick, and the pick with the newly created item
@@ -765,16 +799,8 @@ function postVote(con, eventID, event, callback) {
 
 // deletes the role if user's access is high enough
 function postRole(con, eventID, event, callback) {
-    callback(getAccessPromise(con, event).then(data => {
-        if (data.statusCode === "200") {
-            if (data.access === "Admin" || data.access === "Developer") {
-                return postRole();
-            } else {
-                return createErrorMessage("404", "Invalid Access", "Failed to query requested data due to invalid access", null);
-            }
-        } else {
-            return data;
-        }
+    callback(validAccess(con, event).then(function() {
+        return postRole();
     }).catch(error => {
         return error;
     }));
@@ -876,6 +902,44 @@ function postImage(con, eventID, event, callback) {
     }
 }
 
+// post a user's post
+function postPost(con, eventID, event, callback) {
+    const structure = 'INSERT INTO post (title, content, date_created, user_id) '
+        + 'VALUES ( ? , ? , ? )';
+    const inserts = [event.headers["title"], event.headers["content"], dateTime(), event.headers.user_id];
+    const sql = MySQL.format(structure, inserts);
+
+    con.query(sql, function (error) {
+        if (error) {
+            callback(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+        } else {
+            callback({
+                "statusCode": "200",
+                "message": "Successfully created post"
+            });
+        }
+    });
+}
+
+// post a user's comment on a post
+function postComment(con, eventID, event, callback) {
+    const structure = 'INSERT INTO comment (content, date_created, post_id, user_id) '
+        + 'VALUES ( ? , ? , ? )';
+    const inserts = [event.headers["content"], dateTime(), event.headers["post_id"], event.headers.user_id];
+    const sql = MySQL.format(structure, inserts);
+
+    con.query(sql, function (error) {
+        if (error) {
+            callback(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+        } else {
+            callback({
+                "statusCode": "200",
+                "message": "Successfully created comment"
+            });
+        }
+    });
+}
+
 /*
  ****************** DELETE METHODS (Type is POST) ***************
  */
@@ -970,16 +1034,8 @@ function postDeleteVote(con, eventID, event, callback) {
 
 // deletes the role if user's access is high enough
 function postDeleteRole(con, eventID, event, callback) {
-    callback(getAccessPromise(con, event).then(data => {
-        if (data.statusCode === "200") {
-            if (data.access === "Admin" || data.access === "Developer") {
-                return deleteRole();
-            } else {
-                return createErrorMessage("404", "Invalid Access", "Failed to query requested data due to invalid access", null);
-            }
-        } else {
-            return data;
-        }
+    callback(validAccess(con, event).then(function() {
+        return deleteRole();
     }).catch(error => {
         return error;
     }));
@@ -1004,6 +1060,63 @@ function postDeleteRole(con, eventID, event, callback) {
             });
         });
     }
+}
+
+// deletes the role if user's access is high enough
+function postDeleteUser(con, eventID, event, callback) {
+    const structure = 'DELETE FROM user '
+        + 'WHERE user.user_id = ? ';
+    const inserts = [event.headers["delete_user_id"]];
+    const sql = MySQL.format(structure, inserts);
+
+    con.query(sql, function (error) {
+        if (error) {
+            callback(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+        } else {
+            callback({
+                "statusCode": "200",
+                "message": "Successfully deleted user"
+            });
+        }
+    });
+}
+
+// delete a user's post
+function postDeletePost(con, eventID, event, callback) {
+    const structure = 'DELETE FROM post '
+        + 'WHERE post.post_id = ? ';
+    const inserts = [event.headers["post_id"]];
+    const sql = MySQL.format(structure, inserts);
+
+    con.query(sql, function (error) {
+        if (error) {
+            callback(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+        } else {
+            callback({
+                "statusCode": "200",
+                "message": "Successfully deleted post"
+            });
+        }
+    });
+}
+
+// delete a user's comment on a post
+function postDeleteComment(con, eventID, event, callback) {
+    const structure = 'DELETE FROM comment '
+        + 'WHERE comment.comment_id = ? ';
+    const inserts = [event.headers["comment_id"]];
+    const sql = MySQL.format(structure, inserts);
+
+    con.query(sql, function (error) {
+        if (error) {
+            callback(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+        } else {
+            callback({
+                "statusCode": "200",
+                "message": "Successfully deleted comment"
+            });
+        }
+    });
 }
 
 
@@ -1123,12 +1236,12 @@ function getPickVotes(pick_id, con) {
 }
 
 // delete's the user's pick's item
-function getAccessPromise(con, event) {
+function validAccess(con, event) {
     return new Promise(async function (resolve, reject) {
-        const structure = 'SELECT access.name '
-            + 'FROM access '
-            + 'JOIN user ON user.access_id = access.access_id '
-            + 'WHERE user.user_id = ? ';
+        const structure = 'SELECT user.* '
+            + 'FROM user '
+            + 'JOIN access ON user.access_id = access.access_id '
+            + 'WHERE user.user_id = ? AND (access.name LIKE \'Admin\' OR access.name LIKE \'Developer\') ';
         const inserts = [event.headers["user_id"]];
         const sql = MySQL.format(structure, inserts);
 
@@ -1141,10 +1254,7 @@ function getAccessPromise(con, event) {
                 } else if (results.length > 1) {
                     reject(createErrorMessage("404", "Server-side Error", "Invalid access data, duplicate access", error));
                 } else {
-                    resolve({
-                        "statusCode": "200",
-                        "access": results[0]["name"]
-                    });
+                    resolve();
                 }
             }
         });
