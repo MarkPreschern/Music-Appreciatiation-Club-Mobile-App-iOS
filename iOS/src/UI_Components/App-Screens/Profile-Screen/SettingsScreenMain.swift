@@ -8,10 +8,11 @@
 
 import UIKit
 
-// represents a pick as it's pick id, the item picked, the votes for this item, and the user that picked this item
+// represents a setting as it's name, popup View Controller, and Storyboard Identifier
 struct Setting {
     let name: String!
-    var popup: PopupScreen!
+    let popup: PopupScreen!
+    let identifier: String!
 }
 
 // All possible user settings
@@ -51,22 +52,22 @@ class SettingsScreenMain: UIViewController, UITableViewDelegate {
         let access = userData.access_name
         
         if access == "User" {
-            settings.append(Setting(name: "Log Out", popup: LogOut()))
+            settings.append(Setting(name: "Log Out", popup: LogOut(), identifier: nil))
             callback("Done")
         }
         if access == "Moderator" {
-            settings.append(Setting(name: "Log Out", popup: LogOut()))
-            settings.append(Setting(name: "Add User", popup: AddUser()))
+            settings.append(Setting(name: "Log Out", popup: LogOut(), identifier: nil))
+            settings.append(Setting(name: "Add User", popup: AddUser(), identifier: "AddUserID"))
             callback("Done")
         }
         if access == "Admin" {
-            settings.append(Setting(name: "Log Out", popup: LogOut()))
-            settings.append(Setting(name: "Add User", popup: AddUser()))
+            settings.append(Setting(name: "Log Out", popup: LogOut(), identifier: nil))
+            settings.append(Setting(name: "Add User", popup: AddUser(), identifier: "AddUserID"))
             callback("Done")
         }
         if access == "Developer" {
-            settings.append(Setting(name: "Log Out", popup: LogOut()))
-            settings.append(Setting(name: "Add User", popup: AddUser()))
+            settings.append(Setting(name: "Log Out", popup: LogOut(), identifier: nil))
+            settings.append(Setting(name: "Add User", popup: AddUser(), identifier: "AddUserID"))
             callback("Done")
         }
     }
@@ -80,10 +81,13 @@ class SettingsScreenMain: UIViewController, UITableViewDelegate {
     // when table view cell is tapped
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let popOverVC = settings[indexPath.row].popup!
-        popOverVC.modalPresentationStyle = .overCurrentContext
-        popOverVC.modalTransitionStyle = .crossDissolve
-        self.present(popOverVC, animated: true, completion: nil)
+        if (settings[indexPath.row].name == "Log Out") {
+            let popOverVC = settings[indexPath.row].popup!
+            self.present(popOverVC, animated: true, completion: nil)
+        } else {
+            let nextVC = self.storyboard!.instantiateViewController(withIdentifier: settings[indexPath.row].identifier)
+            self.present(nextVC, animated:true, completion: nil)
+        }
     }
 }
 

@@ -1,5 +1,5 @@
 //
-//  AddUser.swift
+//  CreatePost.swift
 //  Music-Appreciation-Mobile-App-iOs
 //
 //  Created by Mark Preschern on 10/24/19.
@@ -7,10 +7,11 @@
 //
 
 import UIKit
-import AVFoundation
 
-// when the log out button is clicked, the user will be promted with an alert to logout
-class AddUser: UIViewController, PopupScreen {
+// View Controller for creating a new post
+class CreatePost: UIViewController, PopupScreen {
+    @IBOutlet weak var title_outlet: UITextField!
+    @IBOutlet weak var content_outlet: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,13 +24,23 @@ class AddUser: UIViewController, PopupScreen {
             }
         })
     }
-    
+
     func showPopup(callback: @escaping (String) -> Void) {
+        // TODO
     }
     
     func removePopup() {
         self.dismiss(animated: true, completion: nil)
     }
     
+    // when the cancle button is clicked
+    @IBAction func cancelClicked(_ sender: Any) {
+        self.removePopup()
+    }
+    
+    // when the done button is clicked, attempt to create post
+    @IBAction func doneClicked(_ sender: Any) {
+        // TODO
+    }
 }
 

@@ -14,8 +14,6 @@ class LogOut: UIViewController, PopupScreen {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.definesPresentationContext = true
     }
     
     override func viewDidAppear(_ animated: Bool) {

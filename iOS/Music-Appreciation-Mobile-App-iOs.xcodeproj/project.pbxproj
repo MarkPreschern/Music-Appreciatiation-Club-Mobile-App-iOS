@@ -33,6 +33,7 @@
 		A4B2CDFD222B62EB00DB64AC /* Music_Appreciation_Mobile_App_iOsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B2CDFC222B62EB00DB64AC /* Music_Appreciation_Mobile_App_iOsTests.swift */; };
 		A4B2CE08222B62EB00DB64AC /* Music_Appreciation_Mobile_App_iOsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B2CE07222B62EB00DB64AC /* Music_Appreciation_Mobile_App_iOsUITests.swift */; };
 		A4B59E1A2334F3E8002C3EFA /* ParsePickData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B59E192334F3E8002C3EFA /* ParsePickData.swift */; };
+		A4B5D60323621A8800DEBC62 /* CreatePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B5D60223621A8800DEBC62 /* CreatePost.swift */; };
 		A4C884052350B98100BBACD8 /* SettingsScreenMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C884042350B98100BBACD8 /* SettingsScreenMain.swift */; };
 		A4C884072350B9AB00BBACD8 /* MembersScreenMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C884062350B9AB00BBACD8 /* MembersScreenMain.swift */; };
 		A4C884092354E8FC00BBACD8 /* DeleteItemAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C884082354E8FC00BBACD8 /* DeleteItemAlert.swift */; };
@@ -101,6 +102,7 @@
 		A4B2CE07222B62EB00DB64AC /* Music_Appreciation_Mobile_App_iOsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Music_Appreciation_Mobile_App_iOsUITests.swift; sourceTree = "<group>"; };
 		A4B2CE09222B62EB00DB64AC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A4B59E192334F3E8002C3EFA /* ParsePickData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParsePickData.swift; sourceTree = "<group>"; };
+		A4B5D60223621A8800DEBC62 /* CreatePost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePost.swift; sourceTree = "<group>"; };
 		A4C884042350B98100BBACD8 /* SettingsScreenMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreenMain.swift; sourceTree = "<group>"; };
 		A4C884062350B9AB00BBACD8 /* MembersScreenMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MembersScreenMain.swift; sourceTree = "<group>"; };
 		A4C884082354E8FC00BBACD8 /* DeleteItemAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteItemAlert.swift; sourceTree = "<group>"; };
@@ -202,6 +204,7 @@
 			isa = PBXGroup;
 			children = (
 				A495E30A22300AAA00D8607D /* NewsScreenMain.swift */,
+				A4B5D60223621A8800DEBC62 /* CreatePost.swift */,
 			);
 			path = "News-Screen";
 			sourceTree = "<group>";
@@ -576,6 +579,7 @@
 				A4D2AA3622F473A5009007B3 /* AlbumView.swift in Sources */,
 				A46EAB56223A911D00F1B702 /* SearchScreenMain.swift in Sources */,
 				A40FA785230ED43E00D19537 /* AverageColor.swift in Sources */,
+				A4B5D60323621A8800DEBC62 /* CreatePost.swift in Sources */,
 				A4D2AA2722EE5B6E009007B3 /* SearchTextBox.swift in Sources */,
 				A4C884092354E8FC00BBACD8 /* DeleteItemAlert.swift in Sources */,
 				A40FA78E230EE6FC00D19537 /* AddItemAlert.swift in Sources */,

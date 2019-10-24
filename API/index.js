@@ -389,7 +389,7 @@ function getUsers(con, eventID, event, callback) {
 
 // gets all post's and their necessary user information
 function getPosts(con, eventID, event, callback) {
-    const structure = 'SELECT post.*, user.name as user_name, role.name as role_name'
+    const structure = 'SELECT post.*, user.name as user_name, role.name as role_name '
         + 'FROM post '
         + 'JOIN user ON user.user_id = post.user_id '
         + 'JOIN role ON role.role_id = user.role_id '
@@ -404,7 +404,7 @@ function getPosts(con, eventID, event, callback) {
             callback({
                 statusCode: "200",
                 message: "Successfully retrieved posts",
-                users: results
+                posts: results
             });
         }
     });

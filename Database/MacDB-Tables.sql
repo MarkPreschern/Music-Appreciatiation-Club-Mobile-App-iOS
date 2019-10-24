@@ -5,7 +5,6 @@
 CREATE SCHEMA IF NOT EXISTS `MacDB` DEFAULT CHARACTER SET utf8 ;
 USE `MacDB`;
 
-
 -- -----------------------------------------------------
 -- Table `MacDB`.`role`
 -- Represents roles that users in the club can have
