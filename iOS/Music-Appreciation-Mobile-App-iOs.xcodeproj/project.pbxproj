@@ -20,6 +20,7 @@
 		A4387AC123282179008F501B /* JASON+Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4387AC023282179008F501B /* JASON+Alamofire.swift */; };
 		A43DD98D235DD46F00BEFD77 /* PopupScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43DD98C235DD46F00BEFD77 /* PopupScreen.swift */; };
 		A43DD993235DDBEB00BEFD77 /* LogOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43DD992235DDBEB00BEFD77 /* LogOut.swift */; };
+		A43DD9952361C77800BEFD77 /* AddUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43DD9942361C77800BEFD77 /* AddUser.swift */; };
 		A44BFBCA232FA99F007272AB /* MacApiRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44BFBC9232FA99F007272AB /* MacApiRequest.swift */; };
 		A46EAB54223A910100F1B702 /* PicksScreenSongMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A46EAB53223A910100F1B702 /* PicksScreenSongMain.swift */; };
 		A46EAB56223A911D00F1B702 /* SearchScreenMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A46EAB55223A911D00F1B702 /* SearchScreenMain.swift */; };
@@ -80,6 +81,7 @@
 		A4387AC023282179008F501B /* JASON+Alamofire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JASON+Alamofire.swift"; sourceTree = "<group>"; };
 		A43DD98C235DD46F00BEFD77 /* PopupScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupScreen.swift; sourceTree = "<group>"; };
 		A43DD992235DDBEB00BEFD77 /* LogOut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogOut.swift; sourceTree = "<group>"; };
+		A43DD9942361C77800BEFD77 /* AddUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddUser.swift; sourceTree = "<group>"; };
 		A44BFBC9232FA99F007272AB /* MacApiRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacApiRequest.swift; sourceTree = "<group>"; };
 		A46EAB53223A910100F1B702 /* PicksScreenSongMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicksScreenSongMain.swift; sourceTree = "<group>"; };
 		A46EAB55223A911D00F1B702 /* SearchScreenMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchScreenMain.swift; sourceTree = "<group>"; };
@@ -161,6 +163,7 @@
 			children = (
 				A43DD98C235DD46F00BEFD77 /* PopupScreen.swift */,
 				A43DD992235DDBEB00BEFD77 /* LogOut.swift */,
+				A43DD9942361C77800BEFD77 /* AddUser.swift */,
 			);
 			path = "Popup-Screens";
 			sourceTree = "<group>";
@@ -564,6 +567,7 @@
 				A4C884072350B9AB00BBACD8 /* MembersScreenMain.swift in Sources */,
 				A4D2AA3422F46B19009007B3 /* SongView.swift in Sources */,
 				A40FA78C230EE52800D19537 /* LoadingOverlay.swift in Sources */,
+				A43DD9952361C77800BEFD77 /* AddUser.swift in Sources */,
 				A40FA789230EDACD00D19537 /* ImageAsColor.swift in Sources */,
 				A43DD98D235DD46F00BEFD77 /* PopupScreen.swift in Sources */,
 				A4B59E1A2334F3E8002C3EFA /* ParsePickData.swift in Sources */,

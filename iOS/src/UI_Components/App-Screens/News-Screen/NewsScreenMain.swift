@@ -10,7 +10,7 @@ import UIKit
 
 // Represents the news screen. Holds information regarding:
 // - club related news and reminders
-class NewsScreenMain: UIViewController {
+class NewsScreenMain: UIViewController, UITableViewDelegate {
     
     @IBOutlet weak var view_outlet: UIView!
     
@@ -22,5 +22,5 @@ class NewsScreenMain: UIViewController {
         self.view_outlet.layer.borderWidth = 1
         self.view_outlet.layer.borderColor = UIColor(red:222/255, green:225/255, blue:227/255, alpha: 1).cgColor
     }
-
+    
 }

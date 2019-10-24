@@ -401,47 +401,13 @@ function getPosts(con, eventID, event, callback) {
         if (error) {
             callback(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
         } else {
-            if (results.length === 0) {
-                callback({
-                    statusCode: "200",
-                    message: "Successfully retrieved posts",
-                    users: results
-                });
-            } else {
-                let promises = results.map(async post => {
-                    post["comments"] = await getPostComments(post["post_id"]);
-                });
-                callback(Promise.all(promises).then(function () {
-                    return {
-                        "statusCode": "200",
-                        "message": "Successfully retrieved posts",
-                        "posts": results
-                    };
-                }).catch(error => {
-                    return error;
-                }));
-            }
+            callback({
+                statusCode: "200",
+                message: "Successfully retrieved posts",
+                users: results
+            });
         }
     });
-
-    // gets all comments for this post
-    function getPostComments(post_id) {
-        return new Promise(async function (resolve, reject) {
-            const structure = 'SELECT comment.* '
-                + 'FROM comment '
-                + 'WHERE comment.post_id = ? ';
-            const inserts = [post_id];
-            const sql = MySQL.format(structure, inserts);
-
-            await con.query(sql, function (error, results) {
-                if (error) {
-                    reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
-                } else {
-                    resolve(results);
-                }
-            });
-        });
-    }
 }
 
 
@@ -921,25 +887,6 @@ function postPost(con, eventID, event, callback) {
     });
 }
 
-// post a user's comment on a post
-function postComment(con, eventID, event, callback) {
-    const structure = 'INSERT INTO comment (content, date_created, post_id, user_id) '
-        + 'VALUES ( ? , ? , ? )';
-    const inserts = [event.headers["content"], dateTime(), event.headers["post_id"], event.headers.user_id];
-    const sql = MySQL.format(structure, inserts);
-
-    con.query(sql, function (error) {
-        if (error) {
-            callback(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
-        } else {
-            callback({
-                "statusCode": "200",
-                "message": "Successfully created comment"
-            });
-        }
-    });
-}
-
 /*
  ****************** DELETE METHODS (Type is POST) ***************
  */
@@ -1095,25 +1042,6 @@ function postDeletePost(con, eventID, event, callback) {
             callback({
                 "statusCode": "200",
                 "message": "Successfully deleted post"
-            });
-        }
-    });
-}
-
-// delete a user's comment on a post
-function postDeleteComment(con, eventID, event, callback) {
-    const structure = 'DELETE FROM comment '
-        + 'WHERE comment.comment_id = ? ';
-    const inserts = [event.headers["comment_id"]];
-    const sql = MySQL.format(structure, inserts);
-
-    con.query(sql, function (error) {
-        if (error) {
-            callback(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
-        } else {
-            callback({
-                "statusCode": "200",
-                "message": "Successfully deleted comment"
             });
         }
     });

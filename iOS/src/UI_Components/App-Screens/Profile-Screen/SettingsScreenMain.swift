@@ -56,14 +56,17 @@ class SettingsScreenMain: UIViewController, UITableViewDelegate {
         }
         if access == "Moderator" {
             settings.append(Setting(name: "Log Out", popup: LogOut()))
+            settings.append(Setting(name: "Add User", popup: AddUser()))
             callback("Done")
         }
         if access == "Admin" {
             settings.append(Setting(name: "Log Out", popup: LogOut()))
+            settings.append(Setting(name: "Add User", popup: AddUser()))
             callback("Done")
         }
         if access == "Developer" {
             settings.append(Setting(name: "Log Out", popup: LogOut()))
+            settings.append(Setting(name: "Add User", popup: AddUser()))
             callback("Done")
         }
     }
