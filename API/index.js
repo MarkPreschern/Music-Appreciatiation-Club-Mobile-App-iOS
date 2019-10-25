@@ -389,7 +389,7 @@ function getUsers(con, eventID, event, callback) {
 
 // gets all post's and their necessary user information
 function getPosts(con, eventID, event, callback) {
-    const structure = 'SELECT post.*, user.name as user_name, role.name as role_name '
+    const structure = 'SELECT post.*, user.user_id, user.name as user_name, role.name as role_name '
         + 'FROM post '
         + 'JOIN user ON user.user_id = post.user_id '
         + 'JOIN role ON role.role_id = user.role_id '
@@ -870,9 +870,9 @@ function postImage(con, eventID, event, callback) {
 
 // post a user's post
 function postPost(con, eventID, event, callback) {
-    const structure = 'INSERT INTO post (title, content, date_created, user_id) '
+    const structure = 'INSERT INTO post (content, date_created, user_id) '
         + 'VALUES ( ? , ? , ? )';
-    const inserts = [event.headers["title"], event.headers["content"], dateTime(), event.headers.user_id];
+    const inserts = [event.headers["content"], dateTime(), event.headers.user_id];
     const sql = MySQL.format(structure, inserts);
 
     con.query(sql, function (error) {

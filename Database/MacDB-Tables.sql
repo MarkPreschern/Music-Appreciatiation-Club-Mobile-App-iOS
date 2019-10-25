@@ -196,7 +196,6 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `MacDB`.`post` (
   `post_id` INT NOT NULL AUTO_INCREMENT,
-  `title` VARCHAR(50) NOT NULL,
   `content` VARCHAR(250) NOT NULL,
   `date_created` DATETIME NOT NULL,
   `user_id` INT NOT NULL,

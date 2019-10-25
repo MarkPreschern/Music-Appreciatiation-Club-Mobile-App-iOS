@@ -310,4 +310,3 @@ extension ProfileScreenMain: UITableViewDataSource {
         }
     }
 }
-
