@@ -19,7 +19,7 @@ exports.handler = async (event) => {
     //      'statusCode': '<error status>',
     //      'title': '<error general message>',
     //      'description': '<error detailed description>',
-    //      'stack race': '<error stack trace>'
+    //      'stack trace': '<error stack trace>'
     // }
     return await new Promise(function (resolve, reject) {
         // establishes database connection
@@ -365,9 +365,10 @@ function getUserPopularPicks(con, eventID, event, callback) {
 
 // gets all user's and their necessary user information except for the user who sent the request
 function getUsers(con, eventID, event, callback) {
-    const structure = 'SELECT user.user_id, user.name AS user_name, role.name AS role_name, role.description, image.image_data '
+    const structure = 'SELECT user.user_id, user.name AS user_name, role.name AS role_name, access.name as access_name, role.description, image.image_data '
         + 'FROM user '
         + 'JOIN role ON user.role_id = role.role_id '
+        + 'JOIN access ON user.access_id = access.access_id '
         + 'LEFT JOIN image ON user.image_id = image.image_id '
         + 'WHERE user.user_id != ? '
         + 'ORDER BY user.name ASC ';
@@ -412,7 +413,9 @@ function getPosts(con, eventID, event, callback) {
 
 // gets all roles
 function getRoles(con, eventID, event, callback) {
-    const sql = 'SELECT * FROM role ';
+    const sql = 'SELECT * ' +
+        'FROM role ' +
+        'ORDER BY role_id ASC';
 
     con.query(sql, function (error, results) {
         if (error) {

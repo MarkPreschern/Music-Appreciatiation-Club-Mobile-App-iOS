@@ -58,16 +58,19 @@ class SettingsScreenMain: UIViewController, UITableViewDelegate {
         if access == "Moderator" {
             settings.append(Setting(name: "Log Out", popup: LogOut(), identifier: nil))
             settings.append(Setting(name: "Add User", popup: AddUser(), identifier: "AddUserID"))
+            settings.append(Setting(name: "Delete User", popup: DeleteUser(), identifier: "DeleteUserID"))
             callback("Done")
         }
         if access == "Admin" {
             settings.append(Setting(name: "Log Out", popup: LogOut(), identifier: nil))
             settings.append(Setting(name: "Add User", popup: AddUser(), identifier: "AddUserID"))
+            settings.append(Setting(name: "Delete User", popup: DeleteUser(), identifier: "DeleteUserID"))
             callback("Done")
         }
         if access == "Developer" {
             settings.append(Setting(name: "Log Out", popup: LogOut(), identifier: nil))
             settings.append(Setting(name: "Add User", popup: AddUser(), identifier: "AddUserID"))
+            settings.append(Setting(name: "Delete User", popup: DeleteUser(), identifier: "DeleteUserID"))
             callback("Done")
         }
     }
