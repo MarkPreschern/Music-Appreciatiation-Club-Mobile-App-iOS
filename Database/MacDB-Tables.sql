@@ -48,7 +48,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `MacDB`.`user` (
   `user_id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(100) NOT NULL,
-  `nuid` VARCHAR(10) NOT NULL,
+  `nuid` VARCHAR(10) NOT NULL UNIQUE,
   `authorization` VARCHAR(64),
   `login_date` DATETIME NOT NULL,
   `role_id` INT NOT NULL,

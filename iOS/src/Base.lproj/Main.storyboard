@@ -570,7 +570,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Trash" translatesAutoresizingMaskIntoConstraints="NO" id="ko5-nj-Jqw">
-                                                    <rect key="frame" x="-12" y="-199" width="0.0" height="494"/>
+                                                    <rect key="frame" x="-12" y="-75.666666666666671" width="0.0" height="247.33333333333337"/>
                                                 </imageView>
                                             </subviews>
                                             <constraints>
@@ -1178,11 +1178,11 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
-                                    <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tRd-c9-Mvm">
+                                    <pickerView contentMode="scaleToFill" fixedFrame="YES" restorationIdentifier="rolePicker" translatesAutoresizingMaskIntoConstraints="NO" id="tRd-c9-Mvm">
                                         <rect key="frame" x="0.0" y="121" width="107" height="81"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                     </pickerView>
-                                    <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YzQ-7b-YOB">
+                                    <pickerView contentMode="scaleToFill" fixedFrame="YES" restorationIdentifier="accessPicker" translatesAutoresizingMaskIntoConstraints="NO" id="YzQ-7b-YOB">
                                         <rect key="frame" x="126" y="121" width="107" height="81"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                     </pickerView>
@@ -1190,11 +1190,17 @@
                                         <rect key="frame" x="130" y="210" width="98" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="Done"/>
+                                        <connections>
+                                            <action selector="doneClicked:" destination="2Gw-n6-Me4" eventType="touchUpInside" id="0x5-38-7UZ"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Maq-yo-Q0k">
                                         <rect key="frame" x="4" y="210" width="98" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="Cancel"/>
+                                        <connections>
+                                            <action selector="cancelClicked:" destination="2Gw-n6-Me4" eventType="touchUpInside" id="q5H-zj-8vs"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -1210,6 +1216,12 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Of9-23-Vbk"/>
                     </view>
+                    <connections>
+                        <outlet property="access_picker" destination="YzQ-7b-YOB" id="Cc3-0w-e4Q"/>
+                        <outlet property="name_outlet" destination="2XK-DN-gpI" id="aOd-rY-aTQ"/>
+                        <outlet property="nuid_outlet" destination="4cq-cq-xtG" id="EUf-p7-v1X"/>
+                        <outlet property="role_picker" destination="tRd-c9-Mvm" id="kvu-MZ-Kqz"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Lm0-j1-0lf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1403,7 +1415,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Trash" translatesAutoresizingMaskIntoConstraints="NO" id="5cu-9Y-Rb4">
-                                                    <rect key="frame" x="-32.333333333333336" y="-199" width="20.333333333333332" height="494"/>
+                                                    <rect key="frame" x="-32.333333333333336" y="-75.666666666666671" width="20.333333333333332" height="247.33333333333337"/>
                                                 </imageView>
                                             </subviews>
                                             <constraints>
@@ -1664,9 +1676,9 @@
         <image name="uncheck-mark-image" width="137.5" height="91.5"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="nlo-d0-rq3"/>
+        <segue reference="QKl-cU-Ibm"/>
         <segue reference="Wpl-bZ-9zU"/>
-        <segue reference="9Bv-fI-Obu"/>
+        <segue reference="dQu-lE-dEe"/>
         <segue reference="VX8-Wf-1eA"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -57,7 +57,7 @@ class CreatePost: UIViewController, UITextViewDelegate {
                     if let statusCode = jsonData?["statusCode"] as? String {
                         if statusCode == "200" {
                             let nextVC = self.storyboard!.instantiateViewController(withIdentifier: "NewsScreenMain")
-                            self.present(nextVC, animated:true, completion: nil)
+                            self.present(nextVC, animated:false, completion: nil)
                         }
                     }
                 })

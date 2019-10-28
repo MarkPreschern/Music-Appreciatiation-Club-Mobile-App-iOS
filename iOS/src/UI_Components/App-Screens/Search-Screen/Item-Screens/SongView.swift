@@ -130,7 +130,6 @@ class SongView: UIViewController {
                 player?.fadeOut()
             }
         }
-        player = AVAudioPlayer()
         // determines which controller to navigate to
         if (self.albumData == nil) {
             let searchView = self.storyboard!.instantiateViewController(withIdentifier: previousRestorationIdentifier)

@@ -410,6 +410,22 @@ function getPosts(con, eventID, event, callback) {
     });
 }
 
+// gets all roles
+function getRoles(con, eventID, event, callback) {
+    const sql = 'SELECT * FROM role ';
+
+    con.query(sql, function (error, results) {
+        if (error) {
+            callback(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+        } else {
+            callback({
+                statusCode: "200",
+                message: "Successfully retrieved roles",
+                roles: results
+            });
+        }
+    });
+}
 
 /*
  ****************** POST METHODS ***************
@@ -509,7 +525,7 @@ function postUser(con, eventID, event, callback) {
         } else {
             callback({
                 "statusCode": "200",
-                "message": "Success added user"
+                "message": "Added user " + event.headers["user_name"]
             });
         }
     });

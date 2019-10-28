@@ -9,7 +9,7 @@
 import UIKit
 import AVFoundation
 
-// when the log out button is clicked, the user will be promted with an alert to logout
+// the user is promted with an alert to logout
 class LogOut: UIViewController, PopupScreen {
     
     override func viewDidLoad() {
@@ -17,32 +17,25 @@ class LogOut: UIViewController, PopupScreen {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        self.showPopup(callback: { response -> Void in
-            if response == "Done" {
-                self.removePopup()
-            }
-        })
+        self.showPopup()
     }
 
-    func showPopup(callback: @escaping (String) -> Void) {
+    // displays the popup alert
+    func showPopup() {
         let alert = UIAlertController(title: "Log Out", message: "Are you sure you want to log out?", preferredStyle: UIAlertController.Style.alert)
         // handles if the user clicks "no"
         alert.addAction(UIAlertAction(title: "No", style: .default, handler: { action in
-            callback("Done")
+            self.dismiss(animated: true, completion: nil)
         }))
         // handles if the user clicks "yes"
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { action in
             // resets global variables
             self.resetGlobalVariables()
             let nextVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "StartScreenID")
-            self.present(nextVC, animated:true, completion: nil)
+            self.present(nextVC, animated: true, completion: nil)
         }))
         // presents the alert
         self.present(alert, animated: true, completion: nil)
-    }
-    
-    func removePopup() {
-        self.dismiss(animated: true, completion: nil)
     }
     
     // resets all global variables to empty values and userDefaults values
@@ -56,8 +49,6 @@ class LogOut: UIViewController, PopupScreen {
         currentQuery = String()
         spotifySearchItems = [ItemData]()
         songs = [ItemData]()
-        player = AVAudioPlayer()
-        session = AVAudioSession()
         vSpinner = UIView()
         settings = [Setting]()
     }

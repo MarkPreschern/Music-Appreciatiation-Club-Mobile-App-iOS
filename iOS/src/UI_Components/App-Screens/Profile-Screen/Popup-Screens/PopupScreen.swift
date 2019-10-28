@@ -10,10 +10,4 @@ import UIKit
 
 // protocol for all popup screens
 protocol PopupScreen: UIViewController {
-    
-    // shows the popup screen and waits for a callback
-    func showPopup(callback: @escaping (String) -> Void) -> Void
-    
-    // removes the popup screen
-    func removePopup() -> Void
 }
