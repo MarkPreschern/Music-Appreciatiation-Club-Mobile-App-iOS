@@ -325,11 +325,13 @@ class PicksScreenAlbumMain: UIViewController, UITableViewDelegate {
             self.showSpinner(onView: self.view)
             UIAlertController(title: "", message: "", preferredStyle: UIAlertController.Style.alert)
                 .deleteItemAlert(pick: self.userAlbumPicks[gesture.index], type: ItemType.ALBUM, sender: self, callback: { response -> Void in
-                    if (response == "Done") {
+                    if (response == "Success") {
                         self.userAlbumPicks = [Pick]()
                         self.clubAlbumPicks = [Pick]()
                         self.clubAlbumCells = [Int: AlbumCell]()
                         self.requestUserAndClubAlbumData(showSpinner: false)
+                    } else if (response == "Failure") {
+                        self.removeSpinner()
                     }
                 })
         }

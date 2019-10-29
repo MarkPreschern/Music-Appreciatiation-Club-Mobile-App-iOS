@@ -344,11 +344,13 @@ class PicksScreenSongMain: UIViewController, UITableViewDelegate {
             self.showSpinner(onView: self.view)
             UIAlertController(title: "", message: "", preferredStyle: UIAlertController.Style.alert)
                 .deleteItemAlert(pick: self.userSongPicks[gesture.index], type: ItemType.SONG, sender: self, callback: { response -> Void in
-                    if (response == "Done") {
+                    if (response == "Success") {
                         self.userSongPicks = [Pick]()
                         self.clubSongPicks = [Pick]()
                         self.clubSongCells = [Int: SongCell]()
                         self.requestUserAndClubSongData(showSpinner: false)
+                    } else if (response == "Failure") {
+                        self.removeSpinner()
                     }
                 })
         }

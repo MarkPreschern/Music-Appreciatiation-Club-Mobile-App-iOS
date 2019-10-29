@@ -16,7 +16,9 @@ extension UIAlertController {
         self.title = "Delete " + type.toString as String
         self.message = "Delete " + pick.itemData.name + " from your event " + type.toString.lowercased() + " picks?"
         // handles if the user clicks "no"
-        self.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
+        self.addAction(UIAlertAction(title: "No", style: .default, handler: { (alert: UIAlertAction!) in
+            callback("Failure")
+        }))
         // handles if the user clicks "yes"
         self.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (alert: UIAlertAction!) in
             let header: HTTPHeaders = [
@@ -25,7 +27,7 @@ extension UIAlertController {
             ]
             // creates the item and pick
             sender.macRequest(urlName: "deletePick", httpMethod: .post, header: header, successAlert: true, callback: { response -> Void in
-                callback("Done")
+                callback("Success")
             })
         }))
         // presents the alert

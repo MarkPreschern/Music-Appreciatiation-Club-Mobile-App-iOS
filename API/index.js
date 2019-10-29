@@ -1028,23 +1028,113 @@ function postDeleteRole(con, eventID, event, callback) {
     }
 }
 
-// deletes the role if user's access is high enough
+// deletes the user and all of the user's data
 function postDeleteUser(con, eventID, event, callback) {
-    const structure = 'DELETE FROM user '
-        + 'WHERE user.user_id = ? ';
-    const inserts = [event.headers["delete_user_id"]];
-    const sql = MySQL.format(structure, inserts);
 
-    con.query(sql, function (error) {
-        if (error) {
-            callback(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
-        } else {
-            callback({
-                "statusCode": "200",
-                "message": "Successfully deleted user"
+    callback(deleteUserPosts().then(function() {
+        return deleteUserPopularPicks();
+    }).then(function() {
+        return deleteUserVotes();
+    }).then(function() {
+        return deleteUserPicks();
+    }).then(function() {
+        return deleteUser()
+    }).catch(error => {
+        return error;
+    }));
+
+    // delete's the user's posts
+    function deleteUserPosts() {
+        return new Promise(async function (resolve, reject) {
+            const structure = 'DELETE FROM post '
+                + 'WHERE post.user_id = ? ';
+            const inserts = [event.headers["delete_user_id"]];
+            const sql = MySQL.format(structure, inserts);
+
+            await con.query(sql, function (error) {
+                if (error) {
+                    reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+                } else {
+                    resolve();
+                }
             });
-        }
-    });
+        });
+    }
+
+    // delete's the user's popular picks
+    function deleteUserPopularPicks() {
+        return new Promise(async function (resolve, reject) {
+            const structure = 'DELETE FROM popular '
+                + 'WHERE popular.user_id = ? ';
+            const inserts = [event.headers["delete_user_id"]];
+            const sql = MySQL.format(structure, inserts);
+
+            await con.query(sql, function (error) {
+                if (error) {
+                    reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+                } else {
+                    resolve();
+                }
+            });
+        });
+    }
+
+    // delete's the user's votes
+    function deleteUserVotes() {
+        return new Promise(async function (resolve, reject) {
+            const structure = 'DELETE FROM vote '
+                + 'WHERE vote.user_id = ? ';
+            const inserts = [event.headers["delete_user_id"]];
+            const sql = MySQL.format(structure, inserts);
+
+            await con.query(sql, function (error) {
+                if (error) {
+                    reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+                } else {
+                    resolve();
+                }
+            });
+        });
+    }
+
+    // delete's the user's picks
+    function deleteUserPicks() {
+        return new Promise(async function (resolve, reject) {
+            const structure = 'DELETE FROM pick '
+                + 'WHERE pick.user_id = ? ';
+            const inserts = [event.headers["delete_user_id"]];
+            const sql = MySQL.format(structure, inserts);
+
+            await con.query(sql, function (error) {
+                if (error) {
+                    reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+                } else {
+                    resolve();
+                }
+            });
+        });
+    }
+
+    // delete's the user
+    function deleteUser() {
+        return new Promise(async function (resolve, reject) {
+            const structure = 'DELETE FROM user '
+                + 'WHERE user.user_id = ? ';
+            const inserts = [event.headers["delete_user_id"]];
+            const sql = MySQL.format(structure, inserts);
+
+            await con.query(sql, function (error) {
+                if (error) {
+                    reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+                } else {
+                    resolve({
+                        "statusCode": "200",
+                        "message": "Successfully deleted user"
+                    });
+                }
+            });
+        });
+    }
 }
 
 // delete a user's post
