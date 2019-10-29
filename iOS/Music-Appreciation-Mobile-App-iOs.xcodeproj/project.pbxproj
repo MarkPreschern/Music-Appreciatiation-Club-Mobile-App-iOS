@@ -35,6 +35,8 @@
 		A4B59E1A2334F3E8002C3EFA /* ParsePickData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B59E192334F3E8002C3EFA /* ParsePickData.swift */; };
 		A4B5D60323621A8800DEBC62 /* CreatePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B5D60223621A8800DEBC62 /* CreatePost.swift */; };
 		A4B5D60523674F0100DEBC62 /* DeleteUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B5D60423674F0100DEBC62 /* DeleteUser.swift */; };
+		A4B5D6072368772800DEBC62 /* AddRole.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B5D6062368772800DEBC62 /* AddRole.swift */; };
+		A4B5D6092368773600DEBC62 /* DeleteRole.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B5D6082368773600DEBC62 /* DeleteRole.swift */; };
 		A4C884052350B98100BBACD8 /* SettingsScreenMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C884042350B98100BBACD8 /* SettingsScreenMain.swift */; };
 		A4C884072350B9AB00BBACD8 /* MembersScreenMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C884062350B9AB00BBACD8 /* MembersScreenMain.swift */; };
 		A4C884092354E8FC00BBACD8 /* DeleteItemAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C884082354E8FC00BBACD8 /* DeleteItemAlert.swift */; };
@@ -105,6 +107,8 @@
 		A4B59E192334F3E8002C3EFA /* ParsePickData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParsePickData.swift; sourceTree = "<group>"; };
 		A4B5D60223621A8800DEBC62 /* CreatePost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePost.swift; sourceTree = "<group>"; };
 		A4B5D60423674F0100DEBC62 /* DeleteUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteUser.swift; sourceTree = "<group>"; };
+		A4B5D6062368772800DEBC62 /* AddRole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRole.swift; sourceTree = "<group>"; };
+		A4B5D6082368773600DEBC62 /* DeleteRole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteRole.swift; sourceTree = "<group>"; };
 		A4C884042350B98100BBACD8 /* SettingsScreenMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreenMain.swift; sourceTree = "<group>"; };
 		A4C884062350B9AB00BBACD8 /* MembersScreenMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MembersScreenMain.swift; sourceTree = "<group>"; };
 		A4C884082354E8FC00BBACD8 /* DeleteItemAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteItemAlert.swift; sourceTree = "<group>"; };
@@ -169,6 +173,8 @@
 				A43DD992235DDBEB00BEFD77 /* LogOut.swift */,
 				A43DD9942361C77800BEFD77 /* AddUser.swift */,
 				A4B5D60423674F0100DEBC62 /* DeleteUser.swift */,
+				A4B5D6062368772800DEBC62 /* AddRole.swift */,
+				A4B5D6082368773600DEBC62 /* DeleteRole.swift */,
 			);
 			path = "Popup-Screens";
 			sourceTree = "<group>";
@@ -567,6 +573,7 @@
 				A40FA794231043B800D19537 /* AddBorder.swift in Sources */,
 				A40FA7962310482400D19537 /* PicksScreenAlbumMain.swift in Sources */,
 				A4B2CDE8222B62EA00DB64AC /* AppDelegate.swift in Sources */,
+				A4B5D6092368773600DEBC62 /* DeleteRole.swift in Sources */,
 				A4D2AA2322EE5AFE009007B3 /* TextFieldCredentials.swift in Sources */,
 				A43DD993235DDBEB00BEFD77 /* LogOut.swift in Sources */,
 				A4309CA722383C35002B6A13 /* ProfileScreenMain.swift in Sources */,
@@ -580,6 +587,7 @@
 				A44BFBCA232FA99F007272AB /* MacApiRequest.swift in Sources */,
 				A495E304222E003F00D8607D /* StartScreenMain.swift in Sources */,
 				A4B5D60523674F0100DEBC62 /* DeleteUser.swift in Sources */,
+				A4B5D6072368772800DEBC62 /* AddRole.swift in Sources */,
 				A4D2AA3622F473A5009007B3 /* AlbumView.swift in Sources */,
 				A46EAB56223A911D00F1B702 /* SearchScreenMain.swift in Sources */,
 				A40FA785230ED43E00D19537 /* AverageColor.swift in Sources */,

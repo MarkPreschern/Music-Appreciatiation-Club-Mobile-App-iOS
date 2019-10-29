@@ -56,21 +56,17 @@ class SettingsScreenMain: UIViewController, UITableViewDelegate {
             callback("Done")
         }
         if access == "Moderator" {
-            settings.append(Setting(name: "Log Out", popup: LogOut(), identifier: nil))
             settings.append(Setting(name: "Add User", popup: AddUser(), identifier: "AddUserID"))
             settings.append(Setting(name: "Delete User", popup: DeleteUser(), identifier: "DeleteUserID"))
+            settings.append(Setting(name: "Log Out", popup: LogOut(), identifier: nil))
             callback("Done")
         }
-        if access == "Admin" {
-            settings.append(Setting(name: "Log Out", popup: LogOut(), identifier: nil))
+        if access == "Admin" || access == "Developer" {
             settings.append(Setting(name: "Add User", popup: AddUser(), identifier: "AddUserID"))
             settings.append(Setting(name: "Delete User", popup: DeleteUser(), identifier: "DeleteUserID"))
-            callback("Done")
-        }
-        if access == "Developer" {
+            settings.append(Setting(name: "Add Role", popup: AddRole(), identifier: "AddRoleID"))
+            settings.append(Setting(name: "Delete Role", popup: DeleteRole(), identifier: "DeleteRoleID"))
             settings.append(Setting(name: "Log Out", popup: LogOut(), identifier: nil))
-            settings.append(Setting(name: "Add User", popup: AddUser(), identifier: "AddUserID"))
-            settings.append(Setting(name: "Delete User", popup: DeleteUser(), identifier: "DeleteUserID"))
             callback("Done")
         }
     }

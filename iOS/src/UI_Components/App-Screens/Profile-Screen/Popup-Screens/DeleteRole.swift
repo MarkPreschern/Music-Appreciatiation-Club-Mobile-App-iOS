@@ -1,26 +1,31 @@
 //
-//  AddUser.swift
+//  DeleteRole.swift
 //  Music-Appreciation-Mobile-App-iOs
 //
-//  Created by Mark Preschern on 10/24/19.
+//  Created by Mark Preschern on 10/29/19.
 //  Copyright © 2019 Mark Preschern. All rights reserved.
 //
 
 import UIKit
 import Alamofire
 
-// delete a user from the app
-class DeleteUser: UIViewController, PopupScreen, UITableViewDelegate {
+// Represents a role
+struct RoleData {
+    let name : String!
+    let description: String!
+    let id : Int!
+}
+
+class DeleteRole: UIViewController, PopupScreen, UITableViewDelegate {
     
-    // relevent user data for all users except for the one currently using the app
-    var users = [UserData]()
+    var roles = [RoleData]()
     
     @IBOutlet weak var header_outlet: UILabel!
     @IBOutlet weak var table_outlet: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         //sets header border
         self.header_outlet.layer.borderWidth = 1
         self.header_outlet.layer.borderColor = UIColor(red:222/255, green:225/255, blue:227/255, alpha: 1).cgColor
@@ -30,50 +35,30 @@ class DeleteUser: UIViewController, PopupScreen, UITableViewDelegate {
         self.table_outlet.dataSource = self
         self.table_outlet.delegate = self
         
-        self.loadUserData()
+        self.loadRoleData()
     }
     
-    // loads in all user data except for the current user using the app
-    func loadUserData() {
-        self.showSpinner(onView: self.view)
-        self.macRequest(urlName: "users", httpMethod: .get, header: [:], successAlert: false, callback: { jsonData -> Void in
+    // determines what role's the user can pick from and reloads the table data
+    func loadRoleData() {
+        self.macRequest(urlName: "roles", httpMethod: .get, header: nil, successAlert: false, callback: { jsonData -> Void in
             if let statusCode = jsonData?["statusCode"] as? String {
                 if statusCode == "200" {
-                    if let items = jsonData?["users"] as? [JSONStandard] {
-                        if items.count == 0 {
-                            self.removeSpinner()
-                        }
+                    if let items = jsonData?["roles"] as? [JSONStandard] {
                         for i in 0..<items.count {
                             let item = items[i]
-                            // TODO: Confirm image decoding works as expected
-                            let imageEncoded = item["image_data"] as? String
-                            let mainImageData = imageEncoded == nil ? nil : NSData(base64Encoded: imageEncoded!, options: .init())
-                            let mainImage = imageEncoded == nil ? nil : UIImage(data: mainImageData! as Data)
                             
-                            let user = UserData(user_id: item["user_id"] as? Int,
-                                                user_name: item["user_name"] as? String,
-                                                user_nuid: nil,
-                                                authorization_token: nil,
-                                                role_id: nil,
-                                                access_id: nil,
-                                                role_name: item["role_name"] as? String,
-                                                role_description: item["description"] as? String,
-                                                access_name: item["access_name"] as? String,
-                                                access_description: nil,
-                                                image_data: imageEncoded == nil ? nil : mainImage)
+                            let role = RoleData(
+                                name: item["name"] as? String,
+                                description: item["description"] as? String,
+                                id: item["role_id"] as? Int)
                             
-                            // dictates which users this user can delete
-                            if userData.access_name == "Developer" {
-                                self.users.append(user)
-                            } else if userData.access_name == "Admin" && (user.access_name == "User" || user.access_name == "Moderator") {
-                                self.users.append(user)
-                            } else if userData.access_name == "Moderator" && user.access_name == "User" {
-                                self.users.append(user)
+                            // appends the role depending on the user's access
+                            if (userData.access_name == "Admin" || userData.access_name == "Developer") && role.name != "Member" {
+                                self.roles.append(role)
                             }
                             
                             if i == items.count - 1 {
                                 self.table_outlet.reloadData()
-                                self.removeSpinner()
                             }
                         }
                     } else {
@@ -82,13 +67,8 @@ class DeleteUser: UIViewController, PopupScreen, UITableViewDelegate {
                             message: "Error occured during request, couldn't locate items",
                             actionTitle: "Close")
                         self.present(alert, animated: true, completion: nil)
-                        self.removeSpinner()
                     }
-                } else {
-                    self.removeSpinner()
                 }
-            } else {
-                self.removeSpinner()
             }
         })
     }
@@ -98,21 +78,21 @@ class DeleteUser: UIViewController, PopupScreen, UITableViewDelegate {
         self.dismiss(animated: true, completion: nil)
     }
     
-    // when table view cell is tapped, prompt the current user to delete the user
+    // when table view cell is tapped, prompt the current user to delete the role
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let alert = UIAlertController(title: "Delete User", message: "Are you sure you want to delete user " + users[indexPath.row].user_name! + "?", preferredStyle: UIAlertController.Style.alert)
+        let alert = UIAlertController(title: "Delete Role", message: "Are you sure you want to delete role " + roles[indexPath.row].name! + "?", preferredStyle: UIAlertController.Style.alert)
         // handles if the user clicks "no"
         alert.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
         // handles if the user clicks "yes"
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { action in
             let header: HTTPHeaders = [
-                "delete_user_id": String(self.users[indexPath.row].user_id!),
+                "role_id": String(self.roles[indexPath.row].id!),
             ]
             
             self.showSpinner(onView: self.view)
-            self.macRequest(urlName: "deleteUser", httpMethod: .post, header: header, successAlert: false, callback: { jsonData -> Void in
+            self.macRequest(urlName: "deleteRole", httpMethod: .post, header: header, successAlert: false, callback: { jsonData -> Void in
                 if let statusCode = jsonData?["statusCode"] as? String {
                     if statusCode == "200" {
                         let alert = UIAlertController(
@@ -142,26 +122,19 @@ class DeleteUser: UIViewController, PopupScreen, UITableViewDelegate {
 }
 
 // extension handles table data
-extension DeleteUser: UITableViewDataSource {
+extension DeleteRole: UITableViewDataSource {
     
     //sets the number of rows in the table view
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.users.count
+        return self.roles.count
     }
     
     //updates table view data including the image and label
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "deleteUserCell")
+        let cell = tableView.dequeueReusableCell(withIdentifier: "roleCell")
         //sets the label
         let mainLabel = cell?.viewWithTag(1) as! UILabel
-        mainLabel.text = self.users[indexPath.row].user_name! + ", " + self.users[indexPath.row].role_name!
-        //sets the image
-        let mainImageView = cell?.viewWithTag(2) as! UIImageView
-        if self.users[indexPath.row].image_data == nil {
-            mainImageView.image = UIImage(named: "default-profile-image")
-        } else {
-            mainImageView.image = self.users[indexPath.row].image_data
-        }
+        mainLabel.text = self.roles[indexPath.row].name! + ", " + self.roles[indexPath.row].description!
                 
         return cell ?? UITableViewCell()
     }

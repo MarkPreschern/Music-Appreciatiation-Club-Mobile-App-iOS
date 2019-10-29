@@ -1016,7 +1016,11 @@ function postDeleteRole(con, eventID, event, callback) {
 
             await con.query(sql, function (error) {
                 if (error) {
-                    reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+                    if (error["code"] === "ER_ROW_IS_REFERENCED_2") { // a current user has this role
+                        reject(createErrorMessage("404", "Failed Constraint", "One or more users have this role, the user(s) must change roles or be deleted before this role can be deleted", error))
+                    } else {
+                        reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+                    }
                 } else {
                     resolve({
                         "statusCode": "200",

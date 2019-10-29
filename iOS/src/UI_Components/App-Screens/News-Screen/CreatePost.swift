@@ -19,13 +19,25 @@ class CreatePost: UIViewController, UITextViewDelegate {
         //sets task bar border
         self.content_outlet.layer.borderWidth = 1
         self.content_outlet.layer.borderColor = UIColor(red:222/255, green:225/255, blue:227/255, alpha: 1).cgColor
-        
+        self.content_outlet.textColor = UIColor.lightGray
         self.content_outlet.delegate = self
+    }
+    
+    // removes placeholder when user begins editing
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.textColor == UIColor.lightGray {
+            textView.text = nil
+            textView.textColor = UIColor.black
+        }
     }
     
     // closes text view on return
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
+            if textView.text.isEmpty {
+                textView.text = "Content"
+                textView.textColor = UIColor.lightGray
+            }
             textView.resignFirstResponder()
             return false
         }
