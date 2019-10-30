@@ -103,6 +103,7 @@ CREATE TABLE IF NOT EXISTS `MacDB`.`event` (
   `description` VARCHAR(100) NOT NULL,
   `start_date` DATETIME NOT NULL,
   `end_date` DATETIME NOT NULL,
+  `completed` TINYINT NOT NULL,
   PRIMARY KEY (`event_id`),
   UNIQUE INDEX `favorite_recent_id_UNIQUE` (`event_id` ASC))
 ENGINE = InnoDB;

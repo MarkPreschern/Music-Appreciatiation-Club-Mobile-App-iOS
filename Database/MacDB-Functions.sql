@@ -23,17 +23,18 @@ DROP EVENT IF EXISTS schedule_end_event;
 DELIMITER //
 CREATE EVENT IF NOT EXISTS schedule_end_event
 ON SCHEDULE 
-	EVERY 1 DAY
-    STARTS timestamp(curdate(), '23:00:00')
+	EVERY 1 HOUR
 DO
 BEGIN
 	DECLARE eventIsEnding INT; -- the number of events that are ending today
 	
-    -- gets the number of events ending today
+    -- gets the number of events that should be ended
     SELECT count(*)
     INTO eventIsEnding
     FROM event
-    WHERE DATE(event.end_date) = curdate();
+    WHERE DATE(event.end_date) <= curdate() AND event.completed = 0
+    ORDER BY end_date DESC
+	LIMIT 1;
 
 	-- ends the event if applicable
 	IF eventIsEnding > 0 THEN
@@ -49,10 +50,11 @@ BEGIN
  -- The event ID
 declare ending_event_id INT;
 
--- Gets the event ID of the recently ended event
+-- Gets the event ID of the most recently ended event
 SELECT event_id
 INTO ending_event_id
 FROM event
+WHERE DATE(event.end_date) <= curdate() AND completed = 0
 ORDER BY end_date DESC
 LIMIT 1;
 
@@ -112,9 +114,14 @@ WHERE item.item_id NOT IN
 -- Deletes all votes
 DELETE FROM vote;
 
+-- Updates the current event to be completed
+UPDATE event
+SET completed = 1
+WHERE event_id = ending_event_id;
+
 -- Creates a new event at 11:00 PM the following week
-INSERT INTO event (name, description, start_date, end_date) VALUES
-('Weekly Event', 'The Music Appreciation Club\'s weekly event', current_timestamp(), timestamp(date_add(curdate(), INTERVAL 1 WEEK), '23:00:00'));
+INSERT INTO event (name, description, start_date, end_date, completed) VALUES
+('Weekly Event', 'The Music Appreciation Club\'s weekly event', current_timestamp(), timestamp(date_add(curdate(), INTERVAL 1 WEEK), '23:00:00'), 0);
 
 -- Drops the temporary table
 DROP TABLE IF EXISTS event_popular_picks;
