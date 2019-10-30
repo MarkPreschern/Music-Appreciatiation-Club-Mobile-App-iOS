@@ -63,9 +63,10 @@ class SettingsScreenMain: UIViewController, UITableViewDelegate {
         }
         if access == "Admin" || access == "Developer" {
             settings.append(Setting(name: "Add User", popup: AddUser(), identifier: "AddUserID"))
-            settings.append(Setting(name: "Delete User", popup: DeleteUser(), identifier: "DeleteUserID"))
             settings.append(Setting(name: "Add Role", popup: AddRole(), identifier: "AddRoleID"))
+            settings.append(Setting(name: "Delete User", popup: DeleteUser(), identifier: "DeleteUserID"))
             settings.append(Setting(name: "Delete Role", popup: DeleteRole(), identifier: "DeleteRoleID"))
+            settings.append(Setting(name: "End Event", popup: EndEvent(), identifier: nil))
             settings.append(Setting(name: "Log Out", popup: LogOut(), identifier: nil))
             callback("Done")
         }
@@ -80,7 +81,7 @@ class SettingsScreenMain: UIViewController, UITableViewDelegate {
     // when table view cell is tapped
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        if (settings[indexPath.row].name == "Log Out") {
+        if (settings[indexPath.row].identifier == nil) {
             let popOverVC = settings[indexPath.row].popup!
             self.present(popOverVC, animated: true, completion: nil)
         } else {

@@ -345,9 +345,9 @@ function getUserPopularPicks(con, eventID, event, callback) {
         + 'FROM item '
         + 'JOIN popular ON item.item_id = popular.item_id '
         + 'JOIN user ON popular.user_id = user.user_id '
-        + 'WHERE popular.user_id = ? and popular.event_id = ? '
+        + 'WHERE popular.user_id = ?'
         + 'ORDER BY popular.votes DESC';
-    const inserts = [event.headers["member_id"], eventID];
+    const inserts = [event.headers["member_id"]];
     const sql = MySQL.format(structure, inserts);
 
     con.query(sql, function (error, results) {
@@ -901,6 +901,24 @@ function postPost(con, eventID, event, callback) {
             callback({
                 "statusCode": "200",
                 "message": "Successfully created post"
+            });
+        }
+    });
+}
+
+// ends the current event and creates a new one
+function postEndEvent(con, eventID, event, callback) {
+    const structure = 'CALL endEvent( ? ) ';
+    const inserts = [eventID];
+    const sql = MySQL.format(structure, inserts);
+
+    con.query(sql, function (error) {
+        if (error) {
+            callback(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+        } else {
+            callback({
+                "statusCode": "200",
+                "message": "Successfully ended event"
             });
         }
     });

@@ -37,6 +37,7 @@
 		A4B5D60523674F0100DEBC62 /* DeleteUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B5D60423674F0100DEBC62 /* DeleteUser.swift */; };
 		A4B5D6072368772800DEBC62 /* AddRole.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B5D6062368772800DEBC62 /* AddRole.swift */; };
 		A4B5D6092368773600DEBC62 /* DeleteRole.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B5D6082368773600DEBC62 /* DeleteRole.swift */; };
+		A4B5D60B2369FD3C00DEBC62 /* EndEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B5D60A2369FD3C00DEBC62 /* EndEvent.swift */; };
 		A4C884052350B98100BBACD8 /* SettingsScreenMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C884042350B98100BBACD8 /* SettingsScreenMain.swift */; };
 		A4C884072350B9AB00BBACD8 /* MembersScreenMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C884062350B9AB00BBACD8 /* MembersScreenMain.swift */; };
 		A4C884092354E8FC00BBACD8 /* DeleteItemAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C884082354E8FC00BBACD8 /* DeleteItemAlert.swift */; };
@@ -109,6 +110,7 @@
 		A4B5D60423674F0100DEBC62 /* DeleteUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteUser.swift; sourceTree = "<group>"; };
 		A4B5D6062368772800DEBC62 /* AddRole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRole.swift; sourceTree = "<group>"; };
 		A4B5D6082368773600DEBC62 /* DeleteRole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteRole.swift; sourceTree = "<group>"; };
+		A4B5D60A2369FD3C00DEBC62 /* EndEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndEvent.swift; sourceTree = "<group>"; };
 		A4C884042350B98100BBACD8 /* SettingsScreenMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreenMain.swift; sourceTree = "<group>"; };
 		A4C884062350B9AB00BBACD8 /* MembersScreenMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MembersScreenMain.swift; sourceTree = "<group>"; };
 		A4C884082354E8FC00BBACD8 /* DeleteItemAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteItemAlert.swift; sourceTree = "<group>"; };
@@ -175,6 +177,7 @@
 				A4B5D60423674F0100DEBC62 /* DeleteUser.swift */,
 				A4B5D6062368772800DEBC62 /* AddRole.swift */,
 				A4B5D6082368773600DEBC62 /* DeleteRole.swift */,
+				A4B5D60A2369FD3C00DEBC62 /* EndEvent.swift */,
 			);
 			path = "Popup-Screens";
 			sourceTree = "<group>";
@@ -569,6 +572,7 @@
 			files = (
 				A4387AC123282179008F501B /* JASON+Alamofire.swift in Sources */,
 				A40FA79223102EFC00D19537 /* FadeInOutAudio.swift in Sources */,
+				A4B5D60B2369FD3C00DEBC62 /* EndEvent.swift in Sources */,
 				A4C884052350B98100BBACD8 /* SettingsScreenMain.swift in Sources */,
 				A40FA794231043B800D19537 /* AddBorder.swift in Sources */,
 				A40FA7962310482400D19537 /* PicksScreenAlbumMain.swift in Sources */,

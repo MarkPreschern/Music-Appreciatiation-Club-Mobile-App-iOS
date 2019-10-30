@@ -26,11 +26,12 @@ ON SCHEDULE
 	EVERY 1 HOUR
 DO
 BEGIN
-	DECLARE eventIsEnding INT; -- the number of events that are ending today
+	DECLARE eventIsEnding INT; -- if an event is eding
+    DECLARE ending_event_id INT; -- the event_id of an ending event
 	
     -- gets the number of events that should be ended
-    SELECT count(*)
-    INTO eventIsEnding
+    SELECT count(*), event_id
+    INTO eventIsEnding, ending_event_id
     FROM event
     WHERE end_date <= current_timestamp() AND completed = 0
     ORDER BY end_date DESC
@@ -38,25 +39,14 @@ BEGIN
 
 	-- ends the event if applicable
 	IF eventIsEnding > 0 THEN
-		CALL endEvent();
+		CALL endEvent(ending_event_id);
     END IF;
 END //
 
 -- Updates database when an event ends
 DELIMITER //
-CREATE PROCEDURE endEvent()
+CREATE PROCEDURE endEvent(ending_event_id INT)
 BEGIN
-
- -- The event ID
-declare ending_event_id INT;
-
--- Gets the event ID of the most recently ended event
-SELECT event_id
-INTO ending_event_id
-FROM event
-WHERE end_date <= current_timestamp() AND completed = 0
-ORDER BY end_date DESC
-LIMIT 1;
 
 -- Temporary table stores the popular picks from this event
 DROP TABLE IF EXISTS event_popular_picks;
