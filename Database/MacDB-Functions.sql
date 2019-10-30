@@ -32,7 +32,7 @@ BEGIN
     SELECT count(*)
     INTO eventIsEnding
     FROM event
-    WHERE DATE(event.end_date) <= curdate() AND event.completed = 0
+    WHERE end_date <= current_timestamp() AND completed = 0
     ORDER BY end_date DESC
 	LIMIT 1;
 
@@ -54,7 +54,7 @@ declare ending_event_id INT;
 SELECT event_id
 INTO ending_event_id
 FROM event
-WHERE DATE(event.end_date) <= curdate() AND completed = 0
+WHERE end_date <= current_timestamp() AND completed = 0
 ORDER BY end_date DESC
 LIMIT 1;
 

@@ -147,7 +147,7 @@ function authorizeRequest(event, con, path, callbackLocal) {
 function getCurrentEventID(con, callback) {
     const structure = 'SELECT * '
         + 'FROM event '
-        + 'WHERE ? BETWEEN start_date AND end_date '
+        + 'WHERE ( ? BETWEEN start_date AND end_date) AND completed = 0 '
         + 'ORDER BY end_date DESC '
         + 'LIMIT 1';
     const inserts = [dateTime()];
@@ -1185,7 +1185,7 @@ function jsonFormat(body) {
 
 // gets a sql formatted datetime of now
 function dateTime() {
-    return new Date().toISOString().slice(0, 19).replace('T', ' ');
+    return new Date( new Date().getTime() + -4 * 3600 * 1000).toISOString().slice(0, 19).replace('T', ' ')
 }
 
 // function to encode file data to base64 encoded string
