@@ -1,7 +1,6 @@
 // imports
 const MySQL = require('mysql');
 const UUID4 = require('uuid4');
-const fs = require("file-system");
 
 // Music Appreciation Club API
 exports.handler = async (event) => {
@@ -815,21 +814,20 @@ function postRole(con, eventID, event, callback) {
 // post the user's image
 function postImage(con, eventID, event, callback) {
 
-    let image = base64_encode('image_data.jpg');
-    callback(createImage(image).then(function() {
-        return getImageID(image);
+    callback(createImage().then(function() {
+        return getImageID();
     }).then(imageID => {
-        return setUserImageID()
+        return setUserImageID(imageID)
     }).catch(error => {
         return error;
     }));
 
     // adds the image data
-    function createImage(image) {
+    function createImage() {
         return new Promise(async function (resolve, reject) {
             const structure = 'INSERT INTO image (image_data) '
                 + 'VALUES ( ? )';
-            const inserts = [image];
+            const inserts = [event.body.slice(10)];
             const sql = MySQL.format(structure, inserts);
 
             await con.query(sql, function (error) {
@@ -848,7 +846,7 @@ function postImage(con, eventID, event, callback) {
             const structure = 'SELECT image_id '
                 + 'FROM image '
                 + 'WHERE image.image_data = ?';
-            const inserts = [image];
+            const inserts = [event.body.slice(10)];
             const sql = MySQL.format(structure, inserts);
 
             await con.query(sql, function (error, results) {
@@ -857,8 +855,6 @@ function postImage(con, eventID, event, callback) {
                 } else {
                     if (results.length === 0) {
                         reject(createErrorMessage("404", "Server-side Error", "Missing image data", error));
-                    } else if (results.length > 1) {
-                        reject(createErrorMessage("404", "Server-side Error", "Invalid image data, duplicate items", error));
                     } else {
                         resolve(results[0]["image_id"]);
                     }
@@ -880,7 +876,10 @@ function postImage(con, eventID, event, callback) {
                 if (error) {
                     reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
                 } else {
-                    resolve();
+                    resolve({
+                        "statusCode": "200",
+                        "message": "Successfully uploaded image"
+                    });
                 }
             });
         });
@@ -1204,14 +1203,6 @@ function jsonFormat(body) {
 // gets a sql formatted datetime of now
 function dateTime() {
     return new Date( new Date().getTime() + -4 * 3600 * 1000).toISOString().slice(0, 19).replace('T', ' ')
-}
-
-// function to encode file data to base64 encoded string
-function base64_encode(file) {
-    // read binary data
-    let bitmap = fs.readFileSync(file);
-    // convert binary data to base64 encoded string
-    return new bitmap.toString('base64');
 }
 
 // parses a list of picks data for their respective votes

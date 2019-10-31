@@ -34,12 +34,12 @@ extension UIViewController {
                 if let statusCode = readableJSON["statusCode"] as? String {
                     if (statusCode == "200") {
                         if (successAlert) {
-                            let alert = createAlert(title: "Success", message: readableJSON["message"] as? String, actionTitle: "close")
+                            let alert = createAlert(title: "Success", message: readableJSON["message"] as? String, actionTitle: "Close")
                             self.present(alert, animated: true, completion: nil)
                         }
                         callback(readableJSON)
                     } else {
-                        let alert = createAlert(title: readableJSON["title"] as? String, message: readableJSON["description"] as? String, actionTitle: "close")
+                        let alert = createAlert(title: readableJSON["title"] as? String, message: readableJSON["description"] as? String, actionTitle: "Close")
                         self.present(alert, animated: true, completion: nil)
                         callback(["statusCode": statusCode as AnyObject])
                     }
@@ -47,7 +47,7 @@ extension UIViewController {
                     let alert = createAlert(
                         title: "Request Failed",
                         message: "Error occured during request",
-                        actionTitle: "Try Again")
+                        actionTitle: "Close")
                     self.present(alert, animated: true, completion: nil)
                     callback(["statusCode": "404" as AnyObject])
                 }
@@ -56,7 +56,7 @@ extension UIViewController {
                 let alert = createAlert(
                     title: "Request Failed",
                     message: "Error occured during request",
-                    actionTitle: "Try Again")
+                    actionTitle: "Close")
                 self.present(alert, animated: true, completion: nil)
                 callback(["statusCode": "404" as AnyObject])
             }

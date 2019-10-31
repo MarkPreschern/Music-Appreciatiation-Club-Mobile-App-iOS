@@ -352,12 +352,22 @@ class StartScreenMain: UIViewController, UITextFieldDelegate {
                     if let items = jsonData?["items"] as? [JSONStandard] {
                         if items.count == 0 {
                             userData.image_data = nil
-                            callback("Success")
+                            print("here")
                         } else {
-                            let imageData = items[0]["image_data"] as! String
-                            let imagePNG = NSData(base64Encoded: imageData, options: NSData.Base64DecodingOptions(rawValue: 0))!
-                            userData.image_data = UIImage(data: imagePNG as Data)!
-                            callback("Success")
+                            do {
+                                let imageString = items[0]["image_data"] as! String
+                                let imageUrl = URL(string: imageString)!
+                                let imageData = try Data(contentsOf: imageUrl)
+                                userData.image_data = UIImage(data: imageData)!
+                                callback("Success")
+                            } catch {
+                                let alert = createAlert(
+                                    title: "Image Request Failed",
+                                    message: "Failed to read image data",
+                                    actionTitle: "Try Again")
+                                self.present(alert, animated: true, completion: nil)
+                                callback("Failure")
+                            }
                         }
                     } else {
                         let alert = createAlert(

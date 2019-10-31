@@ -161,15 +161,49 @@ class ProfileScreenMain: UIViewController, UITableViewDelegate {
         let headers = [
             "user_id" : "\(String(describing: userData.user_id!))",
             "authorization_token" : userData?.authorization_token ?? "",
-            "Content-type": "multipart/form-data"
         ]
         
-        Alamofire.upload(multipartFormData: { multipartFormData in
-            if let imageData = image.jpegData(compressionQuality: 0.1) {
-                multipartFormData.append(imageData, withName: "image_data",fileName: "image_data.jpg", mimeType: "image_data/jpg")
-                print(imageData)
+        let parameters = [
+            "imageData": image.jpegData(compressionQuality: 0.2)!.base64EncodedString(options: Data.Base64EncodingOptions.lineLength64Characters)
+        ]
+        
+        Alamofire.request(url, method: .post, parameters: parameters, encoding: URLEncoding.default, headers: headers).responseJSON(completionHandler: { response in
+            do {
+                let readableJSON = try JSONSerialization.jsonObject(with: response.data!, options: .mutableContainers) as! JSONStandard
+                print(readableJSON)
+                if let statusCode = readableJSON["statusCode"] as? String {
+                    if (statusCode == "200") {
+                        callback("Success")
+                    } else {
+                        let alert = createAlert(title: readableJSON["title"] as? String, message: readableJSON["description"] as? String, actionTitle: "Close")
+                        self.present(alert, animated: true, completion: nil)
+                        callback("Failure")
+                    }
+                } else {
+                    let alert = createAlert(
+                        title: "Request Failed",
+                        message: "Error occured during request",
+                        actionTitle: "Close")
+                    self.present(alert, animated: true, completion: nil)
+                    callback("Failure")
+                }
+            } catch {
+                print("Error info: \(error)")
+                let alert = createAlert(
+                    title: "Request Failed",
+                    message: "Error occured during request",
+                    actionTitle: "Close")
+                self.present(alert, animated: true, completion: nil)
+                callback("Failure")
             }
-        }, usingThreshold: UInt64.init(), to: url, method: .post, headers: headers) { result in
+        })
+        
+        /*
+        Alamofire.upload(multipartFormData: { multipartFormData in
+            if let imageData = image.jpegData(compressionQuality: 0.2) {
+                multipartFormData.append(imageData, withName: "image_data",fileName: "image_data.jpg", mimeType: "image/jpg")
+            }
+        }, usingThreshold: UInt64.init(), to: url, method: .post, headers: nil) { result in
             switch result {
             case .success(let upload, _, _):
                 
@@ -184,7 +218,7 @@ class ProfileScreenMain: UIViewController, UITableViewDelegate {
                                 callback("Success")
                             } else {
                                 print(readableJSON)
-                                let alert = createAlert(title: readableJSON["title"] as? String, message: readableJSON["description"] as? String, actionTitle: "close")
+                                let alert = createAlert(title: readableJSON["title"] as? String, message: readableJSON["description"] as? String, actionTitle: "Close")
                                 self.present(alert, animated: true, completion: nil)
                                 callback("Failure")
                             }
@@ -193,7 +227,7 @@ class ProfileScreenMain: UIViewController, UITableViewDelegate {
                             let alert = createAlert(
                                 title: "Request Failed",
                                 message: "Error occured during request",
-                                actionTitle: "Try Again")
+                                actionTitle: "Close")
                             self.present(alert, animated: true, completion: nil)
                             callback("Failure")
                         }
@@ -202,7 +236,7 @@ class ProfileScreenMain: UIViewController, UITableViewDelegate {
                         let alert = createAlert(
                             title: "Request Failed",
                             message: "Error occured during request",
-                            actionTitle: "Try Again")
+                            actionTitle: "Close")
                         self.present(alert, animated: true, completion: nil)
                         callback("Failure")
                     }
@@ -212,11 +246,11 @@ class ProfileScreenMain: UIViewController, UITableViewDelegate {
                 let alert = createAlert(
                     title: "Request Failed",
                     message: "Error occured during request",
-                    actionTitle: "Try Again")
+                    actionTitle: "Close")
                 self.present(alert, animated: true, completion: nil)
                 callback("Failure")
             }
-        }
+        }*/
     }
     
     // handles when a user clicks the settings image, moving to the Settings View Controller
