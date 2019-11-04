@@ -44,10 +44,10 @@ class MembersScreenMain: UIViewController, UITableViewDelegate {
                         }
                         for i in 0..<items.count {
                             let item = items[i]
-                            // TODO: Confirm image decoding works as expected
-                            let imageEncoded = item["image_data"] as? String
-                            let mainImageData = imageEncoded == nil ? nil : NSData(base64Encoded: imageEncoded!, options: .init())
-                            let mainImage = imageEncoded == nil ? nil : UIImage(data: mainImageData! as Data)
+                            
+                            let imageEncoded = (items[0]["image_data"] as? String)?.removingPercentEncoding
+                            let imageData : NSData? = (imageEncoded != nil) ? NSData(base64Encoded: imageEncoded!, options: NSData.Base64DecodingOptions.ignoreUnknownCharacters) : nil
+                            let mainImage : UIImage? = (imageEncoded != nil) ? UIImage(data: imageData! as Data)! : nil
                             
                             let user = UserData(user_id: item["user_id"] as? Int,
                                                 user_name: item["user_name"] as? String,

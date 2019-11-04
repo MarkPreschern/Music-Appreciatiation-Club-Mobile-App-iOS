@@ -36,7 +36,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `MacDB`.`image` (
   `image_id` INT NOT NULL AUTO_INCREMENT,
-  `image_data` MEDIUMTEXT CHARACTER SET BINARY NOT NULL,
+  `image_data` MEDIUMTEXT NOT NULL,
   PRIMARY KEY (`image_id`),
   UNIQUE INDEX `image_id_UNIQUE` (`image_id` ASC))
 ENGINE = InnoDB;

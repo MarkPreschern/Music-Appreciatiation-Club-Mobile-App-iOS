@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -1672,7 +1672,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="60" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="5Yh-2T-Xwc">
-                                        <rect key="frame" x="0.0" y="28" width="241" height="202"/>
+                                        <rect key="frame" x="0.0" y="28.3333333333333" width="241" height="201.66666666666663"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="deleteUserCell" rowHeight="60" id="y5O-Eg-flP">
@@ -1751,7 +1751,6 @@
         <!--Add Role-->
         <scene sceneID="ecf-pA-Rkq">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="qst-De-3fY" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="AddRoleID" id="5VC-ic-2Q6" customClass="AddRole" customModule="MAC" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tSC-k9-daF">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
@@ -1832,6 +1831,7 @@
                         <outlet property="name_outlet" destination="2lQ-CC-X6s" id="fNg-ke-a9H"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qst-De-3fY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2560.8000000000002" y="1548.768472906404"/>
         </scene>
@@ -1944,9 +1944,9 @@
         <image name="uncheck-mark-image" width="137.5" height="91.5"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="nlo-d0-rq3"/>
-        <segue reference="Wpl-bZ-9zU"/>
+        <segue reference="DbS-FS-GeG"/>
+        <segue reference="kWr-4v-gEE"/>
         <segue reference="9Bv-fI-Obu"/>
-        <segue reference="VX8-Wf-1eA"/>
+        <segue reference="VEZ-L3-ekw"/>
     </inferredMetricsTieBreakers>
 </document>
