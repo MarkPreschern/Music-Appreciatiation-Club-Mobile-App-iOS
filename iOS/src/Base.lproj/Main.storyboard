@@ -1922,6 +1922,86 @@
             </objects>
             <point key="canvasLocation" x="3224.8000000000002" y="1548.768472906404"/>
         </scene>
+        <!--Alter Event-->
+        <scene sceneID="dhK-Hg-Ghg">
+            <objects>
+                <viewController storyboardIdentifier="AlterEventID" id="P5a-iE-xWb" customClass="AlterEvent" customModule="MAC" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="DkU-4q-Fwy">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C1k-Uc-nio">
+                                <rect key="frame" x="67" y="277" width="241" height="268"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Alter Current Event" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VGn-c7-Gov">
+                                        <rect key="frame" x="0.0" y="0.0" width="240" height="29"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Name" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YJc-vW-NpZ">
+                                        <rect key="frame" x="0.0" y="35" width="240" height="34"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Description" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="CIJ-Dg-ZhC">
+                                        <rect key="frame" x="0.0" y="77" width="240" height="34"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wbE-5J-UIU">
+                                        <rect key="frame" x="135" y="220" width="98" height="40"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="Done"/>
+                                        <connections>
+                                            <action selector="doneClicked:" destination="P5a-iE-xWb" eventType="touchUpInside" id="m8Z-ih-dhy"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="syK-rw-pa3">
+                                        <rect key="frame" x="8" y="220" width="98" height="40"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="Cancel"/>
+                                        <connections>
+                                            <action selector="cancelClicked:" destination="P5a-iE-xWb" eventType="touchUpInside" id="oRs-ta-DSs"/>
+                                        </connections>
+                                    </button>
+                                    <pickerView contentMode="scaleToFill" ambiguous="YES" restorationIdentifier="rolePicker" translatesAutoresizingMaskIntoConstraints="NO" id="ppE-W5-9ZG">
+                                        <rect key="frame" x="8" y="136" width="225" height="81"/>
+                                    </pickerView>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="End Date" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LAB-0G-ih9">
+                                <rect key="frame" x="67" y="392" width="240" height="16"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="C1k-Uc-nio" firstAttribute="leading" secondItem="IL1-qe-cOd" secondAttribute="leading" constant="67" id="51z-fm-NPX"/>
+                            <constraint firstItem="ppE-W5-9ZG" firstAttribute="top" secondItem="LAB-0G-ih9" secondAttribute="bottom" constant="5" id="Fzh-Qp-um2"/>
+                            <constraint firstItem="IL1-qe-cOd" firstAttribute="bottom" secondItem="C1k-Uc-nio" secondAttribute="bottom" constant="233" id="InQ-yP-39X"/>
+                            <constraint firstItem="C1k-Uc-nio" firstAttribute="centerX" secondItem="IL1-qe-cOd" secondAttribute="centerX" id="Uef-Sk-8TA"/>
+                            <constraint firstItem="IL1-qe-cOd" firstAttribute="trailing" secondItem="C1k-Uc-nio" secondAttribute="trailing" constant="67" id="aF4-Rx-LBf"/>
+                            <constraint firstItem="C1k-Uc-nio" firstAttribute="top" secondItem="IL1-qe-cOd" secondAttribute="top" constant="233" id="efV-3E-TeE"/>
+                            <constraint firstItem="C1k-Uc-nio" firstAttribute="centerY" secondItem="IL1-qe-cOd" secondAttribute="centerY" id="qqn-Xv-Ctg"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="IL1-qe-cOd"/>
+                    </view>
+                    <connections>
+                        <outlet property="date_picker" destination="ppE-W5-9ZG" id="nef-Iz-zHt"/>
+                        <outlet property="description_outlet" destination="CIJ-Dg-ZhC" id="T0v-AT-33y"/>
+                        <outlet property="name_outlet" destination="YJc-vW-NpZ" id="aDr-Ih-Lld"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="w7w-an-4xk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3885.5999999999999" y="1548.768472906404"/>
+        </scene>
     </scenes>
     <resources>
         <image name="ArrowGreyDown" width="360" height="194"/>
@@ -1944,8 +2024,8 @@
         <image name="uncheck-mark-image" width="137.5" height="91.5"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="DbS-FS-GeG"/>
-        <segue reference="kWr-4v-gEE"/>
+        <segue reference="nlo-d0-rq3"/>
+        <segue reference="Wpl-bZ-9zU"/>
         <segue reference="9Bv-fI-Obu"/>
         <segue reference="VEZ-L3-ekw"/>
     </inferredMetricsTieBreakers>

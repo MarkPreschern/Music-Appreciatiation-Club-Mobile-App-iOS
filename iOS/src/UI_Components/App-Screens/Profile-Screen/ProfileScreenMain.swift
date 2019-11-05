@@ -146,6 +146,8 @@ class ProfileScreenMain: UIViewController, UITableViewDelegate {
                 self.postImage(image: image, callback: { response -> Void in
                     if response == "Success" {
                         self.userImage_outlet.image = image
+                        self.userDetails?.image_data = image
+                        userData.image_data = image
                         self.removeSpinner()
                     } else if response == "Failure" {
                         self.removeSpinner()

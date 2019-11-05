@@ -66,6 +66,7 @@ class SettingsScreenMain: UIViewController, UITableViewDelegate {
             settings.append(Setting(name: "Add Role", popup: AddRole(), identifier: "AddRoleID"))
             settings.append(Setting(name: "Delete User", popup: DeleteUser(), identifier: "DeleteUserID"))
             settings.append(Setting(name: "Delete Role", popup: DeleteRole(), identifier: "DeleteRoleID"))
+            settings.append(Setting(name: "Alter Current Event", popup: AlterEvent(), identifier: "AlterEventID"))
             settings.append(Setting(name: "End Event", popup: EndEvent(), identifier: nil))
             settings.append(Setting(name: "Log Out", popup: LogOut(), identifier: nil))
             callback("Done")

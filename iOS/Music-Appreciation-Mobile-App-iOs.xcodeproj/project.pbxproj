@@ -26,6 +26,7 @@
 		A46EAB56223A911D00F1B702 /* SearchScreenMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A46EAB55223A911D00F1B702 /* SearchScreenMain.swift */; };
 		A495E304222E003F00D8607D /* StartScreenMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A495E303222E003F00D8607D /* StartScreenMain.swift */; };
 		A495E30B22300AAA00D8607D /* NewsScreenMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A495E30A22300AAA00D8607D /* NewsScreenMain.swift */; };
+		A49E69422370A004003A3D6F /* AlterEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49E69412370A004003A3D6F /* AlterEvent.swift */; };
 		A4B2CDE8222B62EA00DB64AC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B2CDE7222B62EA00DB64AC /* AppDelegate.swift */; };
 		A4B2CDED222B62EA00DB64AC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4B2CDEB222B62EA00DB64AC /* Main.storyboard */; };
 		A4B2CDEF222B62EB00DB64AC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A4B2CDEE222B62EB00DB64AC /* Assets.xcassets */; };
@@ -93,6 +94,7 @@
 		A495E2E9222B891E00D8607D /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		A495E303222E003F00D8607D /* StartScreenMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartScreenMain.swift; sourceTree = "<group>"; };
 		A495E30A22300AAA00D8607D /* NewsScreenMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsScreenMain.swift; sourceTree = "<group>"; };
+		A49E69412370A004003A3D6F /* AlterEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlterEvent.swift; sourceTree = "<group>"; };
 		A4B2CDE4222B62EA00DB64AC /* MAC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MAC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4B2CDE7222B62EA00DB64AC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A4B2CDEC222B62EA00DB64AC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 				A4B5D6062368772800DEBC62 /* AddRole.swift */,
 				A4B5D6082368773600DEBC62 /* DeleteRole.swift */,
 				A4B5D60A2369FD3C00DEBC62 /* EndEvent.swift */,
+				A49E69412370A004003A3D6F /* AlterEvent.swift */,
 			);
 			path = "Popup-Screens";
 			sourceTree = "<group>";
@@ -601,6 +604,7 @@
 				A40FA78E230EE6FC00D19537 /* AddItemAlert.swift in Sources */,
 				A495E30B22300AAA00D8607D /* NewsScreenMain.swift in Sources */,
 				A46EAB54223A910100F1B702 /* PicksScreenSongMain.swift in Sources */,
+				A49E69422370A004003A3D6F /* AlterEvent.swift in Sources */,
 				A4C8840B2357562E00BBACD8 /* ImagePickerManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

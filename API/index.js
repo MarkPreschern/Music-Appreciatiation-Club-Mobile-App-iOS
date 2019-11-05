@@ -152,7 +152,6 @@ function getCurrentEventID(con, callback) {
     const inserts = [dateTime()];
     const sql = MySQL.format(structure, inserts);
 
-    // attempts to insert the authorization token
     con.query(sql, function (error, results) {
         if (error) {
             callback(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
@@ -250,6 +249,33 @@ function getImage(con, eventID, event, callback) {
                 message: "Successfully retrieved user's image",
                 items: results
             })
+        }
+    });
+}
+
+// gets the current event information
+function getEvent(con, eventID, event, callback) {
+    const structure = 'SELECT * '
+        + 'FROM event '
+        + 'WHERE ( ? BETWEEN start_date AND end_date) AND completed = 0 '
+        + 'ORDER BY end_date DESC '
+        + 'LIMIT 1';
+    const inserts = [dateTime()];
+    const sql = MySQL.format(structure, inserts);
+
+    // attempts to insert the authorization token
+    con.query(sql, function (error, results) {
+        if (error) {
+            callback(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+        } else {
+            if (results.length === 0) {
+                callback(createErrorMessage("404", "Server-side Error", "Missing Event Data", error));
+            } else {
+                callback({
+                    "statusCode": "200",
+                    "event": results[0]
+                });
+            }
         }
     });
 }
@@ -597,32 +623,6 @@ function postPick(con, eventID, event, callback) {
         })
     }
 
-    // Returns the current event ID
-    function getEventID() {
-        return new Promise(function (resolve, reject) {
-            const structure = 'SELECT * '
-                + 'FROM event '
-                + 'WHERE ? BETWEEN start_date AND end_date '
-                + 'ORDER BY end_date DESC '
-                + 'LIMIT 1';
-            const inserts = [dateTime()];
-            const sql = MySQL.format(structure, inserts);
-
-            // attempts to insert the authorization token
-            con.query(sql, function (error, results) {
-                if (error) {
-                    reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
-                } else {
-                    if (results.length === 0) {
-                        reject(createErrorMessage("404", "Server-side Error", "Missing Event Data", error));
-                    } else {
-                        resolve(results[0]["event_id"]);
-                    }
-                }
-            });
-        })
-    }
-
     // adds the pick
     function addPick() {
         return new Promise(function (resolve, reject) {
@@ -900,6 +900,27 @@ function postPost(con, eventID, event, callback) {
             callback({
                 "statusCode": "200",
                 "message": "Successfully created post"
+            });
+        }
+    });
+}
+
+// updates the current event information with a new name, description, and end date
+function postEvent(con, eventID, event, callback) {
+    const structure = 'UPDATE event '
+        + 'SET name = ? , description = ? , end_date = ? '
+        + 'WHERE event_id = ? ';
+    const inserts = [event.headers["name"], event.headers["description"], event.headers["end_date"], event.headers["event_id"]];
+    const sql = MySQL.format(structure, inserts);
+
+    // attempts to insert the authorization token
+    con.query(sql, function (error, results) {
+        if (error) {
+            callback(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+        } else {
+            callback({
+                "statusCode": "200",
+                "message": "Successfully updated event"
             });
         }
     });
