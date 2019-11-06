@@ -356,7 +356,7 @@ class StartScreenMain: UIViewController, UITextFieldDelegate {
                         } else {
                             if let imageString = (items[0]["image_data"] as! String).removingPercentEncoding {
                                 let imageData = NSData(base64Encoded: imageString, options: NSData.Base64DecodingOptions.ignoreUnknownCharacters)
-                                userData.image_data = UIImage(data: imageData! as Data)!
+                                userData.image_data = UIImage(data: imageData! as Data)!.resize(targetSize: CGSize(width: 80, height: 80))
                                 callback("Success")
                             } else {
                                 let alert = createAlert(
