@@ -47,7 +47,7 @@ class MembersScreenMain: UIViewController, UITableViewDelegate {
                             
                             let imageEncoded = (items[0]["image_data"] as? String)?.removingPercentEncoding
                             let imageData : NSData? = (imageEncoded != nil) ? NSData(base64Encoded: imageEncoded!, options: NSData.Base64DecodingOptions.ignoreUnknownCharacters) : nil
-                            let mainImage : UIImage? = (imageEncoded != nil) ? UIImage(data: imageData! as Data)!.resize(targetSize: CGSize(width: 80, height: 80)) : nil
+                            let mainImage : UIImage? = (imageEncoded != nil) ? UIImage(data: imageData! as Data)! : nil
                             
                             let user = UserData(user_id: item["user_id"] as? Int,
                                                 user_name: item["user_name"] as? String,
