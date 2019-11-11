@@ -588,10 +588,10 @@ function postPick(con, eventID, event, callback) {
                     reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
                 } else {
                     let count = results[0]["count(*)"];
-                    if (event.headers["item_is_album"] === "1" && count > 3) {
-                        reject(createErrorMessage("404", "Insertion Error", "Failed to insert a new album pick as you have exceeded 3 album picks ", error));
-                    } else if (event.headers["item_is_album"] === "0" && count > 5) {
-                        reject(createErrorMessage("404", "Insertion Error", "Failed to insert a new song pick as you have exceeded 5 song picks", error));
+                    if (event.headers["item_is_album"] === "1" && count > 1) {
+                        reject(createErrorMessage("404", "Insertion Error", "Failed to insert a new album pick as you have exceeded 1 album pick ", error));
+                    } else if (event.headers["item_is_album"] === "0" && count > 1) {
+                        reject(createErrorMessage("404", "Insertion Error", "Failed to insert a new song pick as you have exceeded 1 song pick", error));
                     } else {
                         resolve()
                     }
