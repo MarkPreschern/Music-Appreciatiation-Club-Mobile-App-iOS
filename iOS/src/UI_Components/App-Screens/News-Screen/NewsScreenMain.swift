@@ -59,7 +59,7 @@ class NewsScreenMain: UIViewController, UITableViewDelegate {
     
     // loads in post data from the MAC API
     func loadPosts() {
-        self.macRequest(urlName: "posts", httpMethod: .get, header: nil, successAlert: false, callback: { jsonData -> Void in
+        self.macRequest(urlName: "posts", httpMethod: .get, header: nil, successAlert: false, attempt: 0, callback: { jsonData -> Void in
             if let statusCode = jsonData?["statusCode"] as? String {
                 if statusCode == "200" {
                     if let items = jsonData?["posts"] as? [JSONStandard] {
@@ -116,7 +116,7 @@ class NewsScreenMain: UIViewController, UITableViewDelegate {
                 let header: HTTPHeaders = [
                     "post_id": String(self.posts[gesture.index].post_id),
                 ]
-                self.macRequest(urlName: "deletePost", httpMethod: .post, header: header, successAlert: true, callback: { response -> Void in
+                self.macRequest(urlName: "deletePost", httpMethod: .post, header: header, successAlert: true, attempt: 0, callback: { response -> Void in
                     if let statusCode = response?["statusCode"] as? String {
                         if statusCode == "200" {
                             self.posts.remove(at: gesture.index)

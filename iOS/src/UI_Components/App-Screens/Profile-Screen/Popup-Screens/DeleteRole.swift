@@ -40,7 +40,7 @@ class DeleteRole: UIViewController, PopupScreen, UITableViewDelegate {
     
     // determines what role's the user can pick from and reloads the table data
     func loadRoleData() {
-        self.macRequest(urlName: "roles", httpMethod: .get, header: nil, successAlert: false, callback: { jsonData -> Void in
+        self.macRequest(urlName: "roles", httpMethod: .get, header: nil, successAlert: false, attempt: 0, callback: { jsonData -> Void in
             if let statusCode = jsonData?["statusCode"] as? String {
                 if statusCode == "200" {
                     if let items = jsonData?["roles"] as? [JSONStandard] {
@@ -92,7 +92,7 @@ class DeleteRole: UIViewController, PopupScreen, UITableViewDelegate {
             ]
             
             self.showSpinner(onView: self.view)
-            self.macRequest(urlName: "deleteRole", httpMethod: .post, header: header, successAlert: false, callback: { jsonData -> Void in
+            self.macRequest(urlName: "deleteRole", httpMethod: .post, header: header, successAlert: false, attempt: 0, callback: { jsonData -> Void in
                 if let statusCode = jsonData?["statusCode"] as? String {
                     if statusCode == "200" {
                         let alert = UIAlertController(

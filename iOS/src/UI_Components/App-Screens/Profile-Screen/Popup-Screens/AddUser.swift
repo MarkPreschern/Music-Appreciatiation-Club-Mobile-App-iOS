@@ -42,7 +42,7 @@ class AddUser: UIViewController, PopupScreen, UITextFieldDelegate, UIPickerViewD
     // determines what role's and access' the user can pick from and reloads the picker data
     func loadPickerData() {
         // loads in role data
-        self.macRequest(urlName: "roles", httpMethod: .get, header: nil, successAlert: false, callback: { jsonData -> Void in
+        self.macRequest(urlName: "roles", httpMethod: .get, header: nil, successAlert: false, attempt: 0, callback: { jsonData -> Void in
             if let statusCode = jsonData?["statusCode"] as? String {
                 if statusCode == "200" {
                     if let items = jsonData?["roles"] as? [JSONStandard] {
@@ -124,7 +124,7 @@ class AddUser: UIViewController, PopupScreen, UITextFieldDelegate, UIPickerViewD
             ]
             
             self.showSpinner(onView: self.view)
-            self.macRequest(urlName: "user", httpMethod: .post, header: header, successAlert: false, callback: { jsonData -> Void in
+            self.macRequest(urlName: "user", httpMethod: .post, header: header, successAlert: false, attempt: 0, callback: { jsonData -> Void in
                 self.removeSpinner()
                 if let statusCode = jsonData?["statusCode"] as? String {
                     if statusCode == "200" {

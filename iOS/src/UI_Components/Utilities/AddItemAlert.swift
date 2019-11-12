@@ -29,7 +29,7 @@ extension UIAlertController {
             ]
             // creates the item and pick
             sender.showSpinner(onView: sender.view)
-            sender.macRequest(urlName: "pick", httpMethod: .post, header: header, successAlert: true, callback: { response -> Void in
+            sender.macRequest(urlName: "pick", httpMethod: .post, header: header, successAlert: true, attempt: 0, callback: { response -> Void in
                 sender.removeSpinner()
             })
         }))

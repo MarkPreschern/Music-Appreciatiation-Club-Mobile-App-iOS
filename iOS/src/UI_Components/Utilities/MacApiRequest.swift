@@ -12,7 +12,7 @@ import Alamofire
 extension UIViewController {
 
     // Requests data from the mac api given a urlName and httpMethod, waits for a callback
-    func macRequest(urlName : String!, httpMethod : HTTPMethod!, header : HTTPHeaders?, successAlert : Bool!, callback: @escaping (JSONStandard?) -> Void) {
+    func macRequest(urlName : String!, httpMethod : HTTPMethod!, header : HTTPHeaders?, successAlert : Bool!, attempt: Int!, callback: @escaping (JSONStandard?) -> Void) {
         let url = API_URL + urlName
         
         var headers: HTTPHeaders = [:];
@@ -27,9 +27,24 @@ extension UIViewController {
             headers["authorization_token"] = userData?.authorization_token ?? ""
         }
         
+        // retry's the mac request
+        func retry() {
+            self.macRequest(urlName: urlName, httpMethod: httpMethod, header: header, successAlert: successAlert, attempt: attempt + 1, callback: callback)
+        }
+        
+        // outputs, alerts, and calls back the error message
+        func errorMessage(title: String!, description: String!, statusCode: String!) {
+            let alert = createAlert(
+                title: title,
+                message: description,
+                actionTitle: "Close")
+            self.present(alert, animated: true, completion: nil)
+            callback(["statusCode": statusCode as AnyObject])
+        }
+        
         Alamofire.request(url, method: httpMethod, parameters: nil, encoding: JSONEncoding.default, headers: headers).responseJSON(completionHandler: { response in
             do {
-                var readableJSON = try JSONSerialization.jsonObject(with: response.data!, options: .mutableContainers) as! JSONStandard
+                let readableJSON = try JSONSerialization.jsonObject(with: response.data!, options: .mutableContainers) as! JSONStandard
                 print(readableJSON)
                 if let statusCode = readableJSON["statusCode"] as? String {
                     if (statusCode == "200") {
@@ -39,26 +54,24 @@ extension UIViewController {
                         }
                         callback(readableJSON)
                     } else {
-                        let alert = createAlert(title: readableJSON["title"] as? String, message: readableJSON["description"] as? String, actionTitle: "Close")
-                        self.present(alert, animated: true, completion: nil)
-                        callback(["statusCode": statusCode as AnyObject])
+                        errorMessage(title: readableJSON["title"] as? String, description: readableJSON["description"] as? String, statusCode: statusCode)
                     }
                 } else {
-                    let alert = createAlert(
-                        title: "Request Failed",
-                        message: "Error occured during request",
-                        actionTitle: "Close")
-                    self.present(alert, animated: true, completion: nil)
-                    callback(["statusCode": "404" as AnyObject])
+                    // makes another attempt if a backend error occured
+                    if attempt > 1 {
+                       errorMessage(title: "Request Failed", description: "Error occured during request", statusCode: "404")
+                    } else {
+                        retry()
+                    }
                 }
             } catch {
+                // makes another attempt if an uncaught exception occurs
                 print("Error info: \(error)")
-                let alert = createAlert(
-                    title: "Request Failed",
-                    message: "Error occured during request",
-                    actionTitle: "Close")
-                self.present(alert, animated: true, completion: nil)
-                callback(["statusCode": "404" as AnyObject])
+                if attempt > 1 {
+                   errorMessage(title: "Request Failed", description: "Error occured during request", statusCode: "404")
+                } else {
+                    retry()
+                }
             }
         })
     }

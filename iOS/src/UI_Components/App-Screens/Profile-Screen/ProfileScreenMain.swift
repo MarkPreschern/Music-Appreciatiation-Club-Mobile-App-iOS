@@ -85,7 +85,7 @@ class ProfileScreenMain: UIViewController, UITableViewDelegate {
         ]
         
         self.showSpinner(onView: self.view)
-        self.macRequest(urlName: "userPopularPicks", httpMethod: .get, header: header, successAlert: false, callback: { jsonData -> Void in
+        self.macRequest(urlName: "userPopularPicks", httpMethod: .get, header: header, successAlert: false, attempt: 0, callback: { jsonData -> Void in
             if let statusCode = jsonData?["statusCode"] as? String {
                 if statusCode == "200" {
                     if let items = jsonData?["popular_picks"] as? [JSONStandard] {

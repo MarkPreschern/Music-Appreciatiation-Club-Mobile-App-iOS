@@ -64,7 +64,7 @@ class CreatePost: UIViewController, UITextViewDelegate {
                 ]
                 
                 self.showSpinner(onView: self.view)
-                self.macRequest(urlName: "post", httpMethod: .post, header: header, successAlert: false, callback: { jsonData -> Void in
+                self.macRequest(urlName: "post", httpMethod: .post, header: header, successAlert: false, attempt: 0, callback: { jsonData -> Void in
                     self.removeSpinner()
                     if let statusCode = jsonData?["statusCode"] as? String {
                         if statusCode == "200" {

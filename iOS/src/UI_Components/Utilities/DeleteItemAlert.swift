@@ -26,7 +26,7 @@ extension UIAlertController {
                 "item_id": String(pick.itemData.spotify_id)
             ]
             // creates the item and pick
-            sender.macRequest(urlName: "deletePick", httpMethod: .post, header: header, successAlert: true, callback: { response -> Void in
+            sender.macRequest(urlName: "deletePick", httpMethod: .post, header: header, successAlert: true, attempt: 0, callback: { response -> Void in
                 callback("Success")
             })
         }))

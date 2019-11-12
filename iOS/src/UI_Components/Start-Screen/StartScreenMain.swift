@@ -256,7 +256,7 @@ class StartScreenMain: UIViewController, UITextFieldDelegate {
     
     // Gets the user's specific role data
     func retrieveRoleData(callback: @escaping (String) -> Void) {
-        self.macRequest(urlName: "role", httpMethod: .get, header: [:], successAlert: false, callback: { jsonData -> Void in
+        self.macRequest(urlName: "role", httpMethod: .get, header: [:], successAlert: false, attempt: 0, callback: { jsonData -> Void in
             if let statusCode = jsonData?["statusCode"] as? String {
                 if (statusCode == "200") {
                     if let items = jsonData?["items"] as? [JSONStandard] {
@@ -301,7 +301,7 @@ class StartScreenMain: UIViewController, UITextFieldDelegate {
     
     // Gets the user's specific access data
     func retrieveAccessData(callback: @escaping (String) -> Void) {
-        self.macRequest(urlName: "access", httpMethod: .get, header: [:], successAlert: false, callback: { jsonData -> Void in
+        self.macRequest(urlName: "access", httpMethod: .get, header: [:], successAlert: false, attempt: 0, callback: { jsonData -> Void in
             if let statusCode = jsonData?["statusCode"] as? String {
                 if (statusCode == "200") {
                     if let items = jsonData?["items"] as? [JSONStandard] {
@@ -346,7 +346,7 @@ class StartScreenMain: UIViewController, UITextFieldDelegate {
     
     // Gets the user's specific image data
     func retrieveImageData(callback: @escaping (String) -> Void) {
-        self.macRequest(urlName: "image", httpMethod: .get, header: [:], successAlert: false, callback: { jsonData -> Void in
+        self.macRequest(urlName: "image", httpMethod: .get, header: [:], successAlert: false, attempt: 0, callback: { jsonData -> Void in
             if let statusCode = jsonData?["statusCode"] as? String {
                 if (statusCode == "200") {
                     if let items = jsonData?["items"] as? [JSONStandard] {

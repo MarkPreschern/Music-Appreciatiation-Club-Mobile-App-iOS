@@ -110,7 +110,7 @@ class PicksScreenSongMain: UIViewController, UITableViewDelegate {
     
     // requests user song data from the mac api
     func requestUserData(callback: @escaping (String) -> Void) {
-        self.macRequest(urlName: "userSongPicks", httpMethod: .get, header: [:], successAlert: false, callback: { jsonData -> Void in
+        self.macRequest(urlName: "userSongPicks", httpMethod: .get, header: [:], successAlert: false, attempt: 0, callback: { jsonData -> Void in
             self.parsePickData(jsonData: jsonData, callback: { (picks : [Pick]?) -> Void in
                 if (jsonData?["statusCode"] as? String == "200") {
                     if (picks == nil) {
@@ -131,7 +131,7 @@ class PicksScreenSongMain: UIViewController, UITableViewDelegate {
     
     // requests club song data from the mac api
     func requestClubData(callback: @escaping (String) -> Void) {
-        self.macRequest(urlName: "clubSongPicks", httpMethod: .get, header: [:], successAlert: false, callback: { jsonData -> Void in
+        self.macRequest(urlName: "clubSongPicks", httpMethod: .get, header: [:], successAlert: false, attempt: 0, callback: { jsonData -> Void in
             self.parsePickData(jsonData: jsonData, callback: { (picks : [Pick]?) -> Void in
                 if (jsonData?["statusCode"] as? String == "200") {
                     if (picks == nil) {
@@ -279,7 +279,7 @@ class PicksScreenSongMain: UIViewController, UITableViewDelegate {
             let header: HTTPHeaders = [
                 "vote_id": String(clubSongPicks[gesture.index].voteData.userVoteID!)
             ]
-            self.macRequest(urlName: "deleteVote", httpMethod: .post, header: header, successAlert: false, callback: { jsonData -> Void in
+            self.macRequest(urlName: "deleteVote", httpMethod: .post, header: header, successAlert: false, attempt: 0, callback: { jsonData -> Void in
                 if (jsonData?["statusCode"] as? String == "200") {
                     callback("Success")
                 } else {
@@ -297,7 +297,7 @@ class PicksScreenSongMain: UIViewController, UITableViewDelegate {
             "up": String(up),
             "comment": comment
         ]
-        self.macRequest(urlName: "vote", httpMethod: .post, header: header, successAlert: false, callback: { jsonData -> Void in
+        self.macRequest(urlName: "vote", httpMethod: .post, header: header, successAlert: false, attempt: 0, callback: { jsonData -> Void in
             if (jsonData?["statusCode"] as? String == "200") {
                 self.clubSongPicks[gesture.index].voteData.userVoteID = jsonData?["vote_id"] as? Int
                 callback("Success")
