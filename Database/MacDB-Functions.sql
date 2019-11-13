@@ -68,7 +68,7 @@ FROM
     JOIN item on p1.item_id like item.item_id
     WHERE p1.event_id = ending_event_id AND item.is_album = 0
     ORDER BY totalVotes(p1.pick_id) DESC
-    LIMIT 5
+    LIMIT 100 -- effectively inserts all picks given the current size of the club, can be modified
 ) as songs
 UNION
 (
@@ -77,7 +77,7 @@ UNION
 	JOIN item on p2.item_id like item.item_id
 	WHERE p2.event_id = ending_event_id AND item.is_album = 1
 	ORDER BY totalVotes(p2.pick_id) DESC
-	LIMIT 5
+	LIMIT 100 -- effectively inserts all picks given the current size of the club, can be modified
 );
 
 -- Inserts event_popular_picks into MacDB.popular table
