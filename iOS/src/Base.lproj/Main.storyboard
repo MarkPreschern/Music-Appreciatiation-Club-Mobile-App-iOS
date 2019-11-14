@@ -201,7 +201,7 @@
                                         </connections>
                                     </button>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profile" translatesAutoresizingMaskIntoConstraints="NO" id="T6T-hh-LIb">
-                                        <rect key="frame" x="120" y="21" width="40" height="40.000000000000455"/>
+                                        <rect key="frame" x="120" y="21" width="40" height="40"/>
                                     </imageView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="search" translatesAutoresizingMaskIntoConstraints="NO" id="vTz-vT-Oj7">
                                         <rect key="frame" x="309" y="21" width="40" height="40"/>
@@ -857,7 +857,7 @@
                                         </connections>
                                     </button>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profile" translatesAutoresizingMaskIntoConstraints="NO" id="QEh-eJ-0Gz">
-                                        <rect key="frame" x="120" y="21.666666666666629" width="40" height="39.000000000000455"/>
+                                        <rect key="frame" x="120" y="21.666666666666629" width="40" height="39"/>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UjM-SE-eOW">
                                         <rect key="frame" x="187" y="0.0" width="94" height="82"/>
@@ -1034,7 +1034,7 @@
                                         </connections>
                                     </button>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profile" translatesAutoresizingMaskIntoConstraints="NO" id="04j-cv-o7z">
-                                        <rect key="frame" x="120" y="21.666666666666629" width="40" height="39.000000000000455"/>
+                                        <rect key="frame" x="120" y="21.666666666666629" width="40" height="39"/>
                                     </imageView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="searchgreen" translatesAutoresizingMaskIntoConstraints="NO" id="KFF-iw-OX2">
                                         <rect key="frame" x="309" y="21.666666666666629" width="40" height="39"/>
@@ -1939,7 +1939,7 @@
                                         </connections>
                                     </button>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profile" translatesAutoresizingMaskIntoConstraints="NO" id="S8K-6M-LEA">
-                                        <rect key="frame" x="120" y="21.666666666666629" width="40" height="39.000000000000455"/>
+                                        <rect key="frame" x="120" y="21.666666666666629" width="40" height="39"/>
                                     </imageView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Picksgreen" translatesAutoresizingMaskIntoConstraints="NO" id="kQ0-bw-JCt">
                                         <rect key="frame" x="214" y="21.666666666666629" width="40" height="39"/>
@@ -2116,7 +2116,7 @@
                                         </connections>
                                     </button>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="content" translatesAutoresizingMaskIntoConstraints="NO" id="kbk-uS-N0x">
-                                        <rect key="frame" x="1" y="33" width="239" height="180"/>
+                                        <rect key="frame" x="0.0" y="33" width="241" height="180"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="15"/>
@@ -2131,19 +2131,19 @@
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <constraints>
-                                    <constraint firstItem="kbk-uS-N0x" firstAttribute="leading" secondItem="gsP-ae-jwg" secondAttribute="leading" constant="1" id="5FW-BI-Zxr"/>
+                                    <constraint firstItem="kbk-uS-N0x" firstAttribute="leading" secondItem="gsP-ae-jwg" secondAttribute="leading" id="5FW-BI-Zxr"/>
                                     <constraint firstAttribute="bottom" secondItem="kJJ-Kp-zKj" secondAttribute="bottom" constant="18" id="7QA-DA-IFv"/>
                                     <constraint firstItem="kJJ-Kp-zKj" firstAttribute="height" secondItem="gsP-ae-jwg" secondAttribute="height" multiplier="0.11194" id="AdJ-da-CuE"/>
                                     <constraint firstItem="A1G-CU-EQL" firstAttribute="width" secondItem="gsP-ae-jwg" secondAttribute="width" multiplier="0.406639" id="CN4-gQ-yta"/>
                                     <constraint firstItem="kbk-uS-N0x" firstAttribute="top" secondItem="BuM-kx-WRe" secondAttribute="bottom" constant="5" id="CUc-z1-WwJ"/>
                                     <constraint firstAttribute="trailing" secondItem="kJJ-Kp-zKj" secondAttribute="trailing" constant="13" id="IIw-hw-cWv"/>
-                                    <constraint firstAttribute="trailing" secondItem="kbk-uS-N0x" secondAttribute="trailing" constant="1" id="KpD-KM-5S9"/>
+                                    <constraint firstAttribute="trailing" secondItem="kbk-uS-N0x" secondAttribute="trailing" id="KpD-KM-5S9"/>
                                     <constraint firstItem="kbk-uS-N0x" firstAttribute="centerX" secondItem="gsP-ae-jwg" secondAttribute="centerX" id="Kzu-08-UNi"/>
                                     <constraint firstItem="BuM-kx-WRe" firstAttribute="width" secondItem="gsP-ae-jwg" secondAttribute="width" multiplier="0.372061" constant="151.33333333333334" id="Qbr-nP-i1o"/>
                                     <constraint firstItem="kJJ-Kp-zKj" firstAttribute="width" secondItem="gsP-ae-jwg" secondAttribute="width" multiplier="0.406639" id="Xxo-yg-hXz"/>
                                     <constraint firstItem="BuM-kx-WRe" firstAttribute="height" secondItem="gsP-ae-jwg" secondAttribute="height" multiplier="0.0746269" id="Ze3-3J-cdr"/>
                                     <constraint firstItem="A1G-CU-EQL" firstAttribute="leading" secondItem="gsP-ae-jwg" secondAttribute="leading" constant="4" id="ZhM-Ir-BBa"/>
-                                    <constraint firstItem="kbk-uS-N0x" firstAttribute="width" secondItem="gsP-ae-jwg" secondAttribute="width" multiplier="0.991701" id="bz4-2J-jZT"/>
+                                    <constraint firstItem="kbk-uS-N0x" firstAttribute="width" secondItem="gsP-ae-jwg" secondAttribute="width" multiplier="0.991701" constant="2.0000589999999931" id="bz4-2J-jZT"/>
                                     <constraint firstItem="A1G-CU-EQL" firstAttribute="height" secondItem="gsP-ae-jwg" secondAttribute="height" multiplier="0.11194" id="esO-7C-JhC"/>
                                     <constraint firstItem="BuM-kx-WRe" firstAttribute="top" secondItem="gsP-ae-jwg" secondAttribute="top" constant="8" id="hep-VV-OY7"/>
                                     <constraint firstItem="kbk-uS-N0x" firstAttribute="height" secondItem="gsP-ae-jwg" secondAttribute="height" multiplier="0.671642" id="n2y-K2-Vlh"/>

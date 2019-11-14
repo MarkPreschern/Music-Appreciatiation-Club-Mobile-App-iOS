@@ -49,11 +49,9 @@ class EndEvent: UIViewController, PopupScreen {
                         self.present(alert, animated: true, completion: nil)
                     } else {
                         self.removeSpinner()
-                        self.dismiss(animated: true, completion: nil)
                     }
                 } else {
                     self.removeSpinner()
-                    self.dismiss(animated: true, completion: nil)
                 }
             })
         }))

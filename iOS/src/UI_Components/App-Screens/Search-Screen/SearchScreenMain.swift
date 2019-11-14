@@ -54,8 +54,7 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
         super.viewDidLoad()
         
         //sets task bar border
-        self.view_outlet.layer.borderWidth = 1
-        self.view_outlet.layer.borderColor = UIColor(red:222/255, green:225/255, blue:227/255, alpha: 1).cgColor
+        self.view_outlet.layer.addBorder(edge: UIRectEdge.top, color: UIColor(red:222/255, green:225/255, blue:227/255, alpha: 1), thickness: 1)
         
         //sets search text box constraints
         self.searchTextBox_outlet.delegate = self

@@ -32,7 +32,7 @@ struct UserData {
 }
 
 // Mac API base URL
-let API_URL = "https://50pnu03u26.execute-api.us-east-2.amazonaws.com/MacTesting/api.mac.com/"
+let API_URL = "https://50pnu03u26.execute-api.us-east-2.amazonaws.com/MacProduction/api.mac.com/"
 
 // represents this user
 var userData : UserData!
@@ -354,16 +354,12 @@ class StartScreenMain: UIViewController, UITextFieldDelegate {
                             userData.image_data = nil
                             callback("Success")
                         } else {
-                            if let imageString = (items[0]["image_data"] as! String).removingPercentEncoding {
+                            if let imageString = (items[0]["image_data"] as? String)?.removingPercentEncoding {
                                 let imageData = NSData(base64Encoded: imageString, options: NSData.Base64DecodingOptions.ignoreUnknownCharacters)
                                 userData.image_data = UIImage(data: imageData! as Data)!
                                 callback("Success")
                             } else {
-                                let alert = createAlert(
-                                    title: "Image Request Failed",
-                                    message: "Login succeeded, but couldn't fetch user image.",
-                                    actionTitle: "Close")
-                                self.present(alert, animated: true, completion: nil)
+                                // either user hasn't specified an image or the image data couldn't be read
                                 callback("Success")
                             }
                         }

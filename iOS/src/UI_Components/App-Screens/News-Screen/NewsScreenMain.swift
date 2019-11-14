@@ -18,6 +18,7 @@ struct Post {
     let user_id: Int!
     let user_name: String!
     let role_name: String!
+    let user_image: UIImage?
 }
 
 // Represents the news screen. Holds information regarding:
@@ -36,8 +37,7 @@ class NewsScreenMain: UIViewController, UITableViewDelegate {
         super.viewDidLoad()
         
         //sets task bar border
-        self.view_outlet.layer.borderWidth = 1
-        self.view_outlet.layer.borderColor = UIColor(red:222/255, green:225/255, blue:227/255, alpha: 1).cgColor
+        self.view_outlet.layer.addBorder(edge: UIRectEdge.top, color: UIColor(red:222/255, green:225/255, blue:227/255, alpha: 1), thickness: 1)
         
         //sets view border
         self.viewPost_outlet.layer.borderWidth = 1
@@ -67,10 +67,16 @@ class NewsScreenMain: UIViewController, UITableViewDelegate {
                             self.removeSpinner()
                         }
                         for i in 0..<items.count {
+                            // sets the date
                             let item = items[i]
                             let dateList = (item["date_created"] as! String).components(separatedBy: "-")
                             let day = dateList[2].components(separatedBy: "T")[0]
                             let date = dateList[1] + "/" + day + "/" + dateList[0]
+                            
+                            // sets the image
+                            let imageEncoded = (items[0]["image_data"] as? String)?.removingPercentEncoding
+                            let imageData : NSData? = (imageEncoded != nil) ? NSData(base64Encoded: imageEncoded!, options: NSData.Base64DecodingOptions.ignoreUnknownCharacters) : nil
+                            let mainImage : UIImage? = (imageEncoded != nil) ? UIImage(data: imageData! as Data)! : nil
                             
                             let post = Post(post_id: item["post_id"] as? Int,
                                             title: item["title"] as? String,
@@ -78,7 +84,8 @@ class NewsScreenMain: UIViewController, UITableViewDelegate {
                                             date_created: date,
                                             user_id: item["user_id"] as? Int,
                                             user_name: item["user_name"] as? String,
-                                            role_name: item["role_name"] as? String)
+                                            role_name: item["role_name"] as? String,
+                                            user_image: imageEncoded == nil ? nil : mainImage)
                             
                             self.posts.append(post)
                             self.table_outlet.reloadData()
@@ -153,8 +160,8 @@ extension NewsScreenMain: UITableViewDataSource {
         date.text = posts[indexPath.row].date_created
         // sets the image
         let image = cell?.viewWithTag(5) as! UIImageView
-        if userData.image_data != nil {
-            image.image = userData.image_data
+        if posts[indexPath.row].user_image != nil {
+            image.image = posts[indexPath.row].user_image
         }
         
         // if the user is authorized to delete the post

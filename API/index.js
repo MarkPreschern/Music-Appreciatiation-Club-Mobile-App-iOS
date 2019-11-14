@@ -286,7 +286,8 @@ function getUserSongPicks(con, eventID, event, callback) {
         + 'FROM item '
         + 'JOIN pick ON item.item_id = pick.item_id '
         + 'JOIN user ON pick.user_id = user.user_id '
-        + 'WHERE is_album = 0 and pick.user_id = ? and pick.event_id = ? ';
+        + 'WHERE is_album = 0 and pick.user_id = ? and pick.event_id = ? '
+        + 'ORDER BY totalVotes(pick.pick_id) DESC ';
     const inserts = [event.headers.user_id, eventID];
     const sql = MySQL.format(structure, inserts);
 
@@ -307,7 +308,8 @@ function getUserAlbumPicks(con, eventID, event, callback) {
         + 'FROM item '
         + 'JOIN pick ON item.item_id = pick.item_id '
         + 'JOIN user ON pick.user_id = user.user_id '
-        + 'WHERE is_album = 1 and pick.user_id = ? and pick.event_id = ? ';
+        + 'WHERE is_album = 1 and pick.user_id = ? and pick.event_id = ? '
+        + 'ORDER BY totalVotes(pick.pick_id) DESC ';
     const inserts = [event.headers.user_id, eventID];
     const sql = MySQL.format(structure, inserts);
 
@@ -328,7 +330,8 @@ function getClubSongPicks(con, eventID, event, callback) {
         + 'FROM item '
         + 'JOIN pick ON item.item_id = pick.item_id '
         + 'JOIN user ON pick.user_id = user.user_id '
-        + 'WHERE is_album = 0 and pick.event_id = ? ';
+        + 'WHERE is_album = 0 and pick.event_id = ? '
+        + 'ORDER BY totalVotes(pick.pick_id) DESC ';
     const inserts = [eventID];
     const sql = MySQL.format(structure, inserts);
 
@@ -349,7 +352,8 @@ function getClubAlbumPicks(con, eventID, event, callback) {
         + 'FROM item '
         + 'JOIN pick ON item.item_id = pick.item_id '
         + 'JOIN user ON pick.user_id = user.user_id '
-        + 'WHERE is_album = 1 and pick.event_id = ? ';
+        + 'WHERE is_album = 1 and pick.event_id = ? '
+        + 'ORDER BY totalVotes(pick.pick_id) DESC ';
     const inserts = [eventID];
     const sql = MySQL.format(structure, inserts);
 
@@ -415,10 +419,11 @@ function getUsers(con, eventID, event, callback) {
 
 // gets all post's and their necessary user information
 function getPosts(con, eventID, event, callback) {
-    const structure = 'SELECT post.*, user.user_id, user.name as user_name, role.name as role_name '
+    const structure = 'SELECT post.*, user.user_id, user.name as user_name, role.name as role_name, image.image_data '
         + 'FROM post '
         + 'JOIN user ON user.user_id = post.user_id '
         + 'JOIN role ON role.role_id = user.role_id '
+        + 'LEFT JOIN image ON user.image_id = image.image_id '
         + 'ORDER BY post.date_created DESC ';
     const inserts = [event.headers.user_id];
     const sql = MySQL.format(structure, inserts);
@@ -588,9 +593,9 @@ function postPick(con, eventID, event, callback) {
                     reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
                 } else {
                     let count = results[0]["count(*)"];
-                    if (event.headers["item_is_album"] === "1" && count > 1) {
+                    if (event.headers["item_is_album"] === "1" && count >= 1) {
                         reject(createErrorMessage("404", "Insertion Error", "Failed to insert a new album pick as you have exceeded 1 album pick ", error));
-                    } else if (event.headers["item_is_album"] === "0" && count > 1) {
+                    } else if (event.headers["item_is_album"] === "0" && count >= 1) {
                         reject(createErrorMessage("404", "Insertion Error", "Failed to insert a new song pick as you have exceeded 1 song pick", error));
                     } else {
                         resolve()

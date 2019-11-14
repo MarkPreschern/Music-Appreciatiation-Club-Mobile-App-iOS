@@ -46,7 +46,7 @@ class DeleteUser: UIViewController, PopupScreen, UITableViewDelegate {
                         for i in 0..<items.count {
                             let item = items[i]
                             // TODO: Confirm image decoding works as expected
-                            let imageEncoded = (item["image_data"] as! String).removingPercentEncoding
+                            let imageEncoded = (item["image_data"] as? String)?.removingPercentEncoding
                             let mainImageData = imageEncoded == nil ? nil : NSData(base64Encoded: imageEncoded!, options: NSData.Base64DecodingOptions.ignoreUnknownCharacters)
                             let mainImage = imageEncoded == nil ? nil : UIImage(data: mainImageData! as Data)!
                             

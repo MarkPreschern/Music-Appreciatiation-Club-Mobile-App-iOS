@@ -90,7 +90,7 @@ DELETE FROM pick
 WHERE pick.pick_id NOT IN 
 (
 	SELECT pick_id
-    FROM event_popular_picks
+    FROM popular
 );
 
 -- Deletes MacDB.item data that aren't popular pick items
@@ -98,7 +98,7 @@ DELETE FROM item
 WHERE item.item_id NOT IN
 (
 	SELECT item_id
-    FROM event_popular_picks
+    FROM popular
 );
 
 -- Deletes all votes
