@@ -583,8 +583,8 @@ function postPick(con, eventID, event, callback) {
             const structure = 'SELECT count(*) '
                 + 'FROM pick '
                 + 'JOIN item ON pick.item_id = item.item_id '
-                + 'WHERE item.is_album = ? AND pick.user_id = ? ';
-            const inserts = [event.headers["item_is_album"], event.headers["user_id"]];
+                + 'WHERE item.is_album = ? AND pick.user_id = ? AND pick.event_id = ? ';
+            const inserts = [event.headers["item_is_album"], event.headers["user_id"], eventID];
             const sql = MySQL.format(structure, inserts);
 
             // attempts to insert the authorization token
@@ -823,6 +823,8 @@ function postImage(con, eventID, event, callback) {
         return getImageID();
     }).then(imageID => {
         return setUserImageID(imageID)
+    }).then(function() {
+        return deleteUnusedImages();
     }).catch(error => {
         return error;
     }));
@@ -868,7 +870,7 @@ function postImage(con, eventID, event, callback) {
         })
     }
 
-    // sets the user's imageID to this image
+    // sets the user's image ID to the newly created image's id
     function setUserImageID(imageID) {
         return new Promise(async function (resolve, reject) {
             const structure = 'UPDATE user '
@@ -876,6 +878,22 @@ function postImage(con, eventID, event, callback) {
                 + 'WHERE user.user_id = ? ';
             const inserts = [imageID, event.headers.user_id];
             const sql = MySQL.format(structure, inserts);
+
+            await con.query(sql, function (error) {
+                if (error) {
+                    reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
+                } else {
+                    resolve();
+                }
+            });
+        });
+    }
+
+    // deletes all images that aren't in a user's image_id column, thus unused
+    function deleteUnusedImages() {
+        return new Promise(async function (resolve, reject) {
+            const sql = 'DELETE FROM image '
+                + 'WHERE image.image_id NOT IN (SELECT image_id FROM user) ';
 
             await con.query(sql, function (error) {
                 if (error) {

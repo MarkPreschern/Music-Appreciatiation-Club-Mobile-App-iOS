@@ -27,6 +27,7 @@
 		A495E304222E003F00D8607D /* StartScreenMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A495E303222E003F00D8607D /* StartScreenMain.swift */; };
 		A495E30B22300AAA00D8607D /* NewsScreenMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A495E30A22300AAA00D8607D /* NewsScreenMain.swift */; };
 		A49E69422370A004003A3D6F /* AlterEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49E69412370A004003A3D6F /* AlterEvent.swift */; };
+		A4A4E2B9237EFFDE00F3E9EE /* SanitizeString.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A4E2B8237EFFDE00F3E9EE /* SanitizeString.swift */; };
 		A4B2CDE8222B62EA00DB64AC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B2CDE7222B62EA00DB64AC /* AppDelegate.swift */; };
 		A4B2CDED222B62EA00DB64AC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A4B2CDEB222B62EA00DB64AC /* Main.storyboard */; };
 		A4B2CDEF222B62EB00DB64AC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A4B2CDEE222B62EB00DB64AC /* Assets.xcassets */; };
@@ -95,6 +96,7 @@
 		A495E303222E003F00D8607D /* StartScreenMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartScreenMain.swift; sourceTree = "<group>"; };
 		A495E30A22300AAA00D8607D /* NewsScreenMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsScreenMain.swift; sourceTree = "<group>"; };
 		A49E69412370A004003A3D6F /* AlterEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlterEvent.swift; sourceTree = "<group>"; };
+		A4A4E2B8237EFFDE00F3E9EE /* SanitizeString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SanitizeString.swift; sourceTree = "<group>"; };
 		A4B2CDE4222B62EA00DB64AC /* MAC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MAC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4B2CDE7222B62EA00DB64AC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A4B2CDEC222B62EA00DB64AC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 				A44BFBC9232FA99F007272AB /* MacApiRequest.swift */,
 				A4B59E192334F3E8002C3EFA /* ParsePickData.swift */,
 				A4C8840A2357562E00BBACD8 /* ImagePickerManager.swift */,
+				A4A4E2B8237EFFDE00F3E9EE /* SanitizeString.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -602,6 +605,7 @@
 				A4D2AA2722EE5B6E009007B3 /* SearchTextBox.swift in Sources */,
 				A4C884092354E8FC00BBACD8 /* DeleteItemAlert.swift in Sources */,
 				A40FA78E230EE6FC00D19537 /* AddItemAlert.swift in Sources */,
+				A4A4E2B9237EFFDE00F3E9EE /* SanitizeString.swift in Sources */,
 				A495E30B22300AAA00D8607D /* NewsScreenMain.swift in Sources */,
 				A46EAB54223A910100F1B702 /* PicksScreenSongMain.swift in Sources */,
 				A49E69422370A004003A3D6F /* AlterEvent.swift in Sources */,

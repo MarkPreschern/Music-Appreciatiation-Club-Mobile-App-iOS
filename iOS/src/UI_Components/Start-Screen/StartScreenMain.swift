@@ -153,8 +153,8 @@ class StartScreenMain: UIViewController, UITextFieldDelegate {
         //header information for spotify url call
         let url = API_URL + "authorization"
         let headers : HTTPHeaders = [
-            "name" : name ?? "",
-            "nuid" : nuid ?? ""
+            "name" : name?.sanitize() ?? "",
+            "nuid" : nuid?.sanitize() ?? ""
         ]
         
         //creates a request for the authorization token

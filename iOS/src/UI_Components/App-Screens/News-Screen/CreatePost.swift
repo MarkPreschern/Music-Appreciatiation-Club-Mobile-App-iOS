@@ -51,7 +51,8 @@ class CreatePost: UIViewController, UITextViewDelegate {
     
     // when the done button is clicked, attempt to create post
     @IBAction func doneClicked(_ sender: Any) {
-        if let content = content_outlet.text {
+        if let content = content_outlet.text?.sanitize() {
+            print(content)
             if content.count < 1 || content.count > 250 {
                 let alert = createAlert(
                     title: "Request Failed",

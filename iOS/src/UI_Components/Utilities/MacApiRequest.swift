@@ -15,6 +15,7 @@ extension UIViewController {
     func macRequest(urlName : String!, httpMethod : HTTPMethod!, header : HTTPHeaders?, successAlert : Bool!, attempt: Int!, callback: @escaping (JSONStandard?) -> Void) {
         let url = API_URL + urlName
         
+        // sets the header based on input header
         var headers: HTTPHeaders = [:];
         if (header == nil) {
             headers = [
@@ -25,6 +26,11 @@ extension UIViewController {
             headers = header!
             headers["user_id"] = "\(String(describing: userData.user_id!))"
             headers["authorization_token"] = userData?.authorization_token ?? ""
+        }
+        
+        // sanitizes all api request headers
+        for (key, value) in headers {
+            headers[key] = value.sanitize()
         }
         
         // retry's the mac request

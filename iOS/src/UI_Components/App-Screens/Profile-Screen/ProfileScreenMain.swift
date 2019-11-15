@@ -160,8 +160,8 @@ class ProfileScreenMain: UIViewController, UITableViewDelegate {
     func postImage(image: UIImage, callback: @escaping (String) -> Void) {
         let url = API_URL + "image"
         let headers = [
-            "user_id" : "\(String(describing: userData.user_id!))",
-            "authorization_token" : userData?.authorization_token ?? "",
+            "user_id" : "\(String(describing: userData.user_id!).sanitize())",
+            "authorization_token" : userData?.authorization_token?.sanitize() ?? "",
         ]
         
         let parameters = [
@@ -198,60 +198,6 @@ class ProfileScreenMain: UIViewController, UITableViewDelegate {
                 callback("Failure")
             }
         })
-        
-        /*
-        Alamofire.upload(multipartFormData: { multipartFormData in
-            if let imageData = image.jpegData(compressionQuality: 0.2) {
-                multipartFormData.append(imageData, withName: "image_data",fileName: "image_data.jpg", mimeType: "image/jpg")
-            }
-        }, usingThreshold: UInt64.init(), to: url, method: .post, headers: nil) { result in
-            switch result {
-            case .success(let upload, _, _):
-                
-                upload.uploadProgress(closure: { (progress) in
-                    print("Upload Progress: \(progress.fractionCompleted)")
-                })
-                
-                upload.responseJSON { response in
-                    if let readableJSON = response.result.value as? JSONStandard {
-                        if let statusCode = readableJSON["statusCode"] as? String {
-                            if (statusCode == "200") {
-                                callback("Success")
-                            } else {
-                                print(readableJSON)
-                                let alert = createAlert(title: readableJSON["title"] as? String, message: readableJSON["description"] as? String, actionTitle: "Close")
-                                self.present(alert, animated: true, completion: nil)
-                                callback("Failure")
-                            }
-                        } else {
-                            print(readableJSON)
-                            let alert = createAlert(
-                                title: "Request Failed",
-                                message: "Error occured during request",
-                                actionTitle: "Close")
-                            self.present(alert, animated: true, completion: nil)
-                            callback("Failure")
-                        }
-                    } else {
-                        print(response)
-                        let alert = createAlert(
-                            title: "Request Failed",
-                            message: "Error occured during request",
-                            actionTitle: "Close")
-                        self.present(alert, animated: true, completion: nil)
-                        callback("Failure")
-                    }
-                }
-            case .failure(let encodingError):
-                print(encodingError)
-                let alert = createAlert(
-                    title: "Request Failed",
-                    message: "Error occured during request",
-                    actionTitle: "Close")
-                self.present(alert, animated: true, completion: nil)
-                callback("Failure")
-            }
-        }*/
     }
     
     // handles when a user clicks the settings image, moving to the Settings View Controller
