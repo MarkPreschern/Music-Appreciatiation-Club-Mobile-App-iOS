@@ -69,7 +69,7 @@ class PicksScreenAlbumMain: UIViewController, UITableViewDelegate {
     // requests user and club album data from mac api
     func requestUserAndClubAlbumData(showSpinner: Bool) {
         if showSpinner {
-            self.showSpinner(onView: self.view)
+            self.showSpinner(onView: self.view, clickable: true)
         }
         self.requestUserData(callback: { (response1) -> Void in
             if (response1 == "Error") {
@@ -321,7 +321,7 @@ class PicksScreenAlbumMain: UIViewController, UITableViewDelegate {
     // handles when a user clicks the trash icon, prompting the user to delete the pick
     @objc func trash(gesture: VoteTapGesture) {
         if (gesture.view as? UIImageView) != nil {
-            self.showSpinner(onView: self.view)
+            self.showSpinner(onView: self.view, clickable: false)
             UIAlertController(title: "", message: "", preferredStyle: UIAlertController.Style.alert)
                 .deleteItemAlert(pick: self.userAlbumPicks[gesture.index], type: ItemType.ALBUM, sender: self, callback: { response -> Void in
                     if (response == "Success") {

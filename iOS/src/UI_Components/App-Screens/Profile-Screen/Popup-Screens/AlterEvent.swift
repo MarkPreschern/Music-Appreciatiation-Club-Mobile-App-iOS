@@ -34,7 +34,7 @@ class AlterEvent: UIViewController, PopupScreen, UITextFieldDelegate, UIPickerVi
     
     // loads in event data from the MAC API, and populates self.dates accordingly
     func retrieveEventData() {
-        self.showSpinner(onView: self.view)
+        self.showSpinner(onView: self.view, clickable: false)
         self.macRequest(urlName: "event", httpMethod: .get, header: nil, successAlert: false, attempt: 0, callback: { jsonData -> Void in
             if let statusCode = jsonData?["statusCode"] as? String {
                 if statusCode == "200" {
@@ -110,7 +110,7 @@ class AlterEvent: UIViewController, PopupScreen, UITextFieldDelegate, UIPickerVi
                 "event_id": String(self.eventID)
             ]
             
-            self.showSpinner(onView: self.view)
+            self.showSpinner(onView: self.view, clickable: false)
             self.macRequest(urlName: "event", httpMethod: .post, header: header, successAlert: false, attempt: 0, callback: { jsonData -> Void in
                 self.removeSpinner()
                 if let statusCode = jsonData?["statusCode"] as? String {

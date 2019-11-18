@@ -68,7 +68,7 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
         
         //loads the currentURL, or the defaultURL if the currentURL is nil
         if (spotifySearchItems.count == 0) {
-            self.showSpinner(onView: self.view)
+            self.showSpinner(onView: self.view, clickable: true)
             self.callSpotifySongAndAlbum(query: currentQuery == nil ? "Music" : currentQuery!, completion: { (callback) -> Void in
                 if (callback == "Complete") {
                     self.removeSpinner()
@@ -82,7 +82,7 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
         self.view.endEditing(true) //ends editing of text field
         if (!textField.text!.isEmpty) {
             //calls the spotify songs and albums, awaiting for a callback to remove the loading screen
-            self.showSpinner(onView: self.view)
+            self.showSpinner(onView: self.view, clickable: true)
             self.callSpotifySongAndAlbum(query: textField.text, completion: { (callback) -> Void in
                 if (callback == "Complete") {
                     self.removeSpinner()
@@ -172,7 +172,7 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
         Alamofire.request(url, method: .post, parameters: parameters, encoding: URLEncoding.default, headers: nil).responseJSON(completionHandler: {
             response in
             do {
-                var readableJSON = try JSONSerialization.jsonObject(with: response.data!, options: .mutableContainers) as! JSONStandard
+                let readableJSON = try JSONSerialization.jsonObject(with: response.data!, options: .mutableContainers) as! JSONStandard
                 let access_token = readableJSON["access_token"] as! String
                 let token_type = readableJSON["token_type"] as! String
                 callback(token_type + " " + access_token)

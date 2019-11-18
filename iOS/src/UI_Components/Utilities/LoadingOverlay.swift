@@ -14,8 +14,8 @@ var vSpinner : UIView?
 extension UIViewController {
     
     // shows the spinner
-    func showSpinner(onView : UIView) {
-        let spinnerView = UIView.init(frame: onView.bounds)
+    func showSpinner(onView : UIView, clickable: Bool) {
+        let spinnerView = clickable ? UIView.init(frame: CGRect(x: 0, y: 0, width: onView.bounds.width, height: 696)) : UIView.init(frame: onView.bounds)
         spinnerView.backgroundColor = UIColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
         let ai = UIActivityIndicatorView.init(style: .whiteLarge)
         ai.startAnimating()

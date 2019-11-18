@@ -72,7 +72,7 @@ class StartScreenMain: UIViewController, UITextFieldDelegate {
         self.checkbox_outlet.layer.borderColor = UIColor.darkGray.cgColor
         
         // shows loading screen until a user is or isn't validated
-        self.showSpinner(onView: self.view)
+        self.showSpinner(onView: self.view, clickable: false)
         self.validateExistingUser()
     }
     
@@ -87,7 +87,6 @@ class StartScreenMain: UIViewController, UITextFieldDelegate {
             if (response == "Success") {
                 self.retrieveUserData(callback: { response2 -> Void in
                     if (response2 == "Success") {
-                        self.removeSpinner()
                         let nextVC = self.storyboard!.instantiateViewController(withIdentifier: "NewsScreenMain")
                         self.present(nextVC, animated:true, completion: nil)
                     } else if (response2 == "Failure") {
@@ -122,12 +121,11 @@ class StartScreenMain: UIViewController, UITextFieldDelegate {
     // - if correct login information, their user information is added to the database if not already contained
     @IBAction func loginButtonClicked(_ sender: UIButton) {
         if (sender.restorationIdentifier == "LoginToNewsButton") {
-            self.showSpinner(onView: self.view)
+            self.showSpinner(onView: self.view, clickable: false)
             self.requestAuthorization(loginRequest: true, name: self.name_outlet.text ?? "", nuid: self.nuid_outlet.text ?? "", callback: { response -> Void in
                 if (response == "Success") {
                     self.retrieveUserData(callback: { response2 -> Void in
                         if (response2 == "Success") {
-                            self.removeSpinner()
                             let nextVC = self.storyboard!.instantiateViewController(withIdentifier: "NewsScreenMain")
                             self.present(nextVC, animated:true, completion: nil)
                         } else if (response2 == "Failure") {
@@ -161,7 +159,7 @@ class StartScreenMain: UIViewController, UITextFieldDelegate {
         Alamofire.request(url, method: .post, parameters: nil, encoding: URLEncoding.default, headers: headers).responseJSON(completionHandler: {
             response in
             do {
-                var readableJSON = try JSONSerialization.jsonObject(with: response.data!, options: .mutableContainers) as! JSONStandard
+                let readableJSON = try JSONSerialization.jsonObject(with: response.data!, options: .mutableContainers) as! JSONStandard
                 if let statusCode = readableJSON["statusCode"] as? String {
                     // reads user data if the request was successful
                     if (statusCode == "200") {
@@ -207,7 +205,7 @@ class StartScreenMain: UIViewController, UITextFieldDelegate {
                 }
             } catch {
                 do {
-                    var readableJSON = try JSONSerialization.jsonObject(with: response.data!, options: .mutableContainers) as! JSONStandard
+                    let readableJSON = try JSONSerialization.jsonObject(with: response.data!, options: .mutableContainers) as! JSONStandard
                     print("Error info: \(error)")
                     if loginRequest {
                         let alert = createAlert(

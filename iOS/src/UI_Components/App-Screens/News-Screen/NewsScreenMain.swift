@@ -59,6 +59,7 @@ class NewsScreenMain: UIViewController, UITableViewDelegate {
     
     // loads in post data from the MAC API
     func loadPosts() {
+        self.showSpinner(onView: self.view, clickable: true)
         self.macRequest(urlName: "posts", httpMethod: .get, header: nil, successAlert: false, attempt: 0, callback: { jsonData -> Void in
             if let statusCode = jsonData?["statusCode"] as? String {
                 if statusCode == "200" {
@@ -88,7 +89,10 @@ class NewsScreenMain: UIViewController, UITableViewDelegate {
                                             user_image: imageEncoded == nil ? nil : mainImage)
                             
                             self.posts.append(post)
-                            self.table_outlet.reloadData()
+                            if i == items.count - 1 {
+                                self.table_outlet.reloadData()
+                                self.removeSpinner()
+                            }
                         }
                     } else {
                     let alert = createAlert(
@@ -123,11 +127,13 @@ class NewsScreenMain: UIViewController, UITableViewDelegate {
                 let header: HTTPHeaders = [
                     "post_id": String(self.posts[gesture.index].post_id),
                 ]
+                self.showSpinner(onView: self.view, clickable: true)
                 self.macRequest(urlName: "deletePost", httpMethod: .post, header: header, successAlert: true, attempt: 0, callback: { response -> Void in
                     if let statusCode = response?["statusCode"] as? String {
                         if statusCode == "200" {
                             self.posts.remove(at: gesture.index)
                             self.table_outlet.reloadData()
+                            self.removeSpinner()
                         }
                     }
                 })

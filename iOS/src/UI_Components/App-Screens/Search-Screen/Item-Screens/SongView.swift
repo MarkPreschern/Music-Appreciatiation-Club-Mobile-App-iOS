@@ -57,24 +57,18 @@ class SongView: UIViewController {
         // prepares to play this song
         if self.songData.previewUrl != nil && self.songData.previewUrl != "" {
             // downloads and prepares song, waiting for a callback to remove loading screen
-            self.showSpinner(onView: self.view)
             DispatchQueue.global(qos: .userInitiated).sync {
-                self.downloadFileFromURL(url: URL(string: self.songData.previewUrl)!, completion: { (callback) -> Void in
-                    if (callback == "Complete") {
-                        self.removeSpinner()
-                    }
-                })
+                self.downloadFileFromURL(url: URL(string: self.songData.previewUrl)!)
             }
         }
     }
     
     // downloads the file from the given url and prepares to play it
-    func downloadFileFromURL(url: URL, completion: @escaping (String) -> Void) {
+    func downloadFileFromURL(url: URL) {
         var downloadTask = URLSessionDownloadTask()
         downloadTask = URLSession.shared.downloadTask(with: url, completionHandler: {
             customURL, response, error in
             self.prepareToPlay(url: customURL!)
-            completion("Complete")
         })
         downloadTask.resume()
     }

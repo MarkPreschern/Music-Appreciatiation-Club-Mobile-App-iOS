@@ -91,7 +91,7 @@ class DeleteRole: UIViewController, PopupScreen, UITableViewDelegate {
                 "role_id": String(self.roles[indexPath.row].id!),
             ]
             
-            self.showSpinner(onView: self.view)
+            self.showSpinner(onView: self.view, clickable: false)
             self.macRequest(urlName: "deleteRole", httpMethod: .post, header: header, successAlert: false, attempt: 0, callback: { jsonData -> Void in
                 if let statusCode = jsonData?["statusCode"] as? String {
                     if statusCode == "200" {

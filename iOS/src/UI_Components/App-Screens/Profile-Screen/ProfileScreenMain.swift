@@ -83,7 +83,7 @@ class ProfileScreenMain: UIViewController, UITableViewDelegate {
             "member_id": String(self.userDetails?.user_id ?? -1),
         ]
         
-        self.showSpinner(onView: self.view)
+        self.showSpinner(onView: self.view, clickable: true)
         self.macRequest(urlName: "userPopularPicks", httpMethod: .get, header: header, successAlert: false, attempt: 0, callback: { jsonData -> Void in
             if let statusCode = jsonData?["statusCode"] as? String {
                 if statusCode == "200" {
@@ -141,7 +141,7 @@ class ProfileScreenMain: UIViewController, UITableViewDelegate {
         if (gesture.view as? UIImageView) != nil {
             let imageManager = ImagePickerManager.init()
             imageManager.pickImage(self, { image -> Void in
-                self.showSpinner(onView: self.view)
+                self.showSpinner(onView: self.view, clickable: false)
                 self.postImage(image: image, callback: { response -> Void in
                     if response == "Success" {
                         self.userImage_outlet.image = image

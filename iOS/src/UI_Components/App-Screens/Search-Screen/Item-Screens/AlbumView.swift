@@ -50,7 +50,7 @@ class AlbumView: UIViewController, UITableViewDelegate {
         
         //loads the songs in this album if not already populated
         if (songs.count == 0) {
-            self.showSpinner(onView: self.view)
+            self.showSpinner(onView: self.view, clickable: false)
             self.callSpotifyAlbumSongs(id: self.albumData.spotify_id, completion: { (callback) -> Void in
                 if (callback == "Complete") {
                     self.removeSpinner()
@@ -121,7 +121,7 @@ class AlbumView: UIViewController, UITableViewDelegate {
         Alamofire.request(url, method: .post, parameters: parameters, encoding: URLEncoding.default, headers: nil).responseJSON(completionHandler: {
             response in
             do {
-                var readableJSON = try JSONSerialization.jsonObject(with: response.data!, options: .mutableContainers) as! JSONStandard
+                let readableJSON = try JSONSerialization.jsonObject(with: response.data!, options: .mutableContainers) as! JSONStandard
                 let access_token = readableJSON["access_token"] as! String
                 let token_type = readableJSON["token_type"] as! String
                 callback(token_type + " " + access_token)
@@ -136,7 +136,7 @@ class AlbumView: UIViewController, UITableViewDelegate {
     func parseSpotifyData(JSONData : Data, completion: @escaping (String) -> Void) {
         do {
             //reads the JSON
-            var readableJSON = try JSONSerialization.jsonObject(with: JSONData, options: .mutableContainers) as! JSONStandard
+            let readableJSON = try JSONSerialization.jsonObject(with: JSONData, options: .mutableContainers) as! JSONStandard
             
             //parses the JSON for tracks
             if let items = readableJSON["items"] as? [JSONStandard] {
