@@ -29,7 +29,7 @@ class EndEvent: UIViewController, PopupScreen {
         }))
         // handles if the user clicks "yes"
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { action in
-            self.showSpinner(onView: self.view, clickable: false)
+            self.showSpinner(onView: self.view)
             self.macRequest(urlName: "endEvent", httpMethod: .post, header: nil, successAlert: false, attempt: 0, callback: { jsonData -> Void in
                 if let statusCode = jsonData?["statusCode"] as? String {
                     if statusCode == "200" {

@@ -50,7 +50,7 @@ class AlbumView: UIViewController, UITableViewDelegate {
         
         //loads the songs in this album if not already populated
         if (songs.count == 0) {
-            self.showSpinner(onView: self.view, clickable: false)
+            self.showSpinner(onView: self.view)
             self.callSpotifyAlbumSongs(id: self.albumData.spotify_id, completion: { (callback) -> Void in
                 if (callback == "Complete") {
                     self.removeSpinner()

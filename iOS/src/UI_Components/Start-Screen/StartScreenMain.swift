@@ -72,7 +72,7 @@ class StartScreenMain: UIViewController, UITextFieldDelegate {
         self.checkbox_outlet.layer.borderColor = UIColor.darkGray.cgColor
         
         // shows loading screen until a user is or isn't validated
-        self.showSpinner(onView: self.view, clickable: false)
+        self.showSpinner(onView: self.view)
         self.validateExistingUser()
     }
     
@@ -121,7 +121,7 @@ class StartScreenMain: UIViewController, UITextFieldDelegate {
     // - if correct login information, their user information is added to the database if not already contained
     @IBAction func loginButtonClicked(_ sender: UIButton) {
         if (sender.restorationIdentifier == "LoginToNewsButton") {
-            self.showSpinner(onView: self.view, clickable: false)
+            self.showSpinner(onView: self.view)
             self.requestAuthorization(loginRequest: true, name: self.name_outlet.text ?? "", nuid: self.nuid_outlet.text ?? "", callback: { response -> Void in
                 if (response == "Success") {
                     self.retrieveUserData(callback: { response2 -> Void in

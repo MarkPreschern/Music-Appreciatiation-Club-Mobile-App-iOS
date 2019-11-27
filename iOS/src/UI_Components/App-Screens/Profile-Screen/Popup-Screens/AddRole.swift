@@ -78,7 +78,7 @@ class AddRole: UIViewController, PopupScreen, UITextViewDelegate, UITextFieldDel
                 "role_description": content_outlet.text!,
             ]
             
-            self.showSpinner(onView: self.view, clickable: false)
+            self.showSpinner(onView: self.view)
             self.macRequest(urlName: "role", httpMethod: .post, header: header, successAlert: false, attempt: 0, callback: { jsonData -> Void in
                 self.removeSpinner()
                 if let statusCode = jsonData?["statusCode"] as? String {

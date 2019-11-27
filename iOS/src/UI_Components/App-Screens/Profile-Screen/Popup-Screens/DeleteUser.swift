@@ -35,7 +35,7 @@ class DeleteUser: UIViewController, PopupScreen, UITableViewDelegate {
     
     // loads in all user data except for the current user using the app
     func loadUserData() {
-        self.showSpinner(onView: self.view, clickable: false)
+        self.showSpinner(onView: self.view)
         self.macRequest(urlName: "users", httpMethod: .get, header: [:], successAlert: false, attempt: 0, callback: { jsonData -> Void in
             if let statusCode = jsonData?["statusCode"] as? String {
                 if statusCode == "200" {
@@ -111,7 +111,7 @@ class DeleteUser: UIViewController, PopupScreen, UITableViewDelegate {
                 "delete_user_id": String(self.users[indexPath.row].user_id!),
             ]
             
-            self.showSpinner(onView: self.view, clickable: false)
+            self.showSpinner(onView: self.view)
             self.macRequest(urlName: "deleteUser", httpMethod: .post, header: header, successAlert: false, attempt: 0, callback: { jsonData -> Void in
                 if let statusCode = jsonData?["statusCode"] as? String {
                     if statusCode == "200" {

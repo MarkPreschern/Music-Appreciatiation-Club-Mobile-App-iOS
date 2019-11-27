@@ -50,6 +50,7 @@ class LogOut: UIViewController, PopupScreen {
         spotifySearchItems = [ItemData]()
         songs = [ItemData]()
         vSpinner = UIView()
+        vSpinnerControllerRestorationIdentifier = nil
         settings = [Setting]()
     }
 

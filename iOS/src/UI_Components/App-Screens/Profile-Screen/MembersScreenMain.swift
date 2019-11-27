@@ -34,7 +34,7 @@ class MembersScreenMain: UIViewController, UITableViewDelegate {
     
     // retrieves user data from the MAC API
     func retrieveUserData() {
-        self.showSpinner(onView: self.view, clickable: true)
+        self.showSpinner(onView: self.view, height: self.view_outlet.frame.origin.y)
         self.macRequest(urlName: "users", httpMethod: .get, header: [:], successAlert: false, attempt: 0, callback: { jsonData -> Void in
             if let statusCode = jsonData?["statusCode"] as? String {
                 if statusCode == "200" {

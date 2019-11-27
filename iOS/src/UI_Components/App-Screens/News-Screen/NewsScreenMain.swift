@@ -59,7 +59,7 @@ class NewsScreenMain: UIViewController, UITableViewDelegate {
     
     // loads in post data from the MAC API
     func loadPosts() {
-        self.showSpinner(onView: self.view, clickable: true)
+        self.showSpinner(onView: self.view, height: self.view_outlet.frame.origin.y)
         self.macRequest(urlName: "posts", httpMethod: .get, header: nil, successAlert: false, attempt: 0, callback: { jsonData -> Void in
             if let statusCode = jsonData?["statusCode"] as? String {
                 if statusCode == "200" {
@@ -127,7 +127,7 @@ class NewsScreenMain: UIViewController, UITableViewDelegate {
                 let header: HTTPHeaders = [
                     "post_id": String(self.posts[gesture.index].post_id),
                 ]
-                self.showSpinner(onView: self.view, clickable: true)
+                self.showSpinner(onView: self.view, height: self.view_outlet.frame.origin.y)
                 self.macRequest(urlName: "deletePost", httpMethod: .post, header: header, successAlert: true, attempt: 0, callback: { response -> Void in
                     if let statusCode = response?["statusCode"] as? String {
                         if statusCode == "200" {
