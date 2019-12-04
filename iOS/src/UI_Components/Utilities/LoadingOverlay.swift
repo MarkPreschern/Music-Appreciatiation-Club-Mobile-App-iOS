@@ -33,25 +33,6 @@ extension UIViewController {
         vSpinner = spinnerView
     }
     
-    // shows the spinner with a clickable option at a specified height
-    func showSpinner(onView : UIView, height: CGFloat) {
-        vSpinner = nil
-        vSpinnerControllerRestorationIdentifier = self.restorationIdentifier
-        
-        let spinnerView = UIView.init(frame: CGRect(x: 0, y: 0, width: onView.bounds.width, height: height))
-        spinnerView.backgroundColor = UIColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
-        let ai = UIActivityIndicatorView.init(style: .whiteLarge)
-        ai.startAnimating()
-        ai.center = spinnerView.center
-        
-        DispatchQueue.main.async {
-            spinnerView.addSubview(ai)
-            onView.addSubview(spinnerView)
-        }
-            
-        vSpinner = spinnerView
-    }
-    
     // removes the spinner if applicable
     func removeSpinner() {
         DispatchQueue.main.async {

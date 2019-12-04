@@ -63,69 +63,40 @@ class PicksScreenAlbumMain: UIViewController, UITableViewDelegate {
         self.clubPicksTable_outlet.dataSource = self
         self.clubPicksTable_outlet.delegate = self
         
-        self.requestUserAndClubAlbumData(showSpinner: true)
+        self.requestUserAndClubAlbumData()
     }
     
     // requests user and club album data from mac api
-    func requestUserAndClubAlbumData(showSpinner: Bool) {
-        if showSpinner {
-            self.showSpinner(onView: self.view, height: self.view_outlet.frame.origin.y)
-
-        }
-        self.requestUserData(callback: { (response1) -> Void in
-            if (response1 == "Error") {
-                self.removeSpinner()
-            } else if (response1 == "Done") {
-                self.requestClubData(callback: { (response2) -> Void in
-                    if (response2 == "Error") {
-                        self.removeSpinner()
-                    } else if (response2 == "Done") {
-                        self.myPicksTable_outlet.reloadData()
-                        self.clubPicksTable_outlet.reloadData()
-                        self.removeSpinner()
-                    }
-                })
-            }
-        })
+    func requestUserAndClubAlbumData() {
+        self.requestUserData()
+        self.requestClubData()
     }
     
     // requests user album data from the mac api
-    func requestUserData(callback: @escaping (String) -> Void) {
+    func requestUserData() {
         self.macRequest(urlName: "userAlbumPicks", httpMethod: .get, header: [:], successAlert: false, attempt: 0, callback: { jsonData -> Void in
-            self.parsePickData(jsonData: jsonData, callback: { (picks : [Pick]?) -> Void in
+            self.parsePickData(jsonData: jsonData, table: self.myPicksTable_outlet, callback: { (picks : [Pick]?) -> Void in
                 if (jsonData?["statusCode"] as? String == "200") {
-                    if (picks == nil) {
-                        callback("Error")
-                    } else if (picks![0].itemData == nil) {
+                    if (picks == nil || picks![0].itemData == nil) {
                         self.userAlbumPicks = []
-                        callback("Done")
                     } else {
                         self.userAlbumPicks = picks!
-                        callback("Done")
                     }
-                } else {
-                    callback("Error")
                 }
             })
         })
     }
     
     // requests club album data from the mac api
-    func requestClubData(callback: @escaping (String) -> Void) {
+    func requestClubData() {
         self.macRequest(urlName: "clubAlbumPicks", httpMethod: .get, header: [:], successAlert: false, attempt: 0, callback: { jsonData -> Void in
-            self.parsePickData(jsonData: jsonData, callback: { (picks : [Pick]?) -> Void in
+            self.parsePickData(jsonData: jsonData, table: self.clubPicksTable_outlet, callback: { (picks : [Pick]?) -> Void in
                 if (jsonData?["statusCode"] as? String == "200") {
-                    if (picks == nil) {
-                        callback("Error")
-                    } else if (picks![0].itemData == nil) {
+                    if (picks == nil || picks![0].itemData == nil) {
                         self.clubAlbumPicks = []
-                        callback("Done")
                     } else {
                         self.clubAlbumPicks = picks!
-                        callback("Done")
                     }
-                } else {
-                    callback("Error")
                 }
             })
         })
@@ -329,9 +300,7 @@ class PicksScreenAlbumMain: UIViewController, UITableViewDelegate {
                         self.userAlbumPicks = [Pick]()
                         self.clubAlbumPicks = [Pick]()
                         self.clubAlbumCells = [Int: AlbumCell]()
-                        self.requestUserAndClubAlbumData(showSpinner: false)
-                    } else if (response == "Failure") {
-                        self.removeSpinner()
+                        self.requestUserAndClubAlbumData()
                     }
                 })
         }

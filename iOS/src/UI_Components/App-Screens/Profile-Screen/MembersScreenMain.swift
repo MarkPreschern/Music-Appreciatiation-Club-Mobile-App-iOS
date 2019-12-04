@@ -34,14 +34,10 @@ class MembersScreenMain: UIViewController, UITableViewDelegate {
     
     // retrieves user data from the MAC API
     func retrieveUserData() {
-        self.showSpinner(onView: self.view, height: self.view_outlet.frame.origin.y)
         self.macRequest(urlName: "users", httpMethod: .get, header: [:], successAlert: false, attempt: 0, callback: { jsonData -> Void in
             if let statusCode = jsonData?["statusCode"] as? String {
                 if statusCode == "200" {
                     if let items = jsonData?["users"] as? [JSONStandard] {
-                        if items.count == 0 {
-                            self.removeSpinner()
-                        }
                         for i in 0..<items.count {
                             let item = items[i]
                             
@@ -62,10 +58,7 @@ class MembersScreenMain: UIViewController, UITableViewDelegate {
                                                 image_data: imageEncoded == nil ? nil : mainImage)
                             
                             self.users.append(user)
-                            if i == items.count - 1 {
-                                self.table_outlet.reloadData()
-                                self.removeSpinner()
-                            }
+                            self.table_outlet.reloadData()
                         }
                     } else {
                         let alert = createAlert(
@@ -73,13 +66,8 @@ class MembersScreenMain: UIViewController, UITableViewDelegate {
                             message: "Error occured during request, couldn't locate items",
                             actionTitle: "Close")
                         self.present(alert, animated: true, completion: nil)
-                        self.removeSpinner()
                     }
-                } else {
-                    self.removeSpinner()
                 }
-            } else {
-                self.removeSpinner()
             }
         })
     }

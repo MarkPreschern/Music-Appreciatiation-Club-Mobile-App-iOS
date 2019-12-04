@@ -59,14 +59,10 @@ class NewsScreenMain: UIViewController, UITableViewDelegate {
     
     // loads in post data from the MAC API
     func loadPosts() {
-        self.showSpinner(onView: self.view, height: self.view_outlet.frame.origin.y)
         self.macRequest(urlName: "posts", httpMethod: .get, header: nil, successAlert: false, attempt: 0, callback: { jsonData -> Void in
             if let statusCode = jsonData?["statusCode"] as? String {
                 if statusCode == "200" {
                     if let items = jsonData?["posts"] as? [JSONStandard] {
-                        if items.count == 0 {
-                            self.removeSpinner()
-                        }
                         for i in 0..<items.count {
                             // sets the date
                             let item = items[i]
@@ -89,10 +85,7 @@ class NewsScreenMain: UIViewController, UITableViewDelegate {
                                             user_image: imageEncoded == nil ? nil : mainImage)
                             
                             self.posts.append(post)
-                            if i == items.count - 1 {
-                                self.table_outlet.reloadData()
-                                self.removeSpinner()
-                            }
+                            self.table_outlet.reloadData()
                         }
                     } else {
                     let alert = createAlert(
@@ -100,13 +93,8 @@ class NewsScreenMain: UIViewController, UITableViewDelegate {
                         message: "Error occured during request, couldn't locate items",
                         actionTitle: "Close")
                     self.present(alert, animated: true, completion: nil)
-                    self.removeSpinner()
                     }
-                } else {
-                self.removeSpinner()
                 }
-            } else {
-                self.removeSpinner()
             }
         })
     }
@@ -127,13 +115,11 @@ class NewsScreenMain: UIViewController, UITableViewDelegate {
                 let header: HTTPHeaders = [
                     "post_id": String(self.posts[gesture.index].post_id),
                 ]
-                self.showSpinner(onView: self.view, height: self.view_outlet.frame.origin.y)
                 self.macRequest(urlName: "deletePost", httpMethod: .post, header: header, successAlert: true, attempt: 0, callback: { response -> Void in
                     if let statusCode = response?["statusCode"] as? String {
                         if statusCode == "200" {
                             self.posts.remove(at: gesture.index)
                             self.table_outlet.reloadData()
-                            self.removeSpinner()
                         }
                     }
                 })

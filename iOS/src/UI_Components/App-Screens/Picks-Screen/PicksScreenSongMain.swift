@@ -82,68 +82,40 @@ class PicksScreenSongMain: UIViewController, UITableViewDelegate {
         self.clubPicksTable_outlet.dataSource = self
         self.clubPicksTable_outlet.delegate = self
 
-        self.requestUserAndClubSongData(showSpinner: true)
+        self.requestUserAndClubSongData()
     }
     
     // requests user and club song data from mac api
-    func requestUserAndClubSongData(showSpinner: Bool) {
-        if showSpinner {
-            self.showSpinner(onView: self.view, height: self.view_outlet.frame.origin.y)
-        }
-        self.requestUserData(callback: { (response1) -> Void in
-            if (response1 == "Error") {
-                self.removeSpinner()
-            } else if (response1 == "Done") {
-                self.requestClubData(callback: { (response2) -> Void in
-                    if (response2 == "Error") {
-                        self.removeSpinner()
-                    } else if (response2 == "Done") {
-                        self.myPicksTable_outlet.reloadData()
-                        self.clubPicksTable_outlet.reloadData()
-                        self.removeSpinner()
-                    }
-                })
-            }
-        })
+    func requestUserAndClubSongData() {
+        self.requestUserData()
+        self.requestClubData()
     }
     
     // requests user song data from the mac api
-    func requestUserData(callback: @escaping (String) -> Void) {
+    func requestUserData() {
         self.macRequest(urlName: "userSongPicks", httpMethod: .get, header: [:], successAlert: false, attempt: 0, callback: { jsonData -> Void in
-            self.parsePickData(jsonData: jsonData, callback: { (picks : [Pick]?) -> Void in
+            self.parsePickData(jsonData: jsonData, table: self.myPicksTable_outlet, callback: { (picks : [Pick]?) -> Void in
                 if (jsonData?["statusCode"] as? String == "200") {
-                    if (picks == nil) {
-                        callback("Error")
-                    } else if (picks![0].itemData == nil) {
+                    if (picks == nil || picks![0].itemData == nil) {
                         self.userSongPicks = []
-                        callback("Done")
                     } else {
                         self.userSongPicks = picks!
-                        callback("Done")
                     }
-                } else {
-                    callback("Error")
                 }
             })
         })
     }
     
     // requests club song data from the mac api
-    func requestClubData(callback: @escaping (String) -> Void) {
+    func requestClubData() {
         self.macRequest(urlName: "clubSongPicks", httpMethod: .get, header: [:], successAlert: false, attempt: 0, callback: { jsonData -> Void in
-            self.parsePickData(jsonData: jsonData, callback: { (picks : [Pick]?) -> Void in
+            self.parsePickData(jsonData: jsonData, table: self.clubPicksTable_outlet, callback: { (picks : [Pick]?) -> Void in
                 if (jsonData?["statusCode"] as? String == "200") {
-                    if (picks == nil) {
-                        callback("Error")
-                    } else if (picks![0].itemData == nil) {
+                    if (picks == nil || picks![0].itemData == nil) {
                         self.clubSongPicks = []
-                        callback("Done")
                     } else {
                         self.clubSongPicks = picks!
-                        callback("Done")
                     }
-                } else {
-                    callback("Error")
                 }
             })
         })
@@ -347,9 +319,7 @@ class PicksScreenSongMain: UIViewController, UITableViewDelegate {
                         self.userSongPicks = [Pick]()
                         self.clubSongPicks = [Pick]()
                         self.clubSongCells = [Int: SongCell]()
-                        self.requestUserAndClubSongData(showSpinner: false)
-                    } else if (response == "Failure") {
-                        self.removeSpinner()
+                        self.requestUserAndClubSongData()
                     }
                 })
         }

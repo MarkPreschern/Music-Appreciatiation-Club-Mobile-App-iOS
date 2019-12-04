@@ -11,7 +11,7 @@ import UIKit
 extension UIViewController {
 
     // parses pick data for songs and votes
-    func parsePickData(jsonData : JSONStandard!, callback: @escaping ([Pick]?) -> Void) {
+    func parsePickData(jsonData : JSONStandard!, table: UITableView, callback: @escaping ([Pick]?) -> Void) {
         var picks = [Pick]()
         
         if let items = jsonData!["items"] as? [JSONStandard] {
@@ -59,6 +59,7 @@ extension UIViewController {
                                 access_description: nil,
                                 image_data: nil))
                         picks.append(pick)
+                        table.reloadData()
                         if (i == items.count - 1) {
                             callback(picks)
                         }

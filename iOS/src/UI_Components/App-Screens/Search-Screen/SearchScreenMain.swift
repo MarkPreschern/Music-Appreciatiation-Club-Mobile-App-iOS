@@ -68,12 +68,7 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
         
         //loads the currentURL, or the defaultURL if the currentURL is nil
         if (spotifySearchItems.count == 0) {
-                    self.showSpinner(onView: self.view, height: self.view_outlet.frame.origin.y)
-            self.callSpotifySongAndAlbum(query: currentQuery == nil ? "Music" : currentQuery!, completion: { (callback) -> Void in
-                if (callback == "Complete") {
-                    self.removeSpinner()
-                }
-            })
+            self.callSpotifySongAndAlbum(query: currentQuery == nil ? "Music" : currentQuery!)
         }
     }
     
@@ -81,19 +76,13 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true) //ends editing of text field
         if (!textField.text!.isEmpty) {
-            //calls the spotify songs and albums, awaiting for a callback to remove the loading screen
-            self.showSpinner(onView: self.view, height: self.view_outlet.frame.origin.y)
-            self.callSpotifySongAndAlbum(query: textField.text, completion: { (callback) -> Void in
-                if (callback == "Complete") {
-                    self.removeSpinner()
-                }
-            })
+            self.callSpotifySongAndAlbum(query: textField.text)
         }
         return false
     }
     
     //calls to spotify api for songs and albums of this query and updates table
-    func callSpotifySongAndAlbum(query : String!, completion: @escaping (String) -> Void) {
+    func callSpotifySongAndAlbum(query : String!) {
         currentQuery = query //updates the current query
         
         // builds url's
@@ -102,17 +91,10 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
         
         spotifySearchItems = [ItemData]() //resets table to empty
 
-        // calls the spotify url's, waiting for callbacks of success before moving to next steps
+        // calls the spotify url's, waiting for callback of success before moving to next steps
         self.callSpotifyURL(url: albumURL!, type: ItemType.ALBUM, callback: { (callback) -> Void in
             if (callback == "Success") {
                 self.callSpotifyURL(url: songURL!, type: ItemType.SONG, callback: { (token) -> Void in
-                    if (callback == "Success") {
-                        // reloads table view data and scrolls to top of table view
-                        DispatchQueue.main.sync {
-                            self.tableView.reloadData()
-                            completion("Complete")
-                        }
-                    }
                 })
             }
         })
@@ -216,6 +198,9 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
                                 
                                 //updates table information
                                 spotifySearchItems.append(ItemData.init(type: ItemType.ALBUM, name: name, artist: artistName, image: mainImage, imageUrl: mainImageURL, spotify_id: id, previewUrl: nil))
+                                DispatchQueue.main.sync {
+                                    self.tableView.reloadData()
+                                }
                                 if (i + 1 == jsonItems.count) {
                                     completion("Success")
                                 }
@@ -249,6 +234,9 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
                                     
                                     //updates table information
                                     spotifySearchItems.append(ItemData.init(type: ItemType.SONG, name: name, artist: artistName, image: mainImage, imageUrl: mainImageURL, spotify_id: id, previewUrl: previewUrl))
+                                    DispatchQueue.main.sync {
+                                        self.tableView.reloadData()
+                                    }
                                     if (i + 1 == jsonItems.count) {
                                         completion("Success")
                                     }

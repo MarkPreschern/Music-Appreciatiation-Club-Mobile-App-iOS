@@ -83,14 +83,10 @@ class ProfileScreenMain: UIViewController, UITableViewDelegate {
             "member_id": String(self.userDetails?.user_id ?? -1),
         ]
         
-        self.showSpinner(onView: self.view, height: self.view_outlet.frame.origin.y)
         self.macRequest(urlName: "userPopularPicks", httpMethod: .get, header: header, successAlert: false, attempt: 0, callback: { jsonData -> Void in
             if let statusCode = jsonData?["statusCode"] as? String {
                 if statusCode == "200" {
                     if let items = jsonData?["popular_picks"] as? [JSONStandard] {
-                        if items.count == 0 {
-                            self.removeSpinner()
-                        }
                         for i in 0..<items.count {
                             let item = items[i]
                             let imageUrl = item["item_image_url"] as! String
@@ -114,10 +110,7 @@ class ProfileScreenMain: UIViewController, UITableViewDelegate {
                                     userVoteID: nil),
                                 userData: nil)
                             self.popularPicks.append(pick)
-                            if i == items.count - 1 {
-                                self.table_outlet.reloadData()
-                                self.removeSpinner()
-                            }
+                            self.table_outlet.reloadData()
                         }
                     } else {
                         let alert = createAlert(
@@ -125,13 +118,8 @@ class ProfileScreenMain: UIViewController, UITableViewDelegate {
                             message: "Error occured during request, couldn't locate items",
                             actionTitle: "Close")
                         self.present(alert, animated: true, completion: nil)
-                        self.removeSpinner()
                     }
-                } else {
-                    self.removeSpinner()
                 }
-            } else {
-                self.removeSpinner()
             }
         })
     }
@@ -147,9 +135,6 @@ class ProfileScreenMain: UIViewController, UITableViewDelegate {
                         self.userImage_outlet.image = image
                         self.userDetails?.image_data = image
                         userData.image_data = image
-                        self.removeSpinner()
-                    } else if response == "Failure" {
-                        self.removeSpinner()
                     }
                 })
             })
