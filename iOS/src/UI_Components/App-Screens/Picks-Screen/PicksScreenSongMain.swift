@@ -93,6 +93,7 @@ class PicksScreenSongMain: UIViewController, UITableViewDelegate {
     
     // requests user song data from the mac api
     func requestUserData() {
+        self.myPicksTable_outlet.reloadData()
         self.macRequest(urlName: "userSongPicks", httpMethod: .get, header: [:], successAlert: false, attempt: 0, callback: { jsonData -> Void in
             self.parsePickData(jsonData: jsonData, table: self.myPicksTable_outlet, callback: { (picks : [Pick]?) -> Void in
                 if (jsonData?["statusCode"] as? String == "200") {
@@ -108,6 +109,7 @@ class PicksScreenSongMain: UIViewController, UITableViewDelegate {
     
     // requests club song data from the mac api
     func requestClubData() {
+        self.clubPicksTable_outlet.reloadData()
         self.macRequest(urlName: "clubSongPicks", httpMethod: .get, header: [:], successAlert: false, attempt: 0, callback: { jsonData -> Void in
             self.parsePickData(jsonData: jsonData, table: self.clubPicksTable_outlet, callback: { (picks : [Pick]?) -> Void in
                 if (jsonData?["statusCode"] as? String == "200") {
@@ -320,6 +322,7 @@ class PicksScreenSongMain: UIViewController, UITableViewDelegate {
                         self.clubSongPicks = [Pick]()
                         self.clubSongCells = [Int: SongCell]()
                         self.requestUserAndClubSongData()
+                        self.removeSpinner()
                     }
                 })
         }

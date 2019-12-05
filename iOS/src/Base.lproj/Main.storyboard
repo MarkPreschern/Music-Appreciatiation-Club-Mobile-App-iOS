@@ -95,7 +95,7 @@
                                         </constraints>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" cocoaTouchSystemColor="lightTextColor"/>
+                                <color key="backgroundColor" red="0.74509803921568629" green="0.82352941176470584" blue="0.74509803921568629" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>
                                     <constraint firstItem="PyS-qa-YZl" firstAttribute="top" secondItem="dTv-se-73S" secondAttribute="bottom" constant="-20" id="26f-fq-Mc9"/>
                                     <constraint firstItem="dRh-ct-F20" firstAttribute="width" secondItem="2Gj-y5-rnv" secondAttribute="width" id="2UB-Vx-ZHA"/>
@@ -2553,7 +2553,7 @@
     <resources>
         <image name="ArrowGreyDown" width="360" height="194"/>
         <image name="ArrowGreyUp" width="360" height="194"/>
-        <image name="Logo" width="1388" height="1388"/>
+        <image name="Logo" width="1389" height="1389"/>
         <image name="Newsgreen" width="366" height="305"/>
         <image name="Picksgreen" width="3664" height="3194"/>
         <image name="Profile2" width="187" height="237.5"/>
@@ -2571,9 +2571,9 @@
         <image name="uncheck-mark-image" width="137.5" height="91.5"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="DbS-FS-GeG"/>
-        <segue reference="kWr-4v-gEE"/>
-        <segue reference="9Bv-fI-Obu"/>
-        <segue reference="VEZ-L3-ekw"/>
+        <segue reference="QKl-cU-Ibm"/>
+        <segue reference="FRC-yp-F3f"/>
+        <segue reference="YMO-dw-Dns"/>
+        <segue reference="a2v-dM-dVZ"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -74,6 +74,7 @@ class PicksScreenAlbumMain: UIViewController, UITableViewDelegate {
     
     // requests user album data from the mac api
     func requestUserData() {
+        self.myPicksTable_outlet.reloadData()
         self.macRequest(urlName: "userAlbumPicks", httpMethod: .get, header: [:], successAlert: false, attempt: 0, callback: { jsonData -> Void in
             self.parsePickData(jsonData: jsonData, table: self.myPicksTable_outlet, callback: { (picks : [Pick]?) -> Void in
                 if (jsonData?["statusCode"] as? String == "200") {
@@ -89,6 +90,7 @@ class PicksScreenAlbumMain: UIViewController, UITableViewDelegate {
     
     // requests club album data from the mac api
     func requestClubData() {
+        self.clubPicksTable_outlet.reloadData()
         self.macRequest(urlName: "clubAlbumPicks", httpMethod: .get, header: [:], successAlert: false, attempt: 0, callback: { jsonData -> Void in
             self.parsePickData(jsonData: jsonData, table: self.clubPicksTable_outlet, callback: { (picks : [Pick]?) -> Void in
                 if (jsonData?["statusCode"] as? String == "200") {
@@ -301,6 +303,7 @@ class PicksScreenAlbumMain: UIViewController, UITableViewDelegate {
                         self.clubAlbumPicks = [Pick]()
                         self.clubAlbumCells = [Int: AlbumCell]()
                         self.requestUserAndClubAlbumData()
+                        self.removeSpinner()
                     }
                 })
         }

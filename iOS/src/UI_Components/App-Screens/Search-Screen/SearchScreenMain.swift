@@ -76,7 +76,11 @@ class SearchScreenMain: UIViewController, UITextFieldDelegate, UITableViewDelega
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true) //ends editing of text field
         if (!textField.text!.isEmpty) {
-            self.callSpotifySongAndAlbum(query: textField.text)
+            spotifySearchItems = [ItemData]() //resets table to empty
+            currentQuery = textField.text
+            // re-presents this view controller to dismiss any data that may still be loading in
+            let nextVC = self.storyboard!.instantiateViewController(withIdentifier: "searchScreenID")
+            self.present(nextVC, animated:false, completion: nil)
         }
         return false
     }
