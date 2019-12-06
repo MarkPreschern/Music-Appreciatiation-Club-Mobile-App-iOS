@@ -35,60 +35,53 @@ class DeleteUser: UIViewController, PopupScreen, UITableViewDelegate {
     
     // loads in all user data except for the current user using the app
     func loadUserData() {
-        self.showSpinner(onView: self.view)
         self.macRequest(urlName: "users", httpMethod: .get, header: [:], successAlert: false, attempt: 0, callback: { jsonData -> Void in
-            if let statusCode = jsonData?["statusCode"] as? String {
-                if statusCode == "200" {
-                    if let items = jsonData?["users"] as? [JSONStandard] {
-                        if items.count == 0 {
+            DispatchQueue.global(qos: .userInteractive).async {
+                if let statusCode = jsonData?["statusCode"] as? String {
+                    if statusCode == "200" {
+                        if let items = jsonData?["users"] as? [JSONStandard] {
+                            for i in 0..<items.count {
+                                let item = items[i]
+                                // TODO: Confirm image decoding works as expected
+                                let imageEncoded = (item["image_data"] as? String)?.removingPercentEncoding
+                                let mainImageData = imageEncoded == nil ? nil : NSData(base64Encoded: imageEncoded!, options: NSData.Base64DecodingOptions.ignoreUnknownCharacters)
+                                let mainImage = imageEncoded == nil ? nil : UIImage(data: mainImageData! as Data)!
+                                
+                                let user = UserData(user_id: item["user_id"] as? Int,
+                                                    user_name: item["user_name"] as? String,
+                                                    user_nuid: nil,
+                                                    authorization_token: nil,
+                                                    role_id: nil,
+                                                    access_id: nil,
+                                                    role_name: item["role_name"] as? String,
+                                                    role_description: item["description"] as? String,
+                                                    access_name: item["access_name"] as? String,
+                                                    access_description: nil,
+                                                    image_data: imageEncoded == nil ? nil : mainImage)
+                                
+                                // dictates which users this user can delete
+                                if userData.access_name == "Developer" {
+                                    self.users.append(user)
+                                } else if userData.access_name == "Admin" && (user.access_name == "User" || user.access_name == "Moderator") {
+                                    self.users.append(user)
+                                } else if userData.access_name == "Moderator" && user.access_name == "User" {
+                                    self.users.append(user)
+                                }
+                                
+                                DispatchQueue.main.sync {
+                                    self.table_outlet.reloadData()
+                                }
+                            }
+                        } else {
+                            let alert = createAlert(
+                                title: "Request Failed",
+                                message: "Error occured during request, couldn't locate items",
+                                actionTitle: "Close")
+                            self.present(alert, animated: true, completion: nil)
                             self.removeSpinner()
                         }
-                        for i in 0..<items.count {
-                            let item = items[i]
-                            // TODO: Confirm image decoding works as expected
-                            let imageEncoded = (item["image_data"] as? String)?.removingPercentEncoding
-                            let mainImageData = imageEncoded == nil ? nil : NSData(base64Encoded: imageEncoded!, options: NSData.Base64DecodingOptions.ignoreUnknownCharacters)
-                            let mainImage = imageEncoded == nil ? nil : UIImage(data: mainImageData! as Data)!
-                            
-                            let user = UserData(user_id: item["user_id"] as? Int,
-                                                user_name: item["user_name"] as? String,
-                                                user_nuid: nil,
-                                                authorization_token: nil,
-                                                role_id: nil,
-                                                access_id: nil,
-                                                role_name: item["role_name"] as? String,
-                                                role_description: item["description"] as? String,
-                                                access_name: item["access_name"] as? String,
-                                                access_description: nil,
-                                                image_data: imageEncoded == nil ? nil : mainImage)
-                            
-                            // dictates which users this user can delete
-                            if userData.access_name == "Developer" {
-                                self.users.append(user)
-                            } else if userData.access_name == "Admin" && (user.access_name == "User" || user.access_name == "Moderator") {
-                                self.users.append(user)
-                            } else if userData.access_name == "Moderator" && user.access_name == "User" {
-                                self.users.append(user)
-                            }
-                            
-                            if i == items.count - 1 {
-                                self.table_outlet.reloadData()
-                                self.removeSpinner()
-                            }
-                        }
-                    } else {
-                        let alert = createAlert(
-                            title: "Request Failed",
-                            message: "Error occured during request, couldn't locate items",
-                            actionTitle: "Close")
-                        self.present(alert, animated: true, completion: nil)
-                        self.removeSpinner()
                     }
-                } else {
-                    self.removeSpinner()
                 }
-            } else {
-                self.removeSpinner()
             }
         })
     }

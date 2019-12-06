@@ -35,37 +35,41 @@ class MembersScreenMain: UIViewController, UITableViewDelegate {
     // retrieves user data from the MAC API
     func retrieveUserData() {
         self.macRequest(urlName: "users", httpMethod: .get, header: [:], successAlert: false, attempt: 0, callback: { jsonData -> Void in
-            if let statusCode = jsonData?["statusCode"] as? String {
-                if statusCode == "200" {
-                    if let items = jsonData?["users"] as? [JSONStandard] {
-                        for i in 0..<items.count {
-                            let item = items[i]
-                            
-                            let imageEncoded = (item["image_data"] as? String)?.removingPercentEncoding
-                            let imageData : NSData? = (imageEncoded != nil) ? NSData(base64Encoded: imageEncoded!, options: NSData.Base64DecodingOptions.ignoreUnknownCharacters) : nil
-                            let mainImage : UIImage? = (imageEncoded != nil) ? UIImage(data: imageData! as Data)! : nil
-                            
-                            let user = UserData(user_id: item["user_id"] as? Int,
-                                                user_name: item["user_name"] as? String,
-                                                user_nuid: nil,
-                                                authorization_token: nil,
-                                                role_id: nil,
-                                                access_id: nil,
-                                                role_name: item["role_name"] as? String,
-                                                role_description: item["description"] as? String,
-                                                access_name: nil,
-                                                access_description: nil,
-                                                image_data: imageEncoded == nil ? nil : mainImage)
-                            
-                            self.users.append(user)
-                            self.table_outlet.reloadData()
+            DispatchQueue.global(qos: .userInteractive).async {
+                if let statusCode = jsonData?["statusCode"] as? String {
+                    if statusCode == "200" {
+                        if let items = jsonData?["users"] as? [JSONStandard] {
+                            for i in 0..<items.count {
+                                let item = items[i]
+                                
+                                let imageEncoded = (item["image_data"] as? String)?.removingPercentEncoding
+                                let imageData : NSData? = (imageEncoded != nil) ? NSData(base64Encoded: imageEncoded!, options: NSData.Base64DecodingOptions.ignoreUnknownCharacters) : nil
+                                let mainImage : UIImage? = (imageEncoded != nil) ? UIImage(data: imageData! as Data)! : nil
+                                
+                                let user = UserData(user_id: item["user_id"] as? Int,
+                                                    user_name: item["user_name"] as? String,
+                                                    user_nuid: nil,
+                                                    authorization_token: nil,
+                                                    role_id: nil,
+                                                    access_id: nil,
+                                                    role_name: item["role_name"] as? String,
+                                                    role_description: item["description"] as? String,
+                                                    access_name: nil,
+                                                    access_description: nil,
+                                                    image_data: imageEncoded == nil ? nil : mainImage)
+                                
+                                self.users.append(user)
+                                DispatchQueue.main.sync {
+                                    self.table_outlet.reloadData()
+                                }
+                            }
+                        } else {
+                            let alert = createAlert(
+                                title: "Request Failed",
+                                message: "Error occured during request, couldn't locate items",
+                                actionTitle: "Close")
+                            self.present(alert, animated: true, completion: nil)
                         }
-                    } else {
-                        let alert = createAlert(
-                            title: "Request Failed",
-                            message: "Error occured during request, couldn't locate items",
-                            actionTitle: "Close")
-                        self.present(alert, animated: true, completion: nil)
                     }
                 }
             }

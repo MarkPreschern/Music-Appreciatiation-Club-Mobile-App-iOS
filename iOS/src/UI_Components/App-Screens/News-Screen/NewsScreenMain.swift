@@ -60,39 +60,43 @@ class NewsScreenMain: UIViewController, UITableViewDelegate {
     // loads in post data from the MAC API
     func loadPosts() {
         self.macRequest(urlName: "posts", httpMethod: .get, header: nil, successAlert: false, attempt: 0, callback: { jsonData -> Void in
-            if let statusCode = jsonData?["statusCode"] as? String {
-                if statusCode == "200" {
-                    if let items = jsonData?["posts"] as? [JSONStandard] {
-                        for i in 0..<items.count {
-                            // sets the date
-                            let item = items[i]
-                            let dateList = (item["date_created"] as! String).components(separatedBy: "-")
-                            let day = dateList[2].components(separatedBy: "T")[0]
-                            let date = dateList[1] + "/" + day + "/" + dateList[0]
+            DispatchQueue.global(qos: .userInteractive).async {
+                if let statusCode = jsonData?["statusCode"] as? String {
+                    if statusCode == "200" {
+                        if let items = jsonData?["posts"] as? [JSONStandard] {
+                            for i in 0..<items.count {
+                                // sets the date
+                                let item = items[i]
+                                let dateList = (item["date_created"] as! String).components(separatedBy: "-")
+                                let day = dateList[2].components(separatedBy: "T")[0]
+                                let date = dateList[1] + "/" + day + "/" + dateList[0]
+                                
+                                // sets the image
+                                let imageEncoded = (item["image_data"] as? String)?.removingPercentEncoding
+                                let imageData : NSData? = (imageEncoded != nil) ? NSData(base64Encoded: imageEncoded!, options: NSData.Base64DecodingOptions.ignoreUnknownCharacters) : nil
+                                let mainImage : UIImage? = (imageEncoded != nil) ? UIImage(data: imageData! as Data)! : nil
+                                
+                                let post = Post(post_id: item["post_id"] as? Int,
+                                                title: item["title"] as? String,
+                                                content: item["content"] as? String,
+                                                date_created: date,
+                                                user_id: item["user_id"] as? Int,
+                                                user_name: item["user_name"] as? String,
+                                                role_name: item["role_name"] as? String,
+                                                user_image: imageEncoded == nil ? nil : mainImage)
                             
-                            // sets the image
-                            let imageEncoded = (item["image_data"] as? String)?.removingPercentEncoding
-                            let imageData : NSData? = (imageEncoded != nil) ? NSData(base64Encoded: imageEncoded!, options: NSData.Base64DecodingOptions.ignoreUnknownCharacters) : nil
-                            let mainImage : UIImage? = (imageEncoded != nil) ? UIImage(data: imageData! as Data)! : nil
-                            
-                            let post = Post(post_id: item["post_id"] as? Int,
-                                            title: item["title"] as? String,
-                                            content: item["content"] as? String,
-                                            date_created: date,
-                                            user_id: item["user_id"] as? Int,
-                                            user_name: item["user_name"] as? String,
-                                            role_name: item["role_name"] as? String,
-                                            user_image: imageEncoded == nil ? nil : mainImage)
-                            
-                            self.posts.append(post)
-                            self.table_outlet.reloadData()
+                                self.posts.append(post)
+                                DispatchQueue.main.sync {
+                                    self.table_outlet.reloadData()
+                                }
+                            }
+                        } else {
+                        let alert = createAlert(
+                            title: "Request Failed",
+                            message: "Error occured during request, couldn't locate items",
+                            actionTitle: "Close")
+                        self.present(alert, animated: true, completion: nil)
                         }
-                    } else {
-                    let alert = createAlert(
-                        title: "Request Failed",
-                        message: "Error occured during request, couldn't locate items",
-                        actionTitle: "Close")
-                    self.present(alert, animated: true, completion: nil)
                     }
                 }
             }

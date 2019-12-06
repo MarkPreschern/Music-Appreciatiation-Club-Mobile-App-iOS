@@ -84,40 +84,44 @@ class ProfileScreenMain: UIViewController, UITableViewDelegate {
         ]
         
         self.macRequest(urlName: "userPopularPicks", httpMethod: .get, header: header, successAlert: false, attempt: 0, callback: { jsonData -> Void in
-            if let statusCode = jsonData?["statusCode"] as? String {
-                if statusCode == "200" {
-                    if let items = jsonData?["popular_picks"] as? [JSONStandard] {
-                        for i in 0..<items.count {
-                            let item = items[i]
-                            let imageUrl = item["item_image_url"] as! String
-                            let mainImageData = NSData(contentsOf: URL(string: imageUrl)!)
-                            let mainImage = UIImage(data: mainImageData! as Data)
-                            
-                            let pick = Pick(
-                                pickID: item["popular_id"] as? Int,
-                                itemData: ItemData(
-                                    type: (item["is_album"] as? Int) == 1 ? ItemType.ALBUM : ItemType.SONG,
-                                    name: item["item_name"] as? String,
-                                    artist: item["item_artist"] as? String,
-                                    image: mainImage,
-                                    imageUrl: imageUrl,
-                                    spotify_id: item["item_id"] as? String,
-                                    previewUrl: item["item_preview_url"] as? String),
-                                voteData: VoteData(
-                                    totalVotes: item["votes"] as? Int,
-                                    upVoteData: nil,
-                                    downVoteData: nil,
-                                    userVoteID: nil),
-                                userData: nil)
-                            self.popularPicks.append(pick)
-                            self.table_outlet.reloadData()
+            DispatchQueue.global(qos: .userInteractive).async {
+                if let statusCode = jsonData?["statusCode"] as? String {
+                    if statusCode == "200" {
+                        if let items = jsonData?["popular_picks"] as? [JSONStandard] {
+                            for i in 0..<items.count {
+                                let item = items[i]
+                                let imageUrl = item["item_image_url"] as! String
+                                let mainImageData = NSData(contentsOf: URL(string: imageUrl)!)
+                                let mainImage = UIImage(data: mainImageData! as Data)
+                                
+                                let pick = Pick(
+                                    pickID: item["popular_id"] as? Int,
+                                    itemData: ItemData(
+                                        type: (item["is_album"] as? Int) == 1 ? ItemType.ALBUM : ItemType.SONG,
+                                        name: item["item_name"] as? String,
+                                        artist: item["item_artist"] as? String,
+                                        image: mainImage,
+                                        imageUrl: imageUrl,
+                                        spotify_id: item["item_id"] as? String,
+                                        previewUrl: item["item_preview_url"] as? String),
+                                    voteData: VoteData(
+                                        totalVotes: item["votes"] as? Int,
+                                        upVoteData: nil,
+                                        downVoteData: nil,
+                                        userVoteID: nil),
+                                    userData: nil)
+                                self.popularPicks.append(pick)
+                                DispatchQueue.main.sync {
+                                    self.table_outlet.reloadData()
+                                }
+                            }
+                        } else {
+                            let alert = createAlert(
+                                title: "Request Failed",
+                                message: "Error occured during request, couldn't locate items",
+                                actionTitle: "Close")
+                            self.present(alert, animated: true, completion: nil)
                         }
-                    } else {
-                        let alert = createAlert(
-                            title: "Request Failed",
-                            message: "Error occured during request, couldn't locate items",
-                            actionTitle: "Close")
-                        self.present(alert, animated: true, completion: nil)
                     }
                 }
             }
