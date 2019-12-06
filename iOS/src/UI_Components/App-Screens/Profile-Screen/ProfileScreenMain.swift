@@ -126,10 +126,9 @@ class ProfileScreenMain: UIViewController, UITableViewDelegate {
     
     // handles when a user clicks the user image, prompting the user to select a new image
     @objc func imageClicked(gesture: UITapGestureRecognizer) {
-        if (gesture.view as? UIImageView) != nil && self.currentUser {
+        if (gesture.view as? UIImageView) != nil && (self.currentUser || userData.access_name == "Developer") {
             let imageManager = ImagePickerManager.init()
             imageManager.pickImage(self, { image -> Void in
-                self.showSpinner(onView: self.view)
                 self.postImage(image: image, callback: { response -> Void in
                     if response == "Success" {
                         self.userImage_outlet.image = image

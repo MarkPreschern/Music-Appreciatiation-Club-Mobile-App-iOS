@@ -71,7 +71,7 @@ class NewsScreenMain: UIViewController, UITableViewDelegate {
                             let date = dateList[1] + "/" + day + "/" + dateList[0]
                             
                             // sets the image
-                            let imageEncoded = (items[0]["image_data"] as? String)?.removingPercentEncoding
+                            let imageEncoded = (item["image_data"] as? String)?.removingPercentEncoding
                             let imageData : NSData? = (imageEncoded != nil) ? NSData(base64Encoded: imageEncoded!, options: NSData.Base64DecodingOptions.ignoreUnknownCharacters) : nil
                             let mainImage : UIImage? = (imageEncoded != nil) ? UIImage(data: imageData! as Data)! : nil
                             

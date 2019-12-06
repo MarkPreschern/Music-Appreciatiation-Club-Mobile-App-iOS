@@ -617,7 +617,7 @@ function postPick(con, eventID, event, callback) {
             con.query(sql, function (error) {
                 if (error) {
                     if (error["code"] === "ER_DUP_ENTRY") { // don't want to allow multiple users to pick the same item
-                        reject(createErrorMessage("404", "Duplicate Entry", "This " + (event.headers["item_is_album"] === "1" ? "album" : "song") + " has already been chosen for this event or was popular in a previous event", error))
+                        reject(createErrorMessage("404", "Duplicate Entry", "This " + (event.headers["item_is_album"] === "1" ? "album" : "song") + " has already been chosen for this event or a previous event", error))
                     } else {
                         reject(createErrorMessage("404", "Server-side Error", "Failed to query requested data due to server-side error", error));
                     }

@@ -41,7 +41,7 @@ class MembersScreenMain: UIViewController, UITableViewDelegate {
                         for i in 0..<items.count {
                             let item = items[i]
                             
-                            let imageEncoded = (items[0]["image_data"] as? String)?.removingPercentEncoding
+                            let imageEncoded = (item["image_data"] as? String)?.removingPercentEncoding
                             let imageData : NSData? = (imageEncoded != nil) ? NSData(base64Encoded: imageEncoded!, options: NSData.Base64DecodingOptions.ignoreUnknownCharacters) : nil
                             let mainImage : UIImage? = (imageEncoded != nil) ? UIImage(data: imageData! as Data)! : nil
                             

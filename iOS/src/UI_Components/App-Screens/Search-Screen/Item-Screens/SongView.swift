@@ -55,6 +55,7 @@ class SongView: UIViewController {
         try! session?.setCategory(AVAudioSession.Category.playback)
 
         // prepares to play this song
+        player?.volume = 0.0
         if self.songData.previewUrl != nil && self.songData.previewUrl != "" {
             // downloads and prepares song, waiting for a callback to remove loading screen
             DispatchQueue.global(qos: .userInitiated).sync {
@@ -106,11 +107,11 @@ class SongView: UIViewController {
                 actionTitle: "Try Again")
             self.present(alert, animated: true, completion: nil)
         } else {
-            if (player?.isPlaying ?? false && player?.volume == 1.0) {
-                player?.fadeOut()
+            if (player?.isPlaying ?? false) {
+                player?.fadeOut(changeStatus: true)
                 self.playPause_outlet.setTitle("Play", for: UIControl.State.normal)
-            } else if (!(player?.isPlaying ?? true) && player?.volume == 0.0) {
-                player?.fadeIn()
+            } else {
+                player?.fadeIn(changeStatus: true)
                 self.playPause_outlet.setTitle("Pause", for: UIControl.State.normal)
             }
         }
@@ -120,9 +121,7 @@ class SongView: UIViewController {
     @IBAction func backButtonClicked(_ sender: Any) {
         //resets the audio player after fading
         if (self.songData.previewUrl != nil && self.songData.previewUrl != "") {
-            if (player?.isPlaying ?? false && player?.volume == 1.0) {
-                player?.fadeOut()
-            }
+            player?.fadeOut(changeStatus: true)
         }
         // determines which controller to navigate to
         if (self.albumData == nil) {

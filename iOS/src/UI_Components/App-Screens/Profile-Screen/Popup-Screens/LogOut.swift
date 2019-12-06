@@ -52,6 +52,7 @@ class LogOut: UIViewController, PopupScreen {
         vSpinner = UIView()
         vSpinnerControllerRestorationIdentifier = nil
         settings = [Setting]()
+        fadingIn = true
     }
 
 }
