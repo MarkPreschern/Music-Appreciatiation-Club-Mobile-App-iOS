@@ -1,8 +1,14 @@
 # Music Appreciation Club Mobile App
 The iOS and Android app for the Music Appreciation Club at Northeastern University
 
+
+
+To request access to the app, fill out the following google forum using a Northeastern University email address: https://docs.google.com/forms/d/10UOPHR68kDy3ciCLsYh8yipS2NcqDAyztZ32nEBmjSM
+
+Upon approval of your request, you will be emailed an invitation to download and use the app
+
 ## iOS
-**Status:** Development done, in beta testing. Expected launch date: January 1, 2020
+**Status:** Development done, available for private distribution
 
 ## Android
 **Status:** In development, expected launch date: May 1, 2020
