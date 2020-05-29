@@ -1,5 +1,5 @@
 # Music Appreciation Club Mobile App
-The iOS and Android app for the Music Appreciation Club at Northeastern University
+The iOS app for the Music Appreciation Club at Northeastern University
 
 
 
@@ -9,8 +9,5 @@ Upon approval of your request, you will be emailed an invitation to download and
 
 ## iOS
 **Status:** Development done, available for private distribution
-
-## Android
-**Status:** In development, expected launch date: May 1, 2020
 
 <img src="GFX/Display/StartScreen.PNG" width="200" height="433" /> <img src="GFX/Display/NewsScreen.PNG" width="200" height="433" /> <img src="GFX/Display/ProfileScreen.PNG" width="200" height="433" /> <img src="GFX/Display/MembersScreen.PNG" width="200" height="433" /> <img src="GFX/Display/PicksScreen.PNG" width="200" height="433" /> <img src="GFX/Display/SearchScreen.PNG" width="200" height="433" /> <img src="GFX/Display/AlbumView.PNG" width="200" height="433" /> <img src="GFX/Display/SongView.PNG" width="200" height="433" />
